@@ -1,0 +1,535 @@
+﻿.ProdLogo {
+    margin-top: 20%;
+}
+/*Side bar categories css*/
+.just-padding {
+    padding-left: 5px;
+    margin-left: 20px;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+    .list-group.list-group-root .list-group {
+        margin-bottom: 0;
+    }
+
+    .list-group.list-group-root .list-group-item {
+        border-radius: 0;
+        border-width: 1px 0 0 0;
+    }
+
+    .list-group.list-group-root > .list-group-item:first-child {
+        border-top-width: 0;
+    }
+
+    .list-group.list-group-root > .list-group > .list-group-item {
+        padding-left: 15px;
+    }
+
+    .list-group.list-group-root > .list-group > .list-group > .list-group-item {
+        padding-left: 45px;
+    }
+/*Box of categories detail css*/
+.rcorners {
+    border: 5px solid #F5F5F5;
+    background-color: #F5F5F5;
+    padding: 20px;
+    height: auto;
+    width: auto;
+}
+
+#LoginBut {
+   
+    margin-top: 7px;
+    border-color: #9d426b;
+    background-color: #9d426b;
+    color: white;
+}
+/*Section Background*/
+#ProductReview {
+    background-color: white;
+}
+/*space above image*/
+#productImage {
+    margin-top: 10px;
+    height: 60px;
+    width: 90px;
+}
+/*Border below each product*/
+#product {
+    border-bottom: 1px solid #D3D3D3;
+}
+
+
+.descriptionHeader {
+    padding: 8px 0px 8px 0px;
+    background: #9d426b;
+    width: 107.1%;
+    margin-left: -11.9px;
+    color: white;
+    padding-left: 10px;
+}
+
+/*See More Button Style*/
+.btn.btn-primary.btn-lg{
+padding: 10px 16px;
+    font-size: 14px!important;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+/*Rating Stars*/
+.stars-container {
+            position: relative;
+            display: inline-block;
+            color: transparent;
+        }
+
+            .stars-container:before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                content: '★★★★★';
+                color: lightgray;
+            }
+
+            .stars-container:after {
+                position: absolute;
+                top: 0;
+                left: 0;
+                content: '★★★★★';
+                color: #9d426b;
+                overflow: hidden;
+            }
+
+     
+        .stars-0:after {
+            width: 0%;
+        }
+
+                   
+
+        .stars-1:after {
+            width: 20%;
+        }
+       
+
+      
+
+        .stars-2:after {
+            width: 40%;
+        }
+
+      
+         .stars-3:after {
+            width: 60%;
+        }
+     
+      
+
+        .stars-4:after {
+            width: 80%;
+        }
+
+      
+
+        .stars-5:after {
+            width: 100%;
+        }
+
+
+.h4FontSize{
+    font-size:15px;
+}
+
+
+
+.trendsBox {
+    border-bottom: 1px solid #D3D3D3;
+    border-left: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    border-top: 1px solid #D3D3D3;
+    border-radius:25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 315px;
+    width: 360px;
+}
+
+#topTrends {
+    color: #9d426b;
+}
+/*header color*/
+#header_wrapper {
+    background-color: black;
+}
+
+#search {
+    background-color: #9d426b;
+    border-color: #9d426b;
+    color: white;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    background-color: #9d426b;
+    color: white;
+}
+
+nav-pills > li > a:hover, .nav > li > a:focus, .nav > li > a:hover {
+    border-color: #9d426b !important;
+    background-color: #9d426b !important;
+    color: white;
+}
+
+a {
+    color: black;
+}
+
+    a:hover, a:focus {
+        color: #9d426b;
+        
+        text-decoration: none;
+    }
+
+/*Top Rated Heading color*/
+
+#topRated {
+    color: #9d426b;
+    margin-bottom: 50px;
+    align-content: center;
+}
+
+/*See more button color*/
+#seeMore {
+    background-color: #9d426b;
+    color: white;
+}
+
+#mainNav {
+    color: white;
+}
+.scroll-link{
+    color: white;
+}
+
+/*--------------------------------------------------------------------PRODUCTS PAGE STYLING-------------------------------------------------------------------------------*/
+/*Products Menu*/
+#productMenu{
+    color:#9d426b;
+    margin-left:30px;
+    margin-right:30px;
+    margin-top:0px;
+    border-bottom: 1px solid #D3D3D3;
+}
+
+/*Box of products details*/
+.productBox {
+    border: 5px solid white;
+    background-color: white;
+    margin-left:30px;
+    padding: 20px;
+    height: auto;
+    width: auto;
+}
+
+
+/*--------------------------------------------------------------------------USER LOGIN----------------------------------------------------------------------*/
+/*Login Detais*/
+#UserLogin {
+    color: #9d426b;
+    margin-left: 40px;
+    margin-right: 30px;
+    margin-top: 0px;
+    font-size: x-large;
+}
+
+#promptUser {
+    margin-left: 55px;
+    color: black;
+}
+
+#emailLabel {
+    color: #9d426b;
+    margin-left: 55px;
+    margin-top: 40px;
+}
+
+#passwordLabel {
+    color: #9d426b;
+    margin-left: 55px;
+    margin-top: 10px;
+}
+
+#email {
+    margin-left: 60px;
+    padding-right: 20px;
+}
+
+#password {
+    margin-top: 10px;
+    margin-left: 93px;
+    padding-right: 20px;
+}
+
+#loginButton {
+    margin-left: 382px;
+    margin-top: 20px;
+    background:#9d426b;
+    color: white;
+}
+
+#forgotPassword {
+    margin-left: 250px;
+    font-size: x-small;
+}
+
+#mainLoginDiv {
+    margin-top: 60px;
+    border-right: 1px solid #D3D3D3;
+    margin-bottom: 90px;
+}
+
+#NoAccountHeading {
+    color: #9d426b;
+    margin-left: 150px;
+    margin-right: 30px;
+    margin-top: 60px;
+    font-size: x-large;
+    align-content: center;
+}
+
+#promptSignUp {
+    margin-left: 160px;
+    color: black;
+}
+
+#SignUpButton {
+    margin-left: 200px;
+    margin-top: 7px;
+    border-color: #9d426b;
+    background-color: #9d426b;
+    color: white;
+}
+
+#promptSignUpDetail {
+    margin-left: 100px;
+    color: black;
+    margin-top: 7px;
+    text-justify: auto;
+}
+
+/*-------------------------------------------------------------------------USER SIGN UP------------------------------------------------------------------*/
+/*Sign Up Details*/
+#UserSignup {
+    color: #9d426b;
+    margin-left: 90px;
+    margin-right: 30px;
+    margin-top: 0px;
+    font-size: x-large;
+}
+
+#promptUserSignup {
+    margin-left: 65px;
+    color: black;
+}
+
+#firstNameSignUp {
+    margin-left: 30px;
+    background-color: #fafafa;
+    border: 1px solid #bbb;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+}
+
+#lastNameSignUp {
+    margin-left: 10px;
+    background-color: #fafafa;
+    border: 1px solid #bbb;
+}
+
+#emailSignUp {
+    margin-top: 10px;
+    margin-left: 30px;
+    background-color: #fafafa;
+    border: 1px solid #bbb;
+}
+
+#emailDiv {
+    padding-right: 228px;
+}
+
+#passwordSignUp {
+    margin-top: 10px;
+    margin-left: 30px;
+    background-color: #fafafa;
+    border: 1px solid #bbb;
+}
+
+#passwordDiv {
+    padding-right: 228px;
+}
+
+#CheckDiv {
+    margin-top: 20px;
+    padding-left: 70px;
+}
+
+#laptopDiv {
+    font-size: medium;
+    color: black;
+}
+
+#laptopDiv {
+    font-size: medium;
+    color: black;
+}
+
+#mobileDiv {
+    font-size: medium;
+    color: black;
+    margin-left: 25px;
+}
+
+#signupDetailButton {
+    margin-left: 30px;
+    margin-top: 25px;
+    padding-left:130px;
+    padding-right:140px;
+    border-color: #9d426b;
+    background-color: #9d426b;
+    color: white;
+}
+#mainSignupDiv {
+    margin-top: 60px;
+    margin-bottom: 90px;
+}
+
+#footerPosition{
+    padding-bottom:-200px;
+}
+#prodDescription_section{
+    position: relative;
+    /* background: url(../img/slide-1.jpg) top center no-repeat; */
+    height: 450px;
+    margin-top: 10px;
+    background-color: #F5F5F5;
+    border-radius:25px;
+}
+
+.ProductPageTop{
+     position: relative;
+    /* background: url(../img/slide-1.jpg) top center no-repeat; */
+    height: 450px;
+    margin-top: 10px;
+    background-color: #F5F5F5;
+}
+
+#ProductTitle{
+    text-align:initial;
+    margin-left:20px;
+}
+
+
+
+/*-----------------------------------------------------------------Specific Product Page Styling--------------------------*/
+#productThumbnail{
+    margin-top:14px;
+        margin-left: 1px;
+}
+.SummaryBox {
+    border-bottom: 1px solid #D3D3D3;
+    border-left: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    border-top: 1px solid #D3D3D3;
+    border-radius: 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+    text-align: justify;
+    padding-bottom: 20px;
+   
+}
+
+#prodDescBox {
+    border-bottom: 1px solid #D3D3D3;
+    border-left: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    border-top: 1px solid #D3D3D3;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+    height: auto;
+    margin-left:1px;
+   
+}
+
+.descriptionHeader {
+    padding: 8px 0px 8px 0px;
+    background: #9d426b;
+    width: 107.1%;
+    margin-left: -11.9px;
+    color: white;
+    padding-left: 10px;
+}
+
+.ReviewBox{
+    border-bottom: 1px solid #D3D3D3;
+    border-left: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    border-top: 1px solid #D3D3D3;
+    border-radius: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.ReviewPageGraph{
+    border-bottom: 1px solid #D3D3D3;
+    border-left: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    border-top: 1px solid #D3D3D3;
+    border-radius:25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    
+}
+
+.thumbnail{
+    margin-bottom:10px!important;
+    margin-top:10px!important;
+}
+
+/*-----------------------------------------------------------------Customer DashBoard Page Styling--------------------------*/
+#SliderPage {
+    margin-bottom:300px;
+    width:100%;
+    
+}
+#SliderMain {
+    width:100%
+}
+#SearchButton {
+    /*background-color:#2251dd;*/
+    /*background-color:#3862e0;*/
+    background-color:#4f74e3;
+    color:white;
+    width:200px;
+    margin-right:15px
+    
+}
+.page-header {
+    color:#9d426b;
+}
+
+/*Footer Color*/
+.footer_bottom {
+    margin-left: -190px;
+    margin-right: -190px;
+    background-color: black;
+}

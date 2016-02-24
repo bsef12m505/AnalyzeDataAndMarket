@@ -1,0 +1,407 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1">
+    <link rel="icon" href="~/img/favicon.png" type="image/png">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/fancybox/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/style.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/Custom.css" rel="stylesheet" />
+    <link href="~/Content/reveal.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/flot/jquery.reveal.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['bar', 'line'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Year', 'Sales', 'Expenses', 'Profit'],
+              ['2014', 1000, 400, 200],
+              ['2015', 1170, 460, 250],
+              ['2016', 660, 1120, 300],
+              ['2017', 1030, 540, 350]
+            ]);
+
+            var options = {
+                chart: {
+                    title: '',
+                    subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                },
+                bars: 'vertical', // Required for Material Bar Charts.
+                width: 320,
+                height: 290
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('trendsBox1'));
+
+            chart.draw(data, options);
+
+
+
+
+
+            @*google.charts.setOnLoadCallback(drawChartLine);*@
+            var data1 = new google.visualization.DataTable();
+            data1.addColumn('number', 'Day');
+            data1.addColumn('number', 'Guardians ');
+            data1.addColumn('number', 'The Avengers');
+            data1.addColumn('number', 'Transformers');
+
+            data1.addRows([
+              [1, 37.8, 80.8, 41.8],
+              [2, 30.9, 69.5, 32.4],
+              [3, 25.4, 57, 25.7],
+              [4, 11.7, 18.8, 10.5],
+              [5, 11.9, 17.6, 10.4],
+              [6, 8.8, 13.6, 7.7],
+              [7, 7.6, 12.3, 9.6],
+              [8, 12.3, 29.2, 10.6],
+              [9, 16.9, 42.9, 14.8],
+              [10, 12.8, 30.9, 11.6],
+              [11, 5.3, 7.9, 4.7],
+              [12, 6.6, 8.4, 5.2],
+              [13, 4.8, 6.3, 3.6],
+              [14, 4.2, 6.2, 3.4]
+            ]);
+
+            var options1 = {
+                chart: {
+                    title: 'Box Office Earnings in First Two Weeks of Opening',
+                    subtitle: 'in millions of dollars (USD)'
+                },
+                width: 320,
+                height: 290
+            };
+
+            var chart1 = new google.charts.Line(document.getElementById('linechart'));
+
+            chart1.draw(data1, options1);
+
+
+        }
+    </script>
+
+
+
+</head>
+<body style="background-color: white">
+
+    <header id="header_wrapper">
+        <div class="container">
+            <div class="header_box">
+                <div class="logo">
+                    <a href="#">
+                        <img src="~/img/logo.png" alt="logo" style="width: 60%;">
+                    </a>
+                </div>
+                <nav class="navbar navbar-inverse" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    </div>
+                    <div id="main-nav" class="navbar-header" @*class="collapse navbar-collapse navStyle"*@>
+                        <ul class="nav nav-pills" id="mainNav">
+                            <li class="active"><a href="../../FYPAdam" class="scroll-link"><strong>Home</strong></a></li>
+                            <li><a href="#service" class="scroll-link"><strong>Top Rated Products</strong></a></li>
+                            <li><a href="#ProductReview" class="scroll-link"><strong>Reviews</strong></a></li>
+                            <li><a href="#contact" class="scroll-link"><strong>Contact</strong></a></li>
+                        </ul>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <form action="Home/Products" method="post" class="navbar-form navbar-right" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search here...">
+                            </div>
+
+                            <button type="submit" class="btn btn-default" id="search"><strong>Search</strong></button>
+                        </form>
+                    </div>
+                    <div class="container">
+                        <div class="col-lg-1">
+                            <button type="submit" class="btn btn-default" onclick="location.href = '../../FYPAdam/ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!--Hero_Section-->
+    <div class="container">
+        <section id="hero_section" class="top_cont_outer">
+            <div class="hero_wrapper">
+                <div class="container">
+                    <div class="hero_section">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="top_left_cont zoomIn wow animated">
+                                    <h2>Find the best of <strong>laptops and phones</strong> you look for </h2>
+                                    <p>ADAM - Analyze Data and Market is a social networking assistant that helps you choose best products among many in your area of interest. <br />Best laptops and phones with detailed specs and reviews to let you choose wisely.</p>
+                                    <a href="#service" class="read_more2">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Hero_Section-->
+        <!--Service-->
+        <section id="service">
+            <div style="align-self:center">
+                @*<h2 id="topRated">Top Rated Products</h2>*@
+                <h2 id="topRated">@ViewBag.Name</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="just-padding">
+
+                        <div class="list-group list-group-root well">
+
+                            <a href="#" class="list-group-item active" id="Laptop">Laptop</a>
+
+                            <div class="list-group">
+
+                                <a href="../../AdamHome/Test2?categoryId=1&&" class="list-group-item"><span class="glyphicon glyphicon-menu-right" id="Apple" onclick="CallWM();"></span>&nbsp;&nbsp;Apple</a>
+
+                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 1.2</a>
+
+                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 1.3</a>
+
+                            </div>
+
+                            <a href="#demo4" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Laptop"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
+                            <div class="collapse" id="demo4">
+                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 1</a>
+                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 2</a>
+                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 3</a>
+                            </div>
+
+                            <a href="#" class="list-group-item active" id="Mobile">Mobile</a>
+
+                            <div class="list-group">
+
+                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 2.1</a>
+
+                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 2.2</a>
+                            </div>
+                            <a href="#demo5" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Mobile"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
+                            <div class="collapse" id="demo5">
+                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 1</a>
+                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 2</a>
+                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 3</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="rcorners">
+                        <div class="row" id="product">
+                            <div class="col-lg-3">
+                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <a href="../../FYPAdam/ADAMHome/ProductDetails"><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
+                                </div>
+                                <div class="row">
+                                    <span class="stars-container stars-3">★★★★★</span>
+                                </div>
+                                <div class="row">
+                                    <p>review</p>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row" id="product">
+                            <div class="col-lg-3">
+                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
+                                </div>
+                                <div class="row">
+                                    <span class="stars-container stars-3">★★★★★</span>
+                                </div>
+                                <div class="row">
+                                    <p>review</p>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row" id="product">
+                            <div class="col-lg-3">
+                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
+                                </div>
+                                <div class="row">
+                                    <span class="stars-container stars-3">★★★★★</span>
+                                </div>
+                                <div class="row">
+                                    <p>review</p>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row" id="product">
+                            <div class="col-lg-3">
+                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
+                                </div>
+                                <div class="row">
+                                    <span class="stars-container stars-3">★★★★★</span>
+                                </div>
+                                <div class="row">
+                                    <p>review</p>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row" id="product">
+                            <div class="col-lg-3">
+                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
+                                </div>
+                                <div class="row">
+                                    <span class="stars-container stars-3">★★★★★</span>
+
+                                </div>
+                                <div class="row">
+                                    <p>review</p>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-8"></div>
+                            <div class="col-lg-2">
+                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products'">See More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="trendsBox" id="trendsBox1">
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px">
+                        <div class="trendsBox" id="linechart">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!--Service-->
+        <!-- Portfolio -->
+        <section id="ProductReview" class="content">
+            <div class="row">
+                <div class="col-lg-8"></div>
+            </div>
+        </section>
+        <!--/Portfolio -->
+
+    </div>
+    <!--Aboutus-->
+    <!--Footer-->
+    <footer class="footer_wrapper" id="contact1" style="background-color: #D3D3D3; ">
+        <div class="container">
+            <section class="page_section contact" id="contact">
+                <div class="contact_section">
+                    <h2>Contact Us</h2>
+                    <div class="row">
+                        <div class="col-lg-4">
+
+                        </div>
+                        <div class="col-lg-4">
+
+                        </div>
+                        <div class="col-lg-4">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 wow fadeInLeft">
+                        <div class="contact_info">
+                            <div class="detail">
+                                <h4>UNIQUE Infoway</h4>
+                                <p>104, Some street, NewYork, USA</p>
+                            </div>
+                            <div class="detail">
+                                <h4>call us</h4>
+                                <p>+1 234 567890</p>
+                            </div>
+                            <div class="detail">
+                                <h4>Email us</h4>
+                                <p>support@sitename.com</p>
+                            </div>
+                        </div>
+
+
+
+                        <ul class="social_links">
+                            <li class="twitter animated bounceIn wow delay-02s"><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
+                            <li class="facebook animated bounceIn wow delay-03s"><a href="javascript:void(0)"><i class="fa fa-facebook"></i></a></li>
+                            <li class="pinterest animated bounceIn wow delay-04s"><a href="javascript:void(0)"><i class="fa fa-pinterest"></i></a></li>
+                            <li class="gplus animated bounceIn wow delay-05s"><a href="javascript:void(0)"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-8 wow fadeInLeft delay-06s">
+                        <div class="form">
+                            <input class="input-text" type="text" name="" value="Your Name *" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
+                            <input class="input-text" type="text" name="" value="Your E-mail *" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
+                            <textarea class="input-text text-area" cols="0" rows="0" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">Your Message *</textarea>
+                            <input class="input-btn" type="submit" value="send message">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="container">
+            <div class="footer_bottom"><span>Copyright © 2014,    Template by <a href="http://webthemez.com">WebThemez.com</a>. </span> </div>
+        </div>
+    </footer>
+
+
+
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-scrolltofixed.js"></script>
+    <script src="~/Scripts/jquery.nav.js"></script>
+    <script src="~/Scripts/jquery.easing.1.3.js"></script>
+    <script src="~/Scripts/jquery.isotope.js"></script>
+    <script src="~/Scripts/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="~/Scripts/wow.js"></script>
+    <script src="~/Scripts/custom.js"></script>
+    <script src="~/Scripts/jquery.reveal.js"></script>
+
+</body>
+</html>
+
