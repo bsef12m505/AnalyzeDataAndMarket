@@ -143,13 +143,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AdamDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AdamDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>AdamDB.mdf</DependentUpon>
-    </Content>
     <EmbeddedResource Include="url3.txt" />
   </ItemGroup>
   <ItemGroup>
