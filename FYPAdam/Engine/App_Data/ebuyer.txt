@@ -1,6 +1,0 @@
-http://www.ebuyer.com/store/Computer/cat/Laptops/ACER
-http://www.ebuyer.com/store/Computer/cat/Laptops/Asus
-http://www.ebuyer.com/store/Computer/cat/Laptops/Dell
-http://www.ebuyer.com/store/Computer/cat/Laptops/HP
-http://www.ebuyer.com/store/Computer/cat/Laptops/Lenovo
-http://www.ebuyer.com/store/Computer/cat/Apple-Laptops
