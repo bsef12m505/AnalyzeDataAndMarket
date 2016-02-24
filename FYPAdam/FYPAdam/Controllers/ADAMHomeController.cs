@@ -15,10 +15,8 @@ namespace FYPAdam.Controllers
 {
     public class ADAMHomeController : Controller
     {
-        //
-        // GET: /Home/
-
-        public async Task<ActionResult> Index(string categoryName)
+        
+        public  ActionResult Index(string categoryName)
         {
             if (categoryName == null)
             {
