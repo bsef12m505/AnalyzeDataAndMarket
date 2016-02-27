@@ -10,6 +10,81 @@ namespace AdamDal
     {
         AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
 
+        //new
+        public dynamic GetTopProductsAgainstBrandAndCategory(string catName, string bName)
+        {
+            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+            List<Product> list = new List<Product>();
+            ed.Configuration.ProxyCreationEnabled = false;
+            int catId = GetCategoryId(catName);
+            int bId = GetBrandId(bName);
+            List<string> strlist = ed.Products.Where(y => y.CategoryId.Equals(catId) && y.BrandId.Equals(bId)).OrderByDescending(x => x.Rating).Select(m => m.Title).Distinct().Take(5).ToList();
+            foreach (var str in strlist)
+            {
+                Product prod = ed.Products.First(x => x.Title.Equals(str));
+                //try
+                //{
+                //    double ratingDouble = Math.Round(double.Parse(prod.Rating));
+                //    int ratingInt = Convert.ToInt32(ratingDouble);
+                //    prod.Rating = "" + ratingInt;
+                //}
+                //catch (Exception)
+                //{
+                //    prod.Rating = "" + 0;
+                //}
+                list.Add(prod);
+            }
+
+            return list;
+
+        }
+        //new 
+        public int GetCategoryId(string catName)
+        {
+            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+            ed.Configuration.ProxyCreationEnabled = false;
+            Category category = ed.Categories.First(x => x.Name.Equals(catName));
+            return category.Id;
+
+        }
+        //new 
+        public int GetBrandId(string bName)
+        {
+            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+            ed.Configuration.ProxyCreationEnabled = false;
+            Brand brand = ed.Brands.First(x => x.Name.Equals(bName));
+            return brand.Id;
+
+        }
+        //new
+        public List<Category> GetAllCategories()
+        {
+            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+            ed.Configuration.ProxyCreationEnabled = false;
+            //var list = ed.Categories.Select(x => new
+            //{
+            //    CategoryName = x.Name,
+            //    CategoryId = x.Id,
+            //    CategoryBrands = x.Brands.Select(y =>new 
+            //    {
+            //        BrandName=y.Name,
+            //        BrandImageUrl=y.ImageUrl
+            //    })
+            //});
+            List<Category> list = ed.Categories.Include("Brands").ToList();
+
+
+            return list;
+        }
+        //new
+        public List<Brand> GetAllProductsAgainstBrand(int bId)
+        {
+            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+            ed.Configuration.ProxyCreationEnabled = false;
+            List<Brand> b = ed.Brands.Include("Products").Where(x => x.Id == bId).ToList();
+            return b;
+        }
+
         //Add Product Details  
         public int AddProductDetails(Product product,string type )
         {
@@ -36,25 +111,25 @@ namespace AdamDal
 
             return list;
         }
-        public List<Category> GetAllCategories()
-        {
-            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
-            ed.Configuration.ProxyCreationEnabled = false;
-            //var list = ed.Categories.Select(x => new
-            //{
-            //    CategoryName = x.Name,
-            //    CategoryId = x.Id,
-            //    CategoryBrands = x.Brands.Select(y =>new 
-            //    {
-            //        BrandName=y.Name,
-            //        BrandImageUrl=y.ImageUrl
-            //    })
-            //});
-            List<Category> list = ed.Categories.Include("Brands").ToList();
+        //public List<Category> GetAllCategories()
+        //{
+        //    AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+        //    ed.Configuration.ProxyCreationEnabled = false;
+        //    //var list = ed.Categories.Select(x => new
+        //    //{
+        //    //    CategoryName = x.Name,
+        //    //    CategoryId = x.Id,
+        //    //    CategoryBrands = x.Brands.Select(y =>new 
+        //    //    {
+        //    //        BrandName=y.Name,
+        //    //        BrandImageUrl=y.ImageUrl
+        //    //    })
+        //    //});
+        //    List<Category> list = ed.Categories.Include("Brands").ToList();
 
 
-            return list;
-        }
+        //    return list;
+        //}
         public List<Brand> GetAllProductsAgainstBrands()
         {
             AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();

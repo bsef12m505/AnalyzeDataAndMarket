@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-
+@using DTO;
 <!doctype html>
 <html>
 <head>
@@ -32,7 +32,7 @@
 
             var options = {
                 chart: {
-                    title: '',
+                    title: 'Company Performance',
                     subtitle: 'Sales, Expenses, and Profit: 2014-2017',
                 },
                 bars: 'vertical', // Required for Material Bar Charts.
@@ -108,7 +108,7 @@
                     </div>
                     <div id="main-nav" class="navbar-header" @*class="collapse navbar-collapse navStyle"*@>
                         <ul class="nav nav-pills" id="mainNav">
-                            <li class="active"><a href="../../FYPAdam" class="scroll-link"><strong>Home</strong></a></li>
+                            <li class="active"><a href="#hero_section" class="scroll-link"><strong>Home</strong></a></li>
                             <li><a href="#service" class="scroll-link"><strong>Top Rated Products</strong></a></li>
                             <li><a href="#ProductReview" class="scroll-link"><strong>Reviews</strong></a></li>
                             <li><a href="#contact" class="scroll-link"><strong>Contact</strong></a></li>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="container">
                         <div class="col-lg-1">
-                            <button type="submit" class="btn btn-default" onclick="location.href = '../../FYPAdam/ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
+                            <button type="submit" class="btn btn-default" onclick="location.href = '../../ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
                         </div>
                     </div>
                 </nav>
@@ -143,7 +143,11 @@
                             <div class="col-md-12">
                                 <div class="top_left_cont zoomIn wow animated">
                                     <h2>Find the best of <strong>laptops and phones</strong> you look for </h2>
-                                    <p>ADAM - Analyze Data and Market is a social networking assistant that helps you choose best products among many in your area of interest. <br />Best laptops and phones with detailed specs and reviews to let you choose wisely.</p>
+                                    <p>
+                                        ADAM - Analyze Data and Market is a social networking assistant that helps you choose best products among many in your area of interest.
+                                        <br />
+                                        Best laptops and phones with detailed specs and reviews to let you choose wisely.
+                                    </p>
                                     <a href="#service" class="read_more2">Read more</a>
                                 </div>
                             </div>
@@ -155,163 +159,192 @@
         <!--Hero_Section-->
         <!--Service-->
         <section id="service">
-            <div style="align-self:center">
-                @*<h2 id="topRated">Top Rated Products</h2>*@
-                <h2 id="topRated">@ViewBag.Name</h2>
+            <div style="align-self: center">
+                <h2 id="topRated">Top Rated Products</h2>
             </div>
             <div class="row">
                 <div class="col-lg-3">
                     <div class="just-padding">
 
                         <div class="list-group list-group-root well">
-
                             <a href="#" class="list-group-item active" id="Laptop">Laptop</a>
+                            @{
+                                int i = 1;
+                                int j = 1;
+                            }
 
-                            <div class="list-group">
+                            @foreach (var cat in @ViewBag.NameOfCategories)
+                            {
+                                if (cat.Name.Equals("Laptop"))
+                                {
+                                    foreach (var b in cat.Brands)
+                                    {
 
-                                <a href="../../AdamHome/Test2?categoryId=1&&" class="list-group-item"><span class="glyphicon glyphicon-menu-right" id="Apple" onclick="CallWM();"></span>&nbsp;&nbsp;Apple</a>
 
-                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 1.2</a>
+                                        if (@i <= 3)
+                                        {
+                                            <div class="list-group">
 
-                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 1.3</a>
+                                                <a href='@Url.Action("Index", "ADAMHome", new { catName = "Laptop", bName = @b.Name })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
+                                                @{
+                                            ++i;
+                                                }
 
-                            </div>
+                                            </div>
+                                        }
+                                    }
 
-                            <a href="#demo4" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Laptop"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
-                            <div class="collapse" id="demo4">
-                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 1</a>
-                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 2</a>
-                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 3</a>
-                            </div>
+                                    <a href="#demo4" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Laptop"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
+                                    <div class="collapse" id="demo4">
 
-                            <a href="#" class="list-group-item active" id="Mobile">Mobile</a>
+                                        @foreach (var b in cat.Brands)
+                                        {
 
-                            <div class="list-group">
+                                            if (@j > 3)
+                                            {
 
-                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 2.1</a>
+                                                <a href="@Url.Action("Index", "ADAMHome", new { catName = "Laptop", bName = @b.Name })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
 
-                                <a href="#" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Item 2.2</a>
-                            </div>
-                            <a href="#demo5" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Mobile"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
-                            <div class="collapse" id="demo5">
-                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 1</a>
-                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 2</a>
-                                <a href="" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;Subitem 3</a>
-                            </div>
+
+                                            }
+
+                                            ++j;
+
+                                        }
+                                    </div>
+
+                                }
+                            }
+                            <a href="#" class="list-group-item active" id="MobilePhones">MobilePhones</a>
+                            @{
+                                i = 1;
+                                j = 1;
+                            }
+
+                            @foreach (var cat in @ViewBag.NameOfCategories)
+                            {
+                                if (cat.Name.Equals("MobilePhones"))
+                                {
+                                    foreach (var b in cat.Brands)
+                                    {
+
+
+                                        if (@i <= 3)
+                                        {
+                                            <div class="list-group">
+
+                                                <a href='@Url.Action("Index", "ADAMHome", new { catName = "MobilePhones", bName = @b.Name })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
+                                                @{
+                                            ++i;
+                                                }
+
+                                            </div>
+                                        }
+                                    }
+
+                                    <a href="#demo5" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Mobile"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
+                                    <div class="collapse" id="demo5">
+
+                                        @foreach (var b in cat.Brands)
+                                        {
+
+                                            if (@j > 3)
+                                            {
+
+                                                <a href="@Url.Action("Index", "ADAMHome", new { catName = "MobilePhones", bName = @b.Name })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
+
+
+                                            }
+
+                                            ++j;
+
+                                        }
+                                    </div>
+
+                                }
+                            }
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <div class="rcorners">
-                        <div class="row" id="product">
-                            <div class="col-lg-3">
-                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <a href="../../FYPAdam/ADAMHome/ProductDetails"><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
-                                </div>
-                                <div class="row">
-                                    <span class="stars-container stars-3">★★★★★</span>
-                                </div>
-                                <div class="row">
-                                    <p>review</p>
-                                </div>
-                            </div>
-                            <br />
-                        </div>
-                        <br />
-                        <div class="row" id="product">
-                            <div class="col-lg-3">
-                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
-                                </div>
-                                <div class="row">
-                                    <span class="stars-container stars-3">★★★★★</span>
-                                </div>
-                                <div class="row">
-                                    <p>review</p>
-                                </div>
-                            </div>
-                            <br />
-                        </div>
-                        <br />
-                        <div class="row" id="product">
-                            <div class="col-lg-3">
-                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
-                                </div>
-                                <div class="row">
-                                    <span class="stars-container stars-3">★★★★★</span>
-                                </div>
-                                <div class="row">
-                                    <p>review</p>
-                                </div>
-                            </div>
-                            <br />
-                        </div>
-                        <br />
-                        <div class="row" id="product">
-                            <div class="col-lg-3">
-                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
-                                </div>
-                                <div class="row">
-                                    <span class="stars-container stars-3">★★★★★</span>
-                                </div>
-                                <div class="row">
-                                    <p>review</p>
-                                </div>
-                            </div>
-                            <br />
-                        </div>
-                        <br />
-                        <div class="row" id="product">
-                            <div class="col-lg-3">
-                                <a href=""><img src="//img.ebyrcdn.net/723106-708085-290.jpg" alt="review" id="productImage"></a>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <a href=""><h4 class="h4FontSize">HP EliteBook 745 G2 Laptop</h4></a>
-                                </div>
-                                <div class="row">
-                                    <span class="stars-container stars-3">★★★★★</span>
+                        @{
+                            int bId = 0;
+                        }
 
+                        @foreach (var p in @ViewBag.ProductList)
+                        {  <div class="row" id="product">
+                            @if (p.CategoryId == 1)
+                            {
+                                bId = p.BrandId;
+                                <div class="col-lg-3">
+                                    <a href="#">
+                                        <img src='@p.ImageUrl' alt="review" id="productImage">
+                                    </a>
                                 </div>
-                                <div class="row">
-                                    <p>review</p>
+                                <div class="col-lg-7">
+                                    <div class="row">
+                                        <a href="../../ADAMHome/ProductDetails">
+                                            <h4 class="h4FontSize">@p.Title</h4>
+                                        </a>
+                                    </div>
+                                    <div class="row">
+                                        <span class="stars-container stars-@p.Rating">★★★★★</span>
+                                    </div>
+                                    <div class="row">
+                                        <p>Review</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <br />
+                                <br />
+                            }
+                            @if (p.CategoryId == 2)
+                            {
+
+                                <div class="col-lg-2">
+                                    <a href="#">
+                                        <img src='@p.ImageUrl' alt="review" id="productImage">
+                                    </a>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="row">
+                                        <a href="../../ADAMHome/ProductDetails">
+                                            <h4 class="h4FontSize">@p.Title</h4>
+                                        </a>
+                                    </div>
+                                    <div class="row">
+                                        <span class="stars-container stars-@p.Rating">★★★★★</span>
+                                    </div>
+                                    <div class="row">
+                                        <p>Review</p>
+                                    </div>
+                                </div>
+                                <br />
+                            }
+
+
                         </div>
+                        }
                         <br />
                         <div class="row">
                             <div class="col-lg-8"></div>
                             <div class="col-lg-2">
-                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products'">See More</button>
+                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products?bId='+@bId">See More</button>
                             </div>
                         </div>
                     </div>
+
+                    <br />
+
                 </div>
+
                 <div class="col-lg-4">
                     <div class="row">
                         <div class="trendsBox" id="trendsBox1">
-
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top:10px">
+                    <div class="row" style="margin-top: 10px">
                         <div class="trendsBox" id="linechart">
-
                         </div>
                     </div>
 
@@ -330,20 +363,17 @@
     </div>
     <!--Aboutus-->
     <!--Footer-->
-    <footer class="footer_wrapper" id="contact1" style="background-color: #D3D3D3; ">
+    <footer class="footer_wrapper" id="contact1" style="background-color: #D3D3D3;">
         <div class="container">
             <section class="page_section contact" id="contact">
                 <div class="contact_section">
                     <h2>Contact Us</h2>
                     <div class="row">
                         <div class="col-lg-4">
-
                         </div>
                         <div class="col-lg-4">
-
                         </div>
                         <div class="col-lg-4">
-
                         </div>
                     </div>
                 </div>
@@ -385,7 +415,7 @@
             </section>
         </div>
         <div class="container">
-            <div class="footer_bottom"><span>Copyright © 2014,    Template by <a href="http://webthemez.com">WebThemez.com</a>. </span> </div>
+            <div class="()bottom"><span>Copyright © 2014,    Template by <a href="http://webthemez.com">WebThemez.com</a>. </span></div>
         </div>
     </footer>
 
@@ -404,4 +434,3 @@
 
 </body>
 </html>
-

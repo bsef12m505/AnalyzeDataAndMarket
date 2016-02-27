@@ -11,58 +11,73 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text;
 using System.Net.Http.Headers;
+
 namespace FYPAdam.Controllers
 {
     public class ADAMHomeController : Controller
     {
-        
-        public  ActionResult Index(string categoryName)
+
+        public async Task<ActionResult> Index(string catName, string bName)
         {
-            if (categoryName == null)
+            if (catName == null && bName == null)
             {
-                categoryName = "Laptop";
+                catName = "Laptop";
+                bName = "acer";
             }
 
             List<Category> categoryList = new List<Category>();
-            Category category = new Category();
             try
             {
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://localhost/Engine/Home/ViewAllCategories");
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl+"Home/ViewAllCategories");
                 request.Timeout = 12000000;
                 request.KeepAlive = false;
                 request.ProtocolVersion = HttpVersion.Version10;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 var serializer = new JavaScriptSerializer();
-                
+
                 StreamReader stream = new StreamReader(response.GetResponseStream());
                 string finalResponse = stream.ReadToEnd();
-                var f = serializer.Deserialize<object>(finalResponse);
-                string s = (string)f;
-                //categoryList = serializer.Deserialize<List<Category>>(finalResponse);
-                //List<string> nameOfCategories = new List<string>();
+                categoryList = serializer.Deserialize<List<Category>>(finalResponse);
 
-                //foreach (var cat in categoryList)
-                //{
-                //    if (cat.Name.ToLower().Equals(categoryName.ToLower()))
-                //    {
-                //        category = cat;
-                //    }
-                //    nameOfCategories.Add(cat.Name);
 
-                //}
-                //ViewBag.NameOfCategories = nameOfCategories;
-                ViewBag.Name = f;
-                return View();
+                ViewBag.NameOfCategories = categoryList;
+
+
             }
             catch (WebException wex)
             {
                 var pageContent = new StreamReader(wex.Response.GetResponseStream())
                         .ReadToEnd();
             }
-                return View();
-            
+            List<Product> productList = new List<Product>();
+            try
+            {
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/AllTopProductsAgainstBrandAndCategory?catName=" + catName + "&bName=" + bName);
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                productList = serializer.Deserialize<List<Product>>(finalResponse);
+
+                ViewBag.ProductList = productList;
+
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+            return View();
+
 
         }
 

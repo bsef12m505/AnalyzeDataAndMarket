@@ -14,6 +14,13 @@ namespace Engine
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+               name: "CategoryRoute",
+               url: "{controller}/{action}/{id}",
+               defaults: new { controller = "Home", action = "ViewAllCategories", id = UrlParameter.Optional }
+
+           );
+
+            routes.MapRoute(
               name: "ProductSpecificationRoute",
               url: "{controller}/{action}/{id}",
               defaults: new { controller = "Home", action = "ProductSpecifications", id = UrlParameter.Optional }
@@ -26,12 +33,7 @@ namespace Engine
                defaults: new { controller = "Home", action = "ViewAllProducts", id = UrlParameter.Optional }
 
            );
-            routes.MapRoute(
-                name: "CategoryRoute",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "ViewAllCategories", id = UrlParameter.Optional }
-            
-            );
+           
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
