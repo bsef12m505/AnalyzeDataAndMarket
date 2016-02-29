@@ -76,6 +76,7 @@
 /*See More Button Style*/
 .btn.btn-primary.btn-lg{
 padding: 10px 16px;
+margin-left:25px;
     font-size: 14px!important;
     line-height: 1.3333333;
     border-radius: 6px;
@@ -532,4 +533,10 @@ a {
     margin-left: -190px;
     margin-right: -190px;
     background-color: black;
+}
+
+#FollowButton{
+    background-color:#9d426b;
+    border-color:#9d426b;
+    margin-top: 10px;
 }

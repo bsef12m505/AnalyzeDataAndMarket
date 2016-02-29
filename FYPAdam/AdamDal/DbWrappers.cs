@@ -150,15 +150,15 @@ namespace AdamDal
             return list;
         }
 
-        public List<Product> GetAllSpecificationsAgainstProduct()
+        public List<Product> GetAllSpecificationsAgainstProduct(int pId)
         {
 
             AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
             ed1.Configuration.ProxyCreationEnabled = false;
-            List<Product> list = ed1.Products.Include("Product_Specification.Specification").Include("ProductReviews").ToList();
+            List<Product> productList = ed1.Products.Include("Product_Specification.Specification").Include("ProductReviews").Where(x => x.Id == pId).ToList();
 
 
-            return list;
+            return productList;
         }
 
         public List<Product> GetTopRatedProducts()

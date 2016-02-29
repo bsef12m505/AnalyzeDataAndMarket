@@ -16,23 +16,28 @@ namespace Engine
     {
         public void Execute(IJobExecutionContext context)
         {
-
-            //Checking the Time Duration of Servive with Email
-            using (var message = new MailMessage("fariyah129@gmail.com", "fariyah129@gmail.com"))
+            try
             {
-                message.Subject = "Service";
-                message.Body = "Service is being started at " + DateTime.Now;
-                using (SmtpClient client = new SmtpClient
+                //Checking the Time Duration of Servive with Email
+                using (var message = new MailMessage("fariyah129@gmail.com", "bsef12m505@pucit.edu.pk"))
                 {
-                    EnableSsl = true,
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    Credentials = new NetworkCredential("fariyah129@gmail.com", "03244047800f")
-                })
-                {
-                    client.Send(message);
+                    message.Subject = "Service";
+                    message.Body = "Service is being started at " + DateTime.Now;
+                    using (SmtpClient client = new SmtpClient
+                    {
+                        EnableSsl = true,
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        Credentials = new NetworkCredential("fariyah129@gmail.com", "03244047800f")
+                    })
+                    {
+                        client.Send(message);
 
+                    }
                 }
+            }catch(Exception )
+            {
+
             }
 
 
@@ -50,7 +55,7 @@ namespace Engine
 
             CrawlingLinks links = new CrawlingLinks();
 
-           // CrawlingLinks.StartCrawlEbuyer("http://www.ebuyer.com/store/Computer/cat/Laptops");
+         //   CrawlingLinks.StartCrawlEbuyer("http://www.ebuyer.com/store/Computer/cat/Laptops");
 
 
             //FileStream fs1 = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/Working/FYPAdam/AdamDal/bin/Debug/gsm.txt", FileMode.Open);

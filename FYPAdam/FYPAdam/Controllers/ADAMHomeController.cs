@@ -81,14 +81,58 @@ namespace FYPAdam.Controllers
 
         }
 
-        public ActionResult Products()
+        public ActionResult Products(int bId)
         {
-            return View();
+            List<Brand> brandList = new List<Brand>();
+            try
+            {
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/GetAllProductsAgainstBrand?bId=" + bId);
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                brandList = serializer.Deserialize<List<Brand>>(finalResponse);
+
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+            return View(brandList[0]);
         }
 
-        public ActionResult ProductDetails()
+        public ActionResult ProductDetails(int pId)
         {
-            return View();
+            List<Product> productList = new List<Product>();
+            try
+            {
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/ProductSpecifications?pId=" + pId);
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                var serializer = new JavaScriptSerializer();
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                productList = serializer.Deserialize<List<Product>>(finalResponse);
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+
+            return View(productList[0]);
         }
 
         public string CheckAjax(string brandName)

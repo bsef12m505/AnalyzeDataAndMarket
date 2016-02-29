@@ -69,7 +69,7 @@
           <Property Name="Price" Type="nvarchar" MaxLength="50" />
           <Property Name="ReviewSummary" Type="nvarchar(max)" />
           <Property Name="ReleaseDate" Type="nvarchar(max)" />
-          <Property Name="Rating" Type="nvarchar" MaxLength="50" />
+          <Property Name="Rating" Type="float" />
           <Property Name="ProductDescription" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Product_Specification">
@@ -268,7 +268,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Brands" Relationship="Self.FK_Brand_Category" FromRole="Category" ToRole="Brand" />
           <NavigationProperty Name="Customer_AreaOfInterest" Relationship="Self.FK_Customer_AreaOfInterest_Category" FromRole="Category" ToRole="Customer_AreaOfInterest" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Category" FromRole="Category" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="AdamDatabaseModel.FK_Product_Category" FromRole="Category" ToRole="Product" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -300,25 +300,6 @@
           <Property Name="SearchString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SearchCount" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="BrandId" Type="Int32" Nullable="false" />
-          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReviewSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ReleaseDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Rating" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Category" Relationship="Self.FK_Product_Category" FromRole="Product" ToRole="Category" />
-          <NavigationProperty Name="Product_Specification" Relationship="Self.FK_Product_Specification_Product" FromRole="Product" ToRole="Product_Specification" />
-          <NavigationProperty Name="ProductReviews" Relationship="Self.FK_ProductReview_Product" FromRole="Product" ToRole="ProductReview" />
-          <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
-        </EntityType>
         <EntityType Name="Product_Specification">
           <Key>
             <PropertyRef Name="Id" />
@@ -327,8 +308,8 @@
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="SpecificationId" Type="Int32" Nullable="false" />
           <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Specification_Product" FromRole="Product_Specification" ToRole="Product" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Product_Specification_Specification" FromRole="Product_Specification" ToRole="Specification" />
+          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_Specification_Product" FromRole="Product_Specification" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductReview">
           <Key>
@@ -337,7 +318,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Review" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_ProductReview_Product" FromRole="ProductReview" ToRole="Product" />
+          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_ProductReview_Product" FromRole="ProductReview" ToRole="Product" />
         </EntityType>
         <EntityType Name="Specification">
           <Key>
@@ -371,18 +352,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Product_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Customer_AreaOfInterest_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
           <End Role="Customer_AreaOfInterest" Type="Self.Customer_AreaOfInterest" Multiplicity="*" />
@@ -392,30 +361,6 @@
             </Principal>
             <Dependent Role="Customer_AreaOfInterest">
               <PropertyRef Name="CustomerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_Specification_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="Product_Specification" Type="Self.Product_Specification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Product_Specification">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductReview_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="ProductReview" Type="Self.ProductReview" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProductReview">
-              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -438,7 +383,6 @@
           <EntitySet Name="Customers" EntityType="Self.Customer" />
           <EntitySet Name="Customer_AreaOfInterest" EntityType="Self.Customer_AreaOfInterest" />
           <EntitySet Name="Items" EntityType="Self.Item" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="Product_Specification" EntityType="Self.Product_Specification" />
           <EntitySet Name="ProductReviews" EntityType="Self.ProductReview" />
           <EntitySet Name="Specifications" EntityType="Self.Specification" />
@@ -450,31 +394,51 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="Customer_AreaOfInterest" EntitySet="Customer_AreaOfInterest" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
           <AssociationSet Name="FK_Customer_AreaOfInterest_Customer" Association="Self.FK_Customer_AreaOfInterest_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Customer_AreaOfInterest" EntitySet="Customer_AreaOfInterest" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_Specification_Product" Association="Self.FK_Product_Specification_Product">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="Product_Specification" EntitySet="Product_Specification" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductReview_Product" Association="Self.FK_ProductReview_Product">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ProductReview" EntitySet="ProductReviews" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Specification_Specification" Association="Self.FK_Product_Specification_Specification">
             <End Role="Specification" EntitySet="Specifications" />
             <End Role="Product_Specification" EntitySet="Product_Specification" />
           </AssociationSet>
+          <EntitySet Name="Products" EntityType="AdamDatabaseModel.Product" />
           <AssociationSet Name="FK_Product_Brand" Association="AdamDatabaseModel.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brands" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <AssociationSet Name="FK_Product_Category" Association="AdamDatabaseModel.FK_Product_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Specification_Product" Association="AdamDatabaseModel.FK_Product_Specification_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Product_Specification" EntitySet="Product_Specification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductReview_Product" Association="AdamDatabaseModel.FK_ProductReview_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductReview" EntitySet="ProductReviews" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Rating" Type="Double" />
+          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
+          <NavigationProperty Name="Category" Relationship="AdamDatabaseModel.FK_Product_Category" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="Product_Specification" Relationship="AdamDatabaseModel.FK_Product_Specification_Product" FromRole="Product" ToRole="Product_Specification" />
+          <NavigationProperty Name="ProductReviews" Relationship="AdamDatabaseModel.FK_ProductReview_Product" FromRole="Product" ToRole="ProductReview" />
+        </EntityType>
         <Association Name="FK_Product_Brand">
           <End Type="AdamDatabaseModel.Brand" Role="Brand" Multiplicity="1" />
           <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="*" />
@@ -484,6 +448,42 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Category">
+          <End Type="AdamDatabaseModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Specification_Product">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.Product_Specification" Role="Product_Specification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product_Specification">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductReview_Product">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.ProductReview" Role="ProductReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductReview">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -551,22 +551,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="AdamDatabaseModel.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="ReviewSummary" ColumnName="ReviewSummary" />
-                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
-                <ScalarProperty Name="Rating" ColumnName="Rating" />
-                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Product_Specification">
             <EntityTypeMapping TypeName="AdamDatabaseModel.Product_Specification">
               <MappingFragment StoreEntitySet="Product_Specification">
@@ -591,6 +575,22 @@
               <MappingFragment StoreEntitySet="Specification">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+                <ScalarProperty Name="ReviewSummary" ColumnName="ReviewSummary" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

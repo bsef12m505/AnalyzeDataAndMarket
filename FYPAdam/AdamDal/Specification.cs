@@ -22,7 +22,7 @@ namespace AdamDal
     
         public int Id { get; set; }
         public string Name { get; set; }
-    [ScriptIgnore]
+     [ScriptIgnore]
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
     }
 }

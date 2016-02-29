@@ -393,60 +393,135 @@ namespace AdamDal
 
                     DbWrappers wrapper = new DbWrappers();
                     prodSpecs.ProductId=wrapper.AddProductDetails(p,"Laptop");
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("HardDrive");
-                    prodSpecs.Value =hardDrive;
-                    wrapper.SaveSpecification(prodSpecs);
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("HardDrive");
+                        prodSpecs.Value = hardDrive;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Memory");
-                    prodSpecs.Value = memory;
-                    wrapper.SaveSpecification(prodSpecs);
+                    }
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("ProcessorSpeed");
-                    prodSpecs.Value = processorSpeed;
-                    wrapper.SaveSpecification(prodSpecs);
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Memory");
+                        prodSpecs.Value = memory;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
+                    }
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("OperayingSystem");
-                    prodSpecs.Value = operatingSystem;
-                    wrapper.SaveSpecification(prodSpecs);
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("ProcessorSpeed");
+                        prodSpecs.Value = processorSpeed;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("OpticalDrive");
-                    prodSpecs.Value = opticalDrive;
-                    wrapper.SaveSpecification(prodSpecs);
+                    }
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Display");
-                    prodSpecs.Value = display;
-                    wrapper.SaveSpecification(prodSpecs);
+                    try
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Graphics");
-                    prodSpecs.Value = graphics;
-                    wrapper.SaveSpecification(prodSpecs);
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("OperatingSystem");
+                        prodSpecs.Value = operatingSystem;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
+                    }
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Audio");
-                    prodSpecs.Value = audio;
-                    wrapper.SaveSpecification(prodSpecs);
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("OpticalDrive");
+                        prodSpecs.Value = opticalDrive;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("InputDevices");
-                    prodSpecs.Value = inputDevices;
-                    wrapper.SaveSpecification(prodSpecs);
+                    }
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Networking");
-                    prodSpecs.Value = networking;
-                    wrapper.SaveSpecification(prodSpecs);
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Display");
+                        prodSpecs.Value = display;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("PowerSupply");
-                    prodSpecs.Value = powerSupply;
-                    wrapper.SaveSpecification(prodSpecs);
+                    }
 
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Graphics");
+                        prodSpecs.Value = graphics;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Dimension");
-                    prodSpecs.Value = dimesnion;
-                    wrapper.SaveSpecification(prodSpecs);
+                    }
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Audio");
+                        prodSpecs.Value = audio;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
 
-                    prodSpecs.SpecificationId = wrapper.GetSpecificationId("Interfaces");
-                    prodSpecs.Value = interfaces;
-                    wrapper.SaveSpecification(prodSpecs);
+                    }
+
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("InputDevices");
+                        prodSpecs.Value = inputDevices;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
+
+                    }
+
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Networking");
+                        prodSpecs.Value = networking;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
+
+                    }
+
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("PowerSupply");
+                        prodSpecs.Value = powerSupply;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
+
+                    }
+
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Dimension");
+                        prodSpecs.Value = dimesnion;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
+
+                    }
+
+                    try
+                    {
+                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Interfaces");
+                        prodSpecs.Value = interfaces;
+                        wrapper.SaveSpecification(prodSpecs);
+                    }catch(Exception)
+                    {
+
+                    }
                 }
                 catch (Exception e)
                 {

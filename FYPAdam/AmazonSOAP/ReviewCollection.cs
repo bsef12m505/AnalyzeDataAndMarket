@@ -91,7 +91,7 @@ namespace AmazonSOAP
             DbWrappers db = new DbWrappers();
             Product prod= db.GetSpecificProduct(prodId);
             string []token=temp1.Split(' ');
-            prod.Rating = token[0];
+            prod.Rating = float.Parse(token[0]); ;
             hasReviews = true;
             db.UpdateProduct(prod);
 

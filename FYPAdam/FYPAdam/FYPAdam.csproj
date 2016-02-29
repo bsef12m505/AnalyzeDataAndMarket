@@ -14,7 +14,7 @@
     <RootNamespace>FYPAdam</RootNamespace>
     <AssemblyName>FYPAdam</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -373,7 +373,10 @@
     <Content Include="Content\External\font-awesome\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\External\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\External\font-awesome\fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\bse.pubxml" />
+    <None Include="Properties\PublishProfiles\bsef12.pubxml" />
     <None Include="Properties\PublishProfiles\BSEF12M505.pubxml" />
+    <None Include="Properties\PublishProfiles\Fariyah.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\fancybox\blank.gif" />
     <Content Include="Scripts\fancybox\fancybox_loading.gif" />

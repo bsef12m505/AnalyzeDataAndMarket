@@ -24,7 +24,7 @@ namespace AdamDal
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public string ImageUrl { get; set; }
-    [ScriptIgnore]
+     [ScriptIgnore]
         public virtual Category Category { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }

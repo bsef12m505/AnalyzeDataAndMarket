@@ -29,13 +29,13 @@ namespace AdamDal
         public string Price { get; set; }
         public string ReviewSummary { get; set; }
         public string ReleaseDate { get; set; }
-        public string Rating { get; set; }
+        public Nullable<double> Rating { get; set; }
         public string ProductDescription { get; set; }
-    [ScriptIgnore]
+     [ScriptIgnore]
+        public virtual Brand Brand { get; set; }
+         [ScriptIgnore]
         public virtual Category Category { get; set; }
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
         public virtual ICollection<ProductReview> ProductReviews { get; set; }
-        [ScriptIgnore]
-        public virtual Brand Brand { get; set; }
     }
 }

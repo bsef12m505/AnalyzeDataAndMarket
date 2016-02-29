@@ -93,6 +93,24 @@ namespace Engine.Controllers
             }
             return this.Json(brand, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult ProductSpecifications(int pId)
+        {
+            List<Product> productList = new List<Product>();
+
+            try
+            {
+                DbWrappers wrap = new DbWrappers();
+                productList = wrap.GetAllSpecificationsAgainstProduct(pId);
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+            return this.Json(productList, JsonRequestBehavior.AllowGet);
+        }
         //public JsonResult ViewAllProducts()
         //{
         //    List<Brand> productListAgainstBrands = new List<Brand>();
@@ -111,25 +129,25 @@ namespace Engine.Controllers
         //    }
         //    return this.Json(productListAgainstBrands, JsonRequestBehavior.AllowGet);
         //}
-        public JsonResult ProductSpecifications()
-        {
-            List<Product> productList = new List<Product>();
+        //public JsonResult ProductSpecifications()
+        //{
+        //    List<Product> productList = new List<Product>();
 
-            try
-            {
-                AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
-                //ed.Configuration.ProxyCreationEnabled = false;
-                DbWrappers wrap = new DbWrappers();
-                productList = wrap.GetAllSpecificationsAgainstProduct();
+        //    try
+        //    {
+        //        AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+        //        //ed.Configuration.ProxyCreationEnabled = false;
+        //        DbWrappers wrap = new DbWrappers();
+        //        productList = wrap.GetAllSpecificationsAgainstProduct();
 
-            }
-            catch (WebException wex)
-            {
-                var pageContent = new StreamReader(wex.Response.GetResponseStream())
-                        .ReadToEnd();
-            }
-            return this.Json(productList, JsonRequestBehavior.AllowGet);
-        }
+        //    }
+        //    catch (WebException wex)
+        //    {
+        //        var pageContent = new StreamReader(wex.Response.GetResponseStream())
+        //                .ReadToEnd();
+        //    }
+        //    return this.Json(productList, JsonRequestBehavior.AllowGet);
+        //}
 
         //Fariyah Code
         // GET: /Home/

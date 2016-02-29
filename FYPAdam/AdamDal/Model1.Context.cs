@@ -31,9 +31,9 @@ namespace AdamDal
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Customer_AreaOfInterest> Customer_AreaOfInterest { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<Product> Products { get; set; }
         public DbSet<Product_Specification> Product_Specification { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Specification> Specifications { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
