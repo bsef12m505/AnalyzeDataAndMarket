@@ -189,6 +189,29 @@ namespace AdamDal
             return products;
             
         }
+
+       public List<Brand> GetAllBrandNamesOfLaptops()
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            List<Brand> brands=ed1.Brands.Where(y => y.CategoryId == 1).Select(x => x).ToList();
+            return brands;
+        }
+
+       public List<Brand> GetAllBrandOfMobiles()
+       {
+           AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+           ed1.Configuration.ProxyCreationEnabled = false;
+           List<Brand> brands = ed1.Brands.Where(y => y.CategoryId == 2).Select(x => x).ToList();
+           return brands;
+       }
+
+       public void UpdateBrand(Brand b)
+       {
+           AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+           ed.Entry(b).State = System.Data.EntityState.Modified;
+           ed.SaveChanges();
+       }
        public void UpdateProduct(Product prod)
        {
            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();

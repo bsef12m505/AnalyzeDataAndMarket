@@ -122,6 +122,8 @@ namespace DTO
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public string ImageUrl { get; set; }
+        public Nullable<int> FollowersCount { get; set; }
+        public string UserName { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
         [ScriptIgnore]

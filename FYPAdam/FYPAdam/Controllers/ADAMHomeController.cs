@@ -76,6 +76,82 @@ namespace FYPAdam.Controllers
                 var pageContent = new StreamReader(wex.Response.GetResponseStream())
                         .ReadToEnd();
             }
+
+            List<Brand> bList = new List<Brand>();
+            List<string> bNamesList=new List<string>();
+            List<int> bFollowersCountList=new List<int>();
+            string[] bname;
+            int[] followrs;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/GetAllMobileBrands");
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                List<Brand> brands= serializer.Deserialize<List<Brand>>(finalResponse);
+              
+           
+                foreach(Brand b in brands)
+                {
+                    bNamesList.Add(b.Name);
+                    bFollowersCountList.Add(b.FollowersCount.Value);
+                }
+
+                bname = bNamesList.ToArray();
+                followrs = bFollowersCountList.ToArray();
+                
+
+                ViewBag.brandNameArray =bname.ToArray();
+                ViewBag.followersCountArray = followrs.ToArray();
+            }catch(Exception)
+            {
+
+            }
+
+            List<Brand> bListLaptops = new List<Brand>();
+            List<string> bNamesListLaptops = new List<string>();
+            List<int> bFollowersCountListLaptops = new List<int>();
+            string[] bnameLaptops;
+            int[] followrsLaptops;
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/GetAllLaptopBrands");
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                List<Brand> brands = serializer.Deserialize<List<Brand>>(finalResponse);
+
+
+                foreach (Brand b in brands)
+                {
+                    bNamesListLaptops.Add(b.Name);
+                    bFollowersCountListLaptops.Add(b.FollowersCount.Value);
+                }
+
+                bnameLaptops = bNamesListLaptops.ToArray();
+                followrsLaptops = bFollowersCountListLaptops.ToArray();
+
+
+                ViewBag.LaptopbrandNameArray = bnameLaptops;
+                ViewBag.LaptopfollowersCountArray = followrsLaptops;
+            }
+            catch (Exception)
+            {
+
+            }
             return View();
 
 

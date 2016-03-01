@@ -299,9 +299,9 @@
       <Project>{a5b6f360-c83f-4cd0-bd7b-06365ef1b5bc}</Project>
       <Name>AmazonSOAP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{36b5e8f6-616d-445d-9ebc-aa181079d87f}</Project>
-      <Name>DTO</Name>
+    <ProjectReference Include="..\Twitter\Twitter.csproj">
+      <Project>{3bb57802-d0f6-4cc6-918e-05d3f7939cca}</Project>
+      <Name>Twitter</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

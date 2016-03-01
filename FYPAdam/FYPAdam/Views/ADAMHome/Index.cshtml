@@ -18,72 +18,141 @@
     <link href="~/Content/reveal.css" rel="stylesheet" />
     <script src="~/Scripts/plugins/flot/jquery.reveal.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   
     <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['bar', 'line'] });
+       
+        google.charts.load('current', { 'packages': ['bar', 'line', 'corechart'] });
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Year', 'Sales', 'Expenses', 'Profit'],
-              ['2014', 1000, 400, 200],
-              ['2015', 1170, 460, 250],
-              ['2016', 660, 1120, 300],
-              ['2017', 1030, 540, 350]
-            ]);
+           
+            //var data = google.visualization.arrayToDataTable([
+            //  ['Year', 'Sales', 'Expenses', 'Profit'],
+            //  ['2014', 1000, 400, 200],
+            //  ['2015', 1170, 460, 250],
+            //  ['2016', 660, 1120, 300],
+            //  ['2017', 1030, 540, 350]
+            //]);
 
-            var options = {
-                chart: {
-                    title: 'Company Performance',
-                    subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-                },
-                bars: 'vertical', // Required for Material Bar Charts.
-                width: 320,
-                height: 290
-            };
+            //var options = {
+            //    chart: {
+            //        title: 'Company Performance',
+            //        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+            //    },
+            //    bars: 'vertical', // Required for Material Bar Charts.
+            //    width: 320,
+            //    height: 290
+            //};
 
-            var chart = new google.charts.Bar(document.getElementById('trendsBox1'));
+            //var chart = new google.charts.Bar(document.getElementById('trendsBox1'));
 
-            chart.draw(data, options);
+            //chart.draw(data, options);
 
 
 
 
 
             @*google.charts.setOnLoadCallback(drawChartLine);*@
-            var data1 = new google.visualization.DataTable();
-            data1.addColumn('number', 'Day');
-            data1.addColumn('number', 'Guardians ');
-            data1.addColumn('number', 'The Avengers');
-            data1.addColumn('number', 'Transformers');
+            //var data1 = new google.visualization.DataTable();
+            //data1.addColumn('number', 'Day');
+            //data1.addColumn('number', 'Guardians ');
+            //data1.addColumn('number', 'The Avengers');
+            //data1.addColumn('number', 'Transformers');
 
-            data1.addRows([
-              [1, 37.8, 80.8, 41.8],
-              [2, 30.9, 69.5, 32.4],
-              [3, 25.4, 57, 25.7],
-              [4, 11.7, 18.8, 10.5],
-              [5, 11.9, 17.6, 10.4],
-              [6, 8.8, 13.6, 7.7],
-              [7, 7.6, 12.3, 9.6],
-              [8, 12.3, 29.2, 10.6],
-              [9, 16.9, 42.9, 14.8],
-              [10, 12.8, 30.9, 11.6],
-              [11, 5.3, 7.9, 4.7],
-              [12, 6.6, 8.4, 5.2],
-              [13, 4.8, 6.3, 3.6],
-              [14, 4.2, 6.2, 3.4]
-            ]);
+            //data1.addRows([
+            //  [1, 37.8, 80.8, 41.8],
+            //  [2, 30.9, 69.5, 32.4],
+            //  [3, 25.4, 57, 25.7],
+            //  [4, 11.7, 18.8, 10.5],
+            //  [5, 11.9, 17.6, 10.4],
+            //  [6, 8.8, 13.6, 7.7],
+            //  [7, 7.6, 12.3, 9.6],
+            //  [8, 12.3, 29.2, 10.6],
+            //  [9, 16.9, 42.9, 14.8],
+            //  [10, 12.8, 30.9, 11.6],
+            //  [11, 5.3, 7.9, 4.7],
+            //  [12, 6.6, 8.4, 5.2],
+            //  [13, 4.8, 6.3, 3.6],
+            //  [14, 4.2, 6.2, 3.4]
+            //]);
 
-            var options1 = {
+            //var options1 = {
+            //    chart: {
+            //        title: 'Box Office Earnings in First Two Weeks of Opening',
+            //        subtitle: 'in millions of dollars (USD)'
+            //    },
+            //    width: 320,
+            //    height: 290
+            //};
+
+            //var chart1 = new google.charts.Line(document.getElementById('linechart'));
+
+            //chart1.draw(data1, options1);
+
+
+           //pie chart
+            var array = @Html.Raw(Json.Encode(@ViewBag.followersCountArray));
+            var array1=@Html.Raw(Json.Encode(@ViewBag.brandNameArray));
+
+            var data2 = new google.visualization.DataTable();
+            data2.addColumn('string', 'BrandName');
+            data2.addColumn('number', 'FollowersCount');
+            data2.addRows(array.length);
+            for (var i = 0; i < array.length; i++) {
+                data2.setCell(i, 0, array1[i]);
+                data2.setCell(i,1, array[i]);
+            }
+           
+            var options2 = {
+               
+              
+                    title: 'Mobile Brands Popularity',
+                    titleFontSize:15,     
+                    chartArea:{left:30,top:50,width:"150%",height:"150%"}
+               
+                
+            };
+
+            var chart2 = new google.visualization.PieChart(document.getElementById('trendsBox1'));
+
+            chart2.draw(data2, options2);
+
+            //bar chart
+            var laptopFollowers = @Html.Raw(Json.Encode(@ViewBag.LaptopfollowersCountArray));
+            var laptopBrandNames=@Html.Raw(Json.Encode(@ViewBag.LaptopbrandNameArray));
+            var color=['color: #9d426b','color: #3fb0e9','color: #42c698','color: red','color: gold','color: green'];
+            var data3 = new google.visualization.DataTable();
+            data3.addColumn('string', 'BrandName');
+            data3.addColumn('number', 'FollowersCount');
+            data3.addColumn({ type: 'string', role: 'style' });
+            data3.addRows(laptopBrandNames.length);
+            for (var i = 0; i < laptopBrandNames.length; i++) {
+                data3.setCell(i, 0, laptopBrandNames[i]);
+                data3.setCell(i,1, laptopFollowers[i]);
+                data3.setCell(i,2, color[i]);
+            }
+            //data3.addRows([
+            //    ['2014', 600, 'color: #9d426b'],
+            //    ['2015', 700, 'color: #3fb0e9'],
+            //    ['2016', 800, 'color: #42c698'],
+            //    ['2016', 900, 'color: red'],
+            //    ['2016', 1000, 'color: gold']
+            //]);
+
+            var options3 = {
                 chart: {
-                    title: 'Box Office Earnings in First Two Weeks of Opening',
-                    subtitle: 'in millions of dollars (USD)'
+                    title: 'Laptop Brands Popularity',
+                    
                 },
-                width: 320,
+                title: 'Laptop Brands Popularity',
+                titleFontSize:15,  
+                bars: 'vertical', // Required for Material Bar Charts.
+                width: 330,
                 height: 290
             };
 
-            var chart1 = new google.charts.Line(document.getElementById('linechart'));
 
-            chart1.draw(data1, options1);
+            var chart3 = new google.visualization.ColumnChart(document.getElementById('linechart'));
+            chart3.draw(data3, options3);
 
 
         }
@@ -328,7 +397,7 @@
                         <div class="row">
                             <div class="col-lg-8"></div>
                             <div class="col-lg-2">
-                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products?bId='+@bId">See More</button>
+                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../ADAMHome/Products?bId='+@bId">See More</button>
                             </div>
                         </div>
                     </div>

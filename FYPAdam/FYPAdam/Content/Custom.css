@@ -176,8 +176,8 @@ margin-left:25px;
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-    background-color: #9d426b;
-    color: white;
+    background-color: #9d426b !important;
+    color: white !important;
 }
 
 nav-pills > li > a:hover, .nav > li > a:focus, .nav > li > a:hover {

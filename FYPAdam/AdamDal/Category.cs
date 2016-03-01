@@ -16,16 +16,16 @@ namespace AdamDal
     {
         public Category()
         {
-            this.Brands = new HashSet<Brand>();
             this.Customer_AreaOfInterest = new HashSet<Customer_AreaOfInterest>();
             this.Products = new HashSet<Product>();
+            this.Brands = new HashSet<Brand>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
     
-        public virtual ICollection<Brand> Brands { get; set; }
         public virtual ICollection<Customer_AreaOfInterest> Customer_AreaOfInterest { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Brand> Brands { get; set; }
     }
 }

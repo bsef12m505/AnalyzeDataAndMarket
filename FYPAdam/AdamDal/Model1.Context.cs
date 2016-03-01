@@ -26,7 +26,6 @@ namespace AdamDal
         }
     
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Customer_AreaOfInterest> Customer_AreaOfInterest { get; set; }
@@ -35,5 +34,6 @@ namespace AdamDal
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Specification> Specifications { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Brand> Brands { get; set; }
     }
 }

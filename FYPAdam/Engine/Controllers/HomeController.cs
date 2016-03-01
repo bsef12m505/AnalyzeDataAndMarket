@@ -111,6 +111,44 @@ namespace Engine.Controllers
             }
             return this.Json(productList, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetAllMobileBrands()
+        {
+
+            List<Brand> brands = new List<Brand>();
+            try
+            {
+                DbWrappers wrap = new DbWrappers();
+               // brands=wrap.GetAllBrandNamesOfLaptops();
+                brands = wrap.GetAllBrandOfMobiles();
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+            return this.Json(brands, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        public JsonResult GetAllLaptopBrands()
+        {
+
+            List<Brand> brands = new List<Brand>();
+            try
+            {
+                DbWrappers wrap = new DbWrappers();
+                 brands=wrap.GetAllBrandNamesOfLaptops();
+                //brands = wrap.GetAllBrandOfMobiles();
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+            return this.Json(brands, JsonRequestBehavior.AllowGet);
+
+        }
         //public JsonResult ViewAllProducts()
         //{
         //    List<Brand> productListAgainstBrands = new List<Brand>();

@@ -9,6 +9,7 @@ using System.Net;
 using AdamDal;
 using System.IO;
 using AmazonSOAP;
+using Twitter;
 
 namespace Engine
 {
@@ -42,14 +43,15 @@ namespace Engine
 
 
             //-------Geting Tweets
-            //var twitter = new Program
-            //    {
-            //        OAuthConsumerKey = "OAuth Consumer Key",
-            //        OAuthConsumerSecret = "OAuth Consumer Secret"
-            //    };
+            var twitter = new Program
+                {
+                    OAuthConsumerKey = "OAuth Consumer Key",
+                    OAuthConsumerSecret = "OAuth Consumer Secret"
+                };
 
 
-           // List<dynamic> Tweets_HashTag = twitter.GetTwitts_HashTags("samsung").Result; //fetchng top 100 tweets related to a hash tag
+            //List<dynamic> Tweets_HashTag = twitter.GetTwitts_HashTags("samsung").Result; //fetchng top 100 tweets related to a hash tag
+            twitter.GetFollowersCount();
 
             // ---Set Abot to Crawl Links-----
 
