@@ -11,6 +11,7 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Script.Serialization;
     
     public partial class Specification
     {
@@ -21,7 +22,8 @@ namespace AdamDal
     
         public int Id { get; set; }
         public string Name { get; set; }
-    
+
+        [ScriptIgnore]
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
     }
 }
