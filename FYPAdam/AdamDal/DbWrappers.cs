@@ -190,6 +190,42 @@ namespace AdamDal
             
         }
 
+       public bool CheckLoginDetails(string eamil,string password)
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            try
+            {
+                Customer c = ed1.Customers.First(x => x.Email.Equals(eamil) && x.Password.Equals(password));
+                return true;
+            }catch(Exception )
+            {
+                return false;
+            }
+          
+
+        }
+
+       public bool AddSignUpDetail(string fname,string lname,string email,string password)
+       {
+           AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+           try
+           {
+               Customer c = new Customer();
+               c.FirstName = fname;
+               c.LastName = lname;
+               c.Email = email;
+               c.Password = password;
+               c.Location="Pakistan";
+               ed1.Customers.Add(c);
+               ed1.SaveChanges();
+               return true;
+               //Customer c = ed1.Customers.First(x => x.Email.Equals(email) && x.Password.Equals(password) && x.LastName.Equals(lname) && x.FirstName.Equals(fname));
+           }catch(Exception)
+           {
+               return false;
+           }
+       }
+
        public List<Brand> GetAllBrandNamesOfLaptops()
         {
             AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();

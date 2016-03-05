@@ -104,10 +104,10 @@
            
             var options2 = {
                
-              
-                    title: 'Mobile Brands Popularity',
+                    title: 'Trending Mobile Brands',
                     titleFontSize:15,     
-                    chartArea:{left:30,top:50,width:"150%",height:"150%"}
+                    chartArea:{left:30,top:20,width:"140%",height:"130%"},
+                    
                
                 
             };
@@ -139,15 +139,12 @@
             //]);
 
             var options3 = {
-                chart: {
-                    title: 'Laptop Brands Popularity',
-                    
-                },
-                title: 'Laptop Brands Popularity',
+                
+                title: 'Trending Laptop Brands',
                 titleFontSize:15,  
-                bars: 'vertical', // Required for Material Bar Charts.
+                legend: {position: 'none'},
                 width: 330,
-                height: 290
+                height: 270
             };
 
 
@@ -368,7 +365,7 @@
                             }
                             @if (p.CategoryId == 2)
                             {
-
+                                bId = p.BrandId;
                                 <div class="col-lg-2">
                                     <a href="#">
                                         <img src='@p.ImageUrl' alt="review" id="productImage">
@@ -397,7 +394,7 @@
                         <div class="row">
                             <div class="col-lg-8"></div>
                             <div class="col-lg-2">
-                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../ADAMHome/Products?bId='+@bId">See More</button>
+                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products?bId='+@bId">See More</button>
                             </div>
                         </div>
                     </div>
@@ -432,61 +429,181 @@
     </div>
     <!--Aboutus-->
     <!--Footer-->
-    <footer class="footer_wrapper" id="contact1" style="background-color: #D3D3D3;">
-        <div class="container">
-            <section class="page_section contact" id="contact">
-                <div class="contact_section">
-                    <h2>Contact Us</h2>
-                    <div class="row">
-                        <div class="col-lg-4">
-                        </div>
-                        <div class="col-lg-4">
-                        </div>
-                        <div class="col-lg-4">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 wow fadeInLeft">
-                        <div class="contact_info">
-                            <div class="detail">
-                                <h4>UNIQUE Infoway</h4>
-                                <p>104, Some street, NewYork, USA</p>
-                            </div>
-                            <div class="detail">
-                                <h4>call us</h4>
-                                <p>+1 234 567890</p>
-                            </div>
-                            <div class="detail">
-                                <h4>Email us</h4>
-                                <p>support@sitename.com</p>
-                            </div>
-                        </div>
+   <!-- <footer class="footer_wrapper" id="contact1" style="background-color: #D3D3D3;">-->
+        <div id="footer-outer">
 
 
 
-                        <ul class="social_links">
-                            <li class="twitter animated bounceIn wow delay-02s"><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
-                            <li class="facebook animated bounceIn wow delay-03s"><a href="javascript:void(0)"><i class="fa fa-facebook"></i></a></li>
-                            <li class="pinterest animated bounceIn wow delay-04s"><a href="javascript:void(0)"><i class="fa fa-pinterest"></i></a></li>
-                            <li class="gplus animated bounceIn wow delay-05s"><a href="javascript:void(0)"><i class="fa fa-google-plus"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-8 wow fadeInLeft delay-06s">
-                        <div class="form">
-                            <input class="input-text" type="text" name="" value="Your Name *" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-                            <input class="input-text" type="text" name="" value="Your E-mail *" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-                            <textarea class="input-text text-area" cols="0" rows="0" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">Your Message *</textarea>
-                            <input class="input-btn" type="submit" value="send message">
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <div class="container">
-            <div class="()bottom"><span>Copyright © 2014,    Template by <a href="http://webthemez.com">WebThemez.com</a>. </span></div>
-        </div>
-    </footer>
+
+
+
+            <div id="footer-widgets">
+
+                <div class="container">
+
+                    <div class="row" id="footer_row">
+
+
+
+                        <div class="col-lg-3">
+
+                            <!-- Footer widget area 1 -->
+
+                            <div id="text-7" class="widget widget_text">
+                                <h4>  &nbsp;Adam </h4>			<div class="textwidget">
+                                    <a href="/about-us/" title="">About Us</a>
+                                    <hr>
+                                    <a href="/our-team/#section-bod" title="">Board Of Directors</a>
+                                    <hr>
+                                    <a href="/our-team/#section-mt" title="">Management Team</a>
+                                    <hr>
+                                    <a href="/about-us#testimonial" title="">Testimonials</a>
+                                </div>
+                            </div>
+                        </div><!--/span_3-->
+
+                    
+
+                        <div class="col-lg-3">
+
+                            <!-- Footer widget area 2 -->
+
+                            <div id="text-9" class="widget widget_text">
+                                <h4>Investors</h4>			<div class="textwidget">
+                                    <a href="http://ir.netsoltech.com/press-releases" title="">News / Events</a></br>
+                                    <hr>
+                                    <a href="http://ir.netsoltech.com/all-sec-filings" title="">SEC Filings</a></br>
+                                    <hr>
+                                    <a href="http://ir.netsoltech.com/financials" title="">Financial Information</a></br>
+                                    <hr>
+                                    <a href="http://ir.netsoltech.com" title="">More</a>
+                                </div>
+                            </div>
+
+
+                        </div><!--/span_3-->
+
+
+
+
+                        <div class="col-lg-3">
+
+                            <!-- Footer widget area 3 -->
+
+                            <div id="text-10" class="widget widget_text">
+                                <h4>Information</h4>			<div class="textwidget">
+                                    <a href="http://www.netsoltech.com/#/" title="">Sitemap</a>
+                                    <hr>
+                                    <a href="/website-term-of-use/" title="">Terms of Use</a></br>
+                                    <hr>
+                                    <a href="/privacy-policy/" title="">Privacy Policy</a></br>
+                                    <hr>
+                                    <a href="/contact-us/" title="">Contact Us</a></br>
+
+                                </div>
+                            </div>
+
+
+                        </div><!--/span_3-->
+
+
+
+
+
+                        <div class="col-lg-3">
+
+                            <!-- Footer widget area 4 -->
+
+                            <div id="text-3" class="widget widget_text">
+                                <h4>Upcoming Events</h4>			<div class="textwidget">
+                                    <a href="http://www.netsoltech.com/event-listings/" title="" target="_blank">Latin American Leasing...</a></br>
+                                    <hr>
+                                    <a href="http://www.netsoltech.com/event-listings/" title="" target="_blank">AELA Annual Conference</a></br>
+                                    <hr>
+                                    <a href="http://www.netsoltech.com/event-listings/" title="" target="_blank">ELFA 54th Annual Convention </a></br>
+                                    <hr>
+                                    <a href="http://www.netsoltech.com/event-listings/" title="">More</a>
+                                </div>
+                            </div>
+
+
+                        </div><!--/span_3-->
+
+
+
+
+                    </div><!--/row-->
+
+
+
+                </div><!--/container-->
+
+
+
+            </div><!--/footer-widgets-->
+
+
+
+
+
+
+            <div class="row" id="copyright">
+
+
+
+                <div class="container">
+
+
+
+                    <div class="col span_5">
+
+
+
+
+
+                        <p>&copy; 2016 ADAM.  </p>
+
+
+
+
+                    </div><!--/span_5-->
+
+
+
+                    <div class="col span_7 col_last">
+
+                        <ul id="social"></ul>
+
+                    </div><!--/span_7-->
+
+
+
+                </div><!--/container-->
+
+
+
+            </div><!--/row-->
+
+            <div style="height:5px; width:100%; float:left; background:#000;">
+
+                <div style="float:left; width:25%; height:5px; background:#BDD7EE;"></div>
+
+                <div style="float:left; width:25%; height:5px; background:#9DC2E5;"></div>
+
+                <div style="float:left; width:25%; height:5px; background:#1970B8;"></div>
+
+                <div style="float:left; width:25%; height:5px; background:#1D4E79;"></div>
+
+            </div>
+
+
+
+
+
+        </div><!--/footer-outer-->
+
+    <!--</footer> -->  
+   
 
 
 

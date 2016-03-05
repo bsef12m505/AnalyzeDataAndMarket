@@ -216,10 +216,55 @@ namespace FYPAdam.Controllers
             return brandName;
         }
 
+
         public ActionResult Login()
         {
+            
+
             return View();
         }
+        public dynamic LoginAction(string email, string password)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "User/Login?email=" + email + "&password=" + password);
+            request.Timeout = 12000000;
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var serializer = new JavaScriptSerializer();
+            StreamReader stream = new StreamReader(response.GetResponseStream());
+            string finalResponse = stream.ReadToEnd();
+            bool b = serializer.Deserialize<bool>(finalResponse);
+            if(b)
+            {
+                return RedirectToAction("UserDashboard", "User");
+            }
+
+            else
+            {
+                return RedirectToAction("Login", "AdamHome");
+            }
+            
+        }
+
+        public dynamic SignUpAction(string firstName, string lastName, string email, string password)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "User/SignUp?firstName=" +firstName+ "&lastName=" +lastName+ "&email=" + email + "&password=" + password);
+            request.Timeout = 12000000;
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var serializer = new JavaScriptSerializer();
+            StreamReader stream = new StreamReader(response.GetResponseStream());
+            string finalResponse = stream.ReadToEnd();
+            bool b = serializer.Deserialize<bool>(finalResponse);
+            if (b)
+            {
+                return RedirectToAction("UserDashboard", "User");
+            }
+            return RedirectToAction("SignUp", "ADAMHome");
+        }
+
+
 
         public ActionResult SignUp()
         {

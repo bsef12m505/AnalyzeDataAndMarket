@@ -51,7 +51,7 @@ namespace Engine
 
 
             //List<dynamic> Tweets_HashTag = twitter.GetTwitts_HashTags("samsung").Result; //fetchng top 100 tweets related to a hash tag
-            twitter.GetFollowersCount();
+            //twitter.GetFollowersCount();
 
             // ---Set Abot to Crawl Links-----
 

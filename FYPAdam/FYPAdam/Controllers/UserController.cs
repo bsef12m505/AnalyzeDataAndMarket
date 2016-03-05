@@ -16,6 +16,12 @@ namespace FYPAdam.Controllers
             return View();
         }
 
+
+        public void CheckLogin()
+        {
+            
+        }
+
         public ActionResult UserDashboard()
         {
             return View();
