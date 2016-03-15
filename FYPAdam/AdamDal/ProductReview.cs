@@ -18,8 +18,8 @@ namespace AdamDal
         public int Id { get; set; }
         public int ProductId { get; set; }
         public string Review { get; set; }
-
-        [ScriptIgnore]
+        public Nullable<int> ReviewScore { get; set; }
+    [ScriptIgnore]
         public virtual Product Product { get; set; }
     }
 }

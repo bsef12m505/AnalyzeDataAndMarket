@@ -10,6 +10,7 @@ using AdamDal;
 using System.IO;
 using AmazonSOAP;
 using Twitter;
+using TextMining;
 
 namespace Engine
 {
@@ -48,7 +49,8 @@ namespace Engine
                     OAuthConsumerKey = "OAuth Consumer Key",
                     OAuthConsumerSecret = "OAuth Consumer Secret"
                 };
-
+           // ReviewRefinement refinement = new ReviewRefinement();
+         //   ReviewRefinement.GetSentimentandNouns();
 
             //List<dynamic> Tweets_HashTag = twitter.GetTwitts_HashTags("samsung").Result; //fetchng top 100 tweets related to a hash tag
             //twitter.GetFollowersCount();
@@ -57,7 +59,7 @@ namespace Engine
 
             CrawlingLinks links = new CrawlingLinks();
 
-         //   CrawlingLinks.StartCrawlEbuyer("http://www.ebuyer.com/store/Computer/cat/Laptops");
+          // CrawlingLinks.StartCrawlEbuyer("http://www.ebuyer.com/store/Computer/cat/Laptops");
 
 
             //FileStream fs1 = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/Working/FYPAdam/AdamDal/bin/Debug/gsm.txt", FileMode.Open);

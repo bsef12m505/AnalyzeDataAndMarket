@@ -19,6 +19,7 @@ namespace AdamDal
         {
             this.Product_Specification = new HashSet<Product_Specification>();
             this.ProductReviews = new HashSet<ProductReview>();
+            this.FeatureSentiments = new HashSet<FeatureSentiment>();
         }
     
         public int Id { get; set; }
@@ -35,8 +36,8 @@ namespace AdamDal
         public virtual Category Category { get; set; }
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
         public virtual ICollection<ProductReview> ProductReviews { get; set; }
-
         [ScriptIgnore]
         public virtual Brand Brand { get; set; }
+        public virtual ICollection<FeatureSentiment> FeatureSentiments { get; set; }
     }
 }

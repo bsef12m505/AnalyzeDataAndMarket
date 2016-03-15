@@ -35,5 +35,6 @@ namespace AdamDal
         public DbSet<Specification> Specifications { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<FeatureSentiment> FeatureSentiments { get; set; }
     }
 }

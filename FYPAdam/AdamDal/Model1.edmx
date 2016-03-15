@@ -51,6 +51,16 @@
           <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="AreaOfInterest" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="FeatureSentiment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="Feature" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sentiment" Type="int" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Item">
           <Key>
             <PropertyRef Name="id" />
@@ -82,6 +92,7 @@
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="SpecificationId" Type="int" Nullable="false" />
           <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NumericValue" Type="float" />
         </EntityType>
         <EntityType Name="ProductReview">
           <Key>
@@ -90,6 +101,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="Review" Type="nvarchar(max)" />
+          <Property Name="ReviewScore" Type="int" />
         </EntityType>
         <EntityType Name="Specification">
           <Key>
@@ -131,6 +143,18 @@
             </Principal>
             <Dependent Role="Customer_AreaOfInterest">
               <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feature_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="FeatureSentiment" Type="Self.FeatureSentiment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FeatureSentiment">
+              <PropertyRef Name="PId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -200,6 +224,7 @@
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer_AreaOfInterest" EntityType="Self.Customer_AreaOfInterest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FeatureSentiment" EntityType="Self.FeatureSentiment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product_Specification" EntityType="Self.Product_Specification" Schema="dbo" store:Type="Tables" />
@@ -216,6 +241,10 @@
           <AssociationSet Name="FK_Customer_AreaOfInterest_Customer" Association="Self.FK_Customer_AreaOfInterest_Customer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Customer_AreaOfInterest" EntitySet="Customer_AreaOfInterest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feature_Product" Association="Self.FK_Feature_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="FeatureSentiment" EntitySet="FeatureSentiment" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Brand" Association="Self.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brand" />
@@ -301,6 +330,7 @@
           <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Product_Specification_Specification" FromRole="Product_Specification" ToRole="Specification" />
           <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_Specification_Product" FromRole="Product_Specification" ToRole="Product" />
+          <Property Name="NumericValue" Type="Double" />
         </EntityType>
         <EntityType Name="ProductReview">
           <Key>
@@ -310,6 +340,7 @@
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Review" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_ProductReview_Product" FromRole="ProductReview" ToRole="Product" />
+          <Property Name="ReviewScore" Type="Int32" />
         </EntityType>
         <EntityType Name="Specification">
           <Key>
@@ -398,6 +429,11 @@
             <End Role="Brand" EntitySet="Brands" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <EntitySet Name="FeatureSentiments" EntityType="AdamDatabaseModel.FeatureSentiment" />
+          <AssociationSet Name="FK_Feature_Product" Association="AdamDatabaseModel.FK_Feature_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="FeatureSentiment" EntitySet="FeatureSentiments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Product">
           <Key>
@@ -417,6 +453,7 @@
           <NavigationProperty Name="Product_Specification" Relationship="AdamDatabaseModel.FK_Product_Specification_Product" FromRole="Product" ToRole="Product_Specification" />
           <NavigationProperty Name="ProductReviews" Relationship="AdamDatabaseModel.FK_ProductReview_Product" FromRole="Product" ToRole="ProductReview" />
           <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
+          <NavigationProperty Name="FeatureSentiments" Relationship="AdamDatabaseModel.FK_Feature_Product" FromRole="Product" ToRole="FeatureSentiment" />
         </EntityType>
         <Association Name="FK_Product_Category">
           <End Type="AdamDatabaseModel.Category" Role="Category" Multiplicity="1" />
@@ -491,6 +528,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FeatureSentiment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PId" Type="Int32" Nullable="false" />
+          <Property Name="Feature" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sentiment" Type="Int32" Nullable="false" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Feature_Product" FromRole="FeatureSentiment" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Feature_Product">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.FeatureSentiment" Role="FeatureSentiment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FeatureSentiment">
+              <PropertyRef Name="PId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -548,6 +608,7 @@
           <EntitySetMapping Name="Product_Specification">
             <EntityTypeMapping TypeName="AdamDatabaseModel.Product_Specification">
               <MappingFragment StoreEntitySet="Product_Specification">
+                <ScalarProperty Name="NumericValue" ColumnName="NumericValue" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="SpecificationId" ColumnName="SpecificationId" />
@@ -558,6 +619,7 @@
           <EntitySetMapping Name="ProductReviews">
             <EntityTypeMapping TypeName="AdamDatabaseModel.ProductReview">
               <MappingFragment StoreEntitySet="ProductReview">
+                <ScalarProperty Name="ReviewScore" ColumnName="ReviewScore" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Review" ColumnName="Review" />
@@ -596,6 +658,17 @@
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeatureSentiments">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.FeatureSentiment">
+              <MappingFragment StoreEntitySet="FeatureSentiment">
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Sentiment" ColumnName="Sentiment" />
+                <ScalarProperty Name="Feature" ColumnName="Feature" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

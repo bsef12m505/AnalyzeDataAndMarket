@@ -10,6 +10,52 @@ namespace AdamDal
     {
         AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
 
+        //Getting Brand Id
+        public int GetBrandIdToSaveProduct(Product product, int cid)
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            int bId = 0;
+
+            Brand b = new Brand();
+            List<Brand> list = ed1.Brands.ToList();
+            foreach (var l in list)
+            {
+                if (product.Title.ToLower().Contains(l.Name.ToLower()) && l.CategoryId == cid)
+                {
+                    bId = l.Id;
+                    break;
+
+                }
+            }
+
+            return bId;
+        }
+
+        ////Get Caretgory Id of Specific Product
+        public int GetCategoryIdToSaveProduct(Product product, string type)
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            int cId = 0; ;
+            Category c = new Category();
+            List<Category> list = ed1.Categories.ToList();
+            foreach (var l in list)
+            {
+                if (l.Name.Equals("Laptop") && type.Equals("Laptop"))
+                {
+                    cId = l.Id;
+                    break;
+                }
+                else if (l.Name.Equals("MobilePhone") && type.Equals("Mobile"))
+                {
+                    cId = l.Id;
+                    break;
+                }
+            }
+            return cId;
+        }
+
         //new
         public dynamic GetTopProductsAgainstBrandAndCategory(string catName, string bName)
         {
@@ -18,24 +64,10 @@ namespace AdamDal
             ed.Configuration.ProxyCreationEnabled = false;
             int catId = GetCategoryId(catName);
             int bId = GetBrandId(bName);
-            List<string> strlist = ed.Products.Where(y => y.CategoryId.Equals(catId) && y.BrandId.Equals(bId)).OrderByDescending(x => x.Rating).Select(m => m.Title).Distinct().Take(5).ToList();
-            foreach (var str in strlist)
-            {
-                Product prod = ed.Products.First(x => x.Title.Equals(str));
-                //try
-                //{
-                //    double ratingDouble = Math.Round(double.Parse(prod.Rating));
-                //    int ratingInt = Convert.ToInt32(ratingDouble);
-                //    prod.Rating = "" + ratingInt;
-                //}
-                //catch (Exception)
-                //{
-                //    prod.Rating = "" + 0;
-                //}
-                list.Add(prod);
-            }
+            var strlist = ed.Products.Where(y => y.CategoryId.Equals(catId) && y.BrandId.Equals(bId)).Select(m => m).Distinct().OrderByDescending(x => x.Rating).Take(5).ToList();
+            
 
-            return list;
+            return strlist;
 
         }
         //new 
@@ -91,14 +123,30 @@ namespace AdamDal
             AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();;
             
             ed1.Configuration.ProxyCreationEnabled = false;
-            product.CategoryId = GetCategoryId(product,type);
-            product.BrandId = GetBrandId(product, product.CategoryId);
+            product.CategoryId = GetCategoryIdToSaveProduct(product, type);
+            product.BrandId = GetBrandIdToSaveProduct(product, product.CategoryId);
             ed1.Products.Add(product);
             ed1.SaveChanges();
             return product.Id;
         }
 
+       public dynamic GetAllReviewsAgainstProduct()
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            var products = ed1.Products.Include("ProductReviews").ToList(); ;
+            return products;
+        }
 
+
+       public void AddFeatureSentiment(FeatureSentiment fs)
+       {
+           AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+           ed1.Configuration.ProxyCreationEnabled = false;
+           ed1.FeatureSentiments.Add(fs);
+           ed1.SaveChanges();
+           
+       }
         public List<Product> GetAllProducts()
         {
             //int bId = 0;
@@ -110,6 +158,22 @@ namespace AdamDal
            
 
             return list;
+        }
+
+        public void SaveReview(ProductReview pr)
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            ed1.ProductReviews.Add(pr);
+            ed1.SaveChanges();
+
+        }
+
+        public List<Specification> GetAllSpecifications()
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            return ed1.Specifications.Select(x => x).ToList();
         }
         //public List<Category> GetAllCategories()
         //{
@@ -156,7 +220,6 @@ namespace AdamDal
             AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
             ed1.Configuration.ProxyCreationEnabled = false;
             List<Product> productList = ed1.Products.Include("Product_Specification.Specification").Include("ProductReviews").Where(x => x.Id == pId).ToList();
-
 
             return productList;
         }
@@ -278,28 +341,28 @@ namespace AdamDal
         }
 
         //Get Caretgory Id of Specific Product
-        public int GetCategoryId(Product product,string type)
-        {
-            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
-            ed1.Configuration.ProxyCreationEnabled = false;
-            int cId = 0; ;
-            Category c = new Category();
-            List<Category> list = ed1.Categories.ToList();
-            foreach (var l in list)
-            {
-                if (l.Name.Equals("Laptop") && type.Equals("Laptop"))
-                {
-                    cId = l.Id;
-                    break;
-                }
-                else if (l.Name.Equals("MobilePhones") && type.Equals("Mobile"))
-                {
-                    cId = l.Id;
-                    break;
-                }
-            }
-            return cId;
-        }
+        //public int GetCategoryId(Product product,string type)
+        //{
+        //    AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+        //    ed1.Configuration.ProxyCreationEnabled = false;
+        //    int cId = 0; ;
+        //    Category c = new Category();
+        //    List<Category> list = ed1.Categories.ToList();
+        //    foreach (var l in list)
+        //    {
+        //        if (l.Name.Equals("Laptop") && type.Equals("Laptop"))
+        //        {
+        //            cId = l.Id;
+        //            break;
+        //        }
+        //        else if (l.Name.Equals("MobilePhones") && type.Equals("Mobile"))
+        //        {
+        //            cId = l.Id;
+        //            break;
+        //        }
+        //    }
+        //    return cId;
+        //}
 
         //Get Specification ID 
         public int GetSpecificationId(string specName)

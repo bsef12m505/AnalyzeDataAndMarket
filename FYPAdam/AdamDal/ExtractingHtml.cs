@@ -17,18 +17,22 @@ namespace AdamDal
        
 
        public static Product p = new Product();
+       static List<string> positiveReviews = new List<string>();
+       static List<string> negativeReviews = new List<string>();
+       public static IDictionary<string, string> dictString = new Dictionary<string, string>();
+       public static IDictionary<string, double> dictValue = new Dictionary<string, double>();
 
         public static void ExtractDetailsEbuyer()
         {
             ed1.Configuration.ProxyCreationEnabled = false;
-            FileStream fs = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/Working/FYPAdam/AdamDal/bin/Debug/UrlEbuyer.txt", FileMode.Open);
-            
+           // FileStream fs = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/Working/FYPAdam/AdamDal/bin/Debug/UrlEbuyer.txt", FileMode.Open);
+            FileStream fs = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/FYP DB Fix UP/FYPAdam/AdamDal/bin/Debug/UrlEbuyer.txt", FileMode.Open);
             //string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             //string txtLocation = Path.Combine(resourceName, "url.txt");
             //string xsltFile = System.Net.Mime.MediaTypeNames.Application.;
             Type myType = typeof(ExtractingHtml);
             //string resourceName = "AdamDal.url.txt";
-           string resourceName = string.Format("{0}.url.txt", myType.Namespace);
+            string resourceName = string.Format("{0}.url.txt", myType.Namespace);
             Stream sr1=Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
            // var arr=sr.ReadToEnd().Split(new[] { "\r\n" }, StringSplitOptions.None);
            // FileStream fs = new FileStream(txtLocation, FileMode.Open);
@@ -60,477 +64,448 @@ namespace AdamDal
             fs.Close();
 
         }
-        public static void ExtractingHtmlEbuyer(string html, string str)
+       
+        public static void GetReviews(string url)
         {
-            Product_Specification prodSpecs = new Product_Specification();
-            ed1.Configuration.ProxyCreationEnabled = false;
-            //try
-            //{
-                var webGet = new HtmlWeb();
-                var doc = webGet.Load(str);
+            var webHtml = new HtmlWeb();
+            var domTree = webHtml.Load(url);
+
+            foreach (HtmlNode div in domTree.DocumentNode.SelectNodes("//dd[@class='pros']"))
+            {
+                positiveReviews.Add(div.InnerText);
+            }
+            foreach (HtmlNode div in domTree.DocumentNode.SelectNodes("//dd[@class='cons']"))
+            {
+                negativeReviews.Add(div.InnerText);
+            }
+
+        }
+
+        public static void ExtractSpecs(string spec, HtmlDocument doc, int uListi)
+        {
+            dictString[spec] = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[" + uListi + "]").InnerText;
+            if (spec.Equals("Memory"))
+            {
+                try
+                {
+                    dictValue[spec] = double.Parse(Regex.Match(dictString[spec], @"\d+").Value);
+                }
+                catch (Exception)
+                { };
+            }
+            else if (spec.Equals("HardDrive") || spec.Equals("Harddrive"))
+            {
+                try
+                {
+                    double tempHard = double.Parse(Regex.Match(dictString[spec], @"\d+").Value);
+                    if (tempHard < 16)
+                    {
+                        tempHard = tempHard * 1024;
+                    }
+                    dictValue[spec] = tempHard;
+                }
+                catch (Exception)
+                { };
+
+            }
+            else if (spec.Equals("Display"))
+            {
+                string temp = "";
+                try
+                {
+                    temp = Regex.Match(dictString[spec], @"\d+[i][n]").Value;
+                    dictValue[spec] = double.Parse(Regex.Match(temp, @"\d+").Value);
+                }
+                catch (Exception)
+                {
+                }
+                if (temp == "")
+                {
+                    try
+                    {
+                        temp = Regex.Match(dictString[spec], @"\d+[.]*\d*[\""]+").Value;
+                        dictValue[spec] = double.Parse(Regex.Match(temp, @"\d+").Value);
+                    }
+                    catch (Exception)
+                    { };
+                }
 
 
+            }
+            else if (spec.Equals("Dimensions"))
+            {
                 try
                 {
 
+                    string temp = (string)Regex.Match(dictString[spec], @"[W][e][i][g][h][t][\s][\d]*[.]*[\d]*").Value;
+                    dictValue[spec] = double.Parse(Regex.Match(temp, @"\d+").Value);
+                }
+                catch (Exception)
+                { };
 
-                    string title = doc.DocumentNode.SelectSingleNode("//h1[@class='product-title']").InnerText;
-                    p.Title = title;
 
+            }
+            else
+            {
+                dictValue[spec] = 0.0;
+            }
+
+        }
+        public static void ExtractingHtmlEbuyer(string html, string str)
+        {
+            positiveReviews.Clear();
+            negativeReviews.Clear();
+            var webGet = new HtmlWeb();
+            var doc = webGet.Load(str);
+            string title = "";
+            string price = "";
+            string imgUrl = "";
+            string description = "";
+            double rating = 0.0;
+            try
+            {
+
+                title = doc.DocumentNode.SelectSingleNode("//h1[@class='product-title']").InnerText;
+                if (title.Contains("EXDISPLAY"))
+                {
+                    title = title.Replace("EXDISPLAY ", "");
+                    if (title.Contains("Laptop"))
+                    {
+                        title = title.Substring(0, title.IndexOf(@"Laptop") + 6);
+                    }
+                    else if (title.Contains("Tablet"))
+                    {
+                        title = title.Substring(0, title.IndexOf(@"Tablet") + 6);
+                    }
+                    else if (title.Contains("Ultrabook"))
+                    {
+                        title = title.Substring(0, title.IndexOf(@"Ultrabook") + 9);
+                    }
+                }
+
+                try
+                {
+                    price = doc.DocumentNode.SelectSingleNode("//div[@class='inc-vat']/p[1]/span[2]").InnerText;
+                }
+                catch (Exception)
+                { }
+
+                var tempImgUrl = doc.DocumentNode.SelectSingleNode("//div[@class='product-img-hero']//a").Descendants("img").Where(x => x.Attributes.Contains("src"));
+
+                foreach (var link in tempImgUrl)
+                {
+                    imgUrl = link.Attributes["src"].Value;
+                }
+
+                try
+                {
+                    description = doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[1]").InnerText;
+                    description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[2]").InnerText;
+                    description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[3]").InnerText;
+                    description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[4]").InnerText;
+                    description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[5]").InnerText;
+                }
+                catch (Exception)
+                { };
+
+                try
+                {
+                    var reviewLink = doc.DocumentNode.SelectSingleNode("//div[@class='button-reevoo']").Descendants("a").Where(x => x.Attributes.Contains("href"));
+                    string reviewUrl = "";
+                    foreach (var link in reviewLink)
+                    {
+                        reviewUrl = link.Attributes["href"].Value;
+                    }
+                    if (reviewUrl != null)
+                    {
+                        //Get product Number
+                        int productNumber = int.Parse(Regex.Match(reviewUrl, @"\d+").Value);
+
+                        //Load the dom tree
+                        var webHtml = new HtmlWeb();
+                        string reviewPageUrl = "http://mark.reevoo.com/reevoomark/en-GB/product.html?page=1&sku=" + productNumber + "&tab=reviews&trkref=EBU";
+                        var domTree = webHtml.Load(reviewPageUrl);
+
+                        //------------------------Extract rating for different features-----------------------------
+
+                        //Feature Name
+                        string temp = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[1]//th[1]").InnerText;
+                        temp = temp.Replace(" ", "");
+                        //Feature Value
+                        string value = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[1]//td[1]").InnerText;
+
+                        //Feature Name
+                        temp = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[2]//th[1]").InnerText;
+                        temp = temp.Replace(" ", "");
+                        //Feature Value
+                        value = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[2]//td[1]").InnerText;
+
+
+                        temp = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[3]//th[1]").InnerText;
+                        temp = temp.Replace(" ", "");
+                        value = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[3]//td[1]").InnerText;
+
+
+                        temp = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[4]//th[1]").InnerText;
+                        temp = temp.Replace(" ", "");
+                        value = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[4]//td[1]").InnerText;
+
+
+                        temp = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[5]//th[1]").InnerText;
+                        temp = temp.Replace(" ", "");
+                        value = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[5]//td[1]").InnerText;
+
+
+                        temp = domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[6]//th[1]").InnerText;
+                        temp = temp.Replace(" ", "");
+                        rating = double.Parse(domTree.DocumentNode.SelectSingleNode("//table[@class='scores']//tr[6]//td[1]").InnerText);
+                        rating = rating / 2;
+
+                        //----------------------------------Get Reviews
+                        try
+                        {
+                            int pageNo = 1;
+                            while (true)
+                            {
+                                GetReviews(reviewPageUrl);
+
+                                reviewPageUrl = reviewPageUrl.Replace("page=" + pageNo, "page=" + (pageNo + 1));
+                                pageNo++;
+
+                            }
+
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+
+
+                    }
+
+                    else
+                    {
+                        //here add the code for getting te reviews from amazon
+                    }
+                }
+                catch (Exception)
+                {
+                }
+                //FileStream fs = new FileStream("pReviews.txt", FileMode.Append);
+                //StreamWriter sw = new StreamWriter(fs);
+                //for (int i = 0; i < positiveReviews.Count; i++)
+                //{
+                //    sw.WriteLine(positiveReviews[i]);
+                //}
+                //sw.Close();
+                //fs.Close();
+
+                //fs = new FileStream("nReviews.txt", FileMode.Append);
+                //sw = new StreamWriter(fs);
+                //for (int i = 0; i < negativeReviews.Count; i++)
+                //{
+                //    sw.WriteLine(negativeReviews[i]);
+                //}
+                //sw.Close();
+                //fs.Close();
+
+                //Getting Specifications
+                // string t=doc.DocumentNode.SelectSingleNode("//div[@class='product-description']//p[2]").InnerText;
+                var p = doc.DocumentNode.Descendants().Where(n => n.GetAttributeValue("class", "").Equals("product-description")).Single();
+                var paraHtml = p.InnerHtml;
+                MatchCollection collectedSpec = Regex.Matches(paraHtml, "\\s*(.+?)\\s*\\n<ul>");
+                int uListi = 1;
+
+
+                foreach (Match m in collectedSpec)
+                {
+
+                    string spec = m.Groups[1].Value;
+                    spec = spec.Replace(" ", "");
                     try
                     {
-                        string price = doc.DocumentNode.SelectSingleNode("//div[@class='inc-vat']/p[1]/span[2]").InnerText;
-                        p.Price = price;
+                        spec = spec.Replace("<p>", "");
+                        spec = spec.Replace("</p>", "");
+                        spec = spec.Replace("<span>", "");
+                        spec = spec.Replace("</span>", "");
+
+
                     }
                     catch (Exception)
                     {
 
                     }
 
-                    try
-                    {
-                        var tempImgUrl = doc.DocumentNode.SelectSingleNode("//div[@class='product-img-hero']//a").Descendants("img").Where(x => x.Attributes.Contains("src"));
-                        string imgUrl = "";
+                    ExtractSpecs(spec, doc, uListi);
+                    uListi++;
 
-                        foreach (var link in tempImgUrl)
+                }
+                if (uListi == 1)
+                {
+                    foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//div[@class='product-description']//p"))
+                    {
+                        string spec = node.InnerText;
+                        spec = spec.Replace(" ", "");
+                        if (spec.Equals("Processor") || spec.Equals("Memory") || spec.Equals("HardDrive") || spec.Equals("OperatingSystem") || spec.Equals("Software") || spec.Equals("OpticalDrive") || spec.Equals("Display") || spec.Equals("Graphics") || spec.Equals("Audio") || spec.Equals("InputDevices") || spec.Equals("Networking") || spec.Equals("PowerSupply") || spec.Equals("Dimensions") || spec.Equals("Interfaces"))
                         {
-                            imgUrl = link.Attributes["src"].Value;
-                            p.ImageUrl = imgUrl;
+                            ExtractSpecs(spec, doc, uListi);
+
+                            uListi++;
+
                         }
                     }
-                    catch (Exception)
-                    {
+                }
+                Product prod = new Product();
+                prod.Title = title;
+                prod.Price = price;
+                prod.ImageUrl = imgUrl;
+                prod.ProductDescription = description;
+                prod.Rating = rating;
 
+                Product_Specification ps = new Product_Specification();
+                DbWrappers wrap = new DbWrappers();
+                ps.ProductId = wrap.AddProductDetails(prod, "Laptop");
+
+                //ps.SpecificationId =GetSpecificationId("HardDrive");
+                //ps.Value = dictString["HardDrive"];
+                //ps.NumericValue = dictValue["HardDrive"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("Memory");
+                //ps.Value = dictString["Memory"];
+                //ps.NumericValue = dictValue["Memory"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("ProcessorSpeed");
+                //ps.Value = dictString["Processor"];
+                //ps.NumericValue = dictValue["Processor"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("OperayingSystem");
+                //ps.Value = dictString["OperayingSystem"];
+                //ps.NumericValue = dictValue["OperayingSystem"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("OpticalDrive");
+                //ps.Value = dictString["OpticalDrive"];
+                //ps.NumericValue = dictValue["OpticalDrive"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("Display");
+                //ps.Value = dictString["Display"];
+                //ps.NumericValue = dictValue["Display"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("Graphics");
+                //ps.Value = dictString["Graphics"];
+                //ps.NumericValue = dictValue["Graphics"];
+                //SaveSpecification(ps);
+
+                //ps.SpecificationId = GetSpecificationId("Audio");
+                //ps.Value = dictString["Audio"];
+                //ps.NumericValue = dictValue["Audio"];
+                //SaveSpecification(ps);
+
+                List<Specification> specifications = wrap.GetAllSpecifications();
+
+                foreach (var s in specifications)
+                {
+                    //Change it (Processor) in db so that this check can be removed
+                    if (s.Name.Equals("ProcessorSpeed"))
+                    {
+                        try
+                        {
+                            ps.SpecificationId = s.Id;
+                            ps.Value = dictString["Processor"];
+                            ps.NumericValue = dictValue["Processor"];
+                            wrap.SaveSpecification(ps);
+                        }
+                        catch (Exception)
+                        { };
                     }
 
-                    try
+                        // Change Dimesnion to Dimensions in Db
+                    else if (s.Name.Equals("Dimension"))
                     {
-                        string description = doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[1]").InnerText;
-                        description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[2]").InnerText;
-                        description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[3]").InnerText;
-                        description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[4]").InnerText;
-                        description = description + "\n" + doc.DocumentNode.SelectSingleNode("//div[@class='product-info']//ul[1]//li[5]").InnerText;
-
-                        p.ProductDescription = description;
+                        try
+                        {
+                            ps.SpecificationId = s.Id;
+                            ps.Value = dictString["Dimensions"];
+                            ps.NumericValue = dictValue["Dimensions"];
+                            wrap.SaveSpecification(ps);
+                        }
+                        catch (Exception)
+                        { };
                     }
-                    catch (Exception e)
+
+                    else if (s.Name.Equals("OperatingSystem"))
                     {
-
+                        try
+                        {
+                            ps.SpecificationId = s.Id;
+                            ps.Value = dictString["OperatingSystem"];
+                            ps.NumericValue = dictValue["OperatingSystem"];
+                            wrap.SaveSpecification(ps);
+                        }
+                        catch (Exception)
+                        {
+                            if (s.Name.Equals("OperatingSystem"))
+                            {
+                                try
+                                {
+                                    ps.SpecificationId = s.Id;
+                                    ps.Value = dictString["Software"];
+                                    ps.NumericValue = dictValue["Software"];
+                                    wrap.SaveSpecification(ps);
+                                }
+                                catch (Exception)
+                                { };
+                            }
+                        };
                     }
-                    string processorSpeed = "";
-                    string memory = "";
-                    string hardDrive = "";
-                    string opticalDrive = "";
-                    string operatingSystem = "";
-                    string display = "";
-                    string graphics = "";
-                    string audio = "";
-                    string inputDevices = "";
-                    string networking = "";
-                    string powerSupply = "";
-                    string dimesnion = "";
-                    string interfaces = "";
-                    //Getting Specifications
-                    if (title.Contains("ASUS") || title.Contains("Asus") || title.Contains("asus"))
-                    {
-                        //processorSpeed = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[1]").InnerText;
-                        //memory = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[2]")).InnerText;
-                        //hardDrive = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[3]")).InnerText;
-                        //opticalDrive = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[4]")).InnerText;
-                        //operatingSystem = doc.DocumentNode.SelectSingleNode(("//div[@class='product-descr iption']/ul[5]")).InnerText;
-                        //display = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[7]")).InnerText;
-                        //graphics = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[8]").InnerText;
-                        //audio = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[9]")).InnerText;
-                        //inputDevices = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[10]")).InnerText;
-                        //networking = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[11]")).InnerText;
-                        //powerSupply = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[12]")).InnerText;
-                        //dimesnion = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[13]")).InnerText;
-                        //interfaces = doc.DocumentNode.SelectSingleNode(("//div[@class='product-description']/ul[14]")).InnerText;
 
-                        try
-                        {
-                            processorSpeed = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[1]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-                        try
-                        {
-                            memory = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[2]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            hardDrive = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[3]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            opticalDrive = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[4]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            operatingSystem = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[5]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            display = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[6]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            graphics = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[7]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            audio = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[8]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            inputDevices = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[9]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            networking = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[10]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            powerSupply = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[11]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            dimesnion = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[12]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            interfaces = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[13]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-
-
-
-
-                    }
                     else
                     {
                         try
                         {
-                            processorSpeed = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[1]").InnerText;
+                            ps.SpecificationId = s.Id;
+                            ps.Value = dictString[s.Name];
+                            ps.NumericValue = dictValue[s.Name];
+                            wrap.SaveSpecification(ps);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
 
-                        }
-                        try
-                        {
-                            memory = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[2]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            hardDrive = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[3]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            opticalDrive = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[4]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            operatingSystem = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[5]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            display = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[6]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            graphics = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[7]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            audio = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[8]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            inputDevices = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[9]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            networking = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[10]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            powerSupply = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[11]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            dimesnion = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[12]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try
-                        {
-                            interfaces = doc.DocumentNode.SelectSingleNode("//div[@class='product-description']/ul[13]").InnerText;
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-
-
-
-                    }
-
-                    DbWrappers wrapper = new DbWrappers();
-                    prodSpecs.ProductId=wrapper.AddProductDetails(p,"Laptop");
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("HardDrive");
-                        prodSpecs.Value = hardDrive;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Memory");
-                        prodSpecs.Value = memory;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("ProcessorSpeed");
-                        prodSpecs.Value = processorSpeed;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("OperatingSystem");
-                        prodSpecs.Value = operatingSystem;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("OpticalDrive");
-                        prodSpecs.Value = opticalDrive;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Display");
-                        prodSpecs.Value = display;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Graphics");
-                        prodSpecs.Value = graphics;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Audio");
-                        prodSpecs.Value = audio;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("InputDevices");
-                        prodSpecs.Value = inputDevices;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Networking");
-                        prodSpecs.Value = networking;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("PowerSupply");
-                        prodSpecs.Value = powerSupply;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Dimension");
-                        prodSpecs.Value = dimesnion;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
-                    }
-
-                    try
-                    {
-                        prodSpecs.SpecificationId = wrapper.GetSpecificationId("Interfaces");
-                        prodSpecs.Value = interfaces;
-                        wrapper.SaveSpecification(prodSpecs);
-                    }catch(Exception)
-                    {
-
+                        };
                     }
                 }
-                catch (Exception e)
+
+                ProductReview pr = new ProductReview();
+
+                foreach (var i in positiveReviews)
                 {
+                    pr.ProductId = ps.ProductId;
+                    pr.Review = i;
+                    pr.ReviewScore = 4;
+                    wrap.SaveReview(pr);
+
+                }
+                foreach (var i in negativeReviews)
+                {
+                    pr.ProductId = ps.ProductId;
+                    pr.Review = i;
+                    pr.ReviewScore = 1;
+                    wrap.SaveReview(pr);
 
                 }
 
+                positiveReviews.Clear();
+                negativeReviews.Clear();
+            }
+            catch (Exception)
+            { };
 
-
-                
 
 
 

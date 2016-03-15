@@ -71,9 +71,10 @@ namespace AdamDal
                 PageToCrawl pageToCrawl = e.PageToCrawl;
 
                 string url = pageToCrawl.ToString();
-                if ((url.Contains("apple") || url.Contains("hp") || url.Contains("lenovo") || url.Contains("asus") || url.Contains("dell") || url.Contains("acer")) && url.Contains("-"))
+                if ((url.Contains("apple") || url.Contains("hp") || url.Contains("lenovo") || url.Contains("asus") || url.Contains("dell") || url.Contains("acer")) && url.Contains("-") && ((url.Contains("laptop")) || (url.Contains("chromebook")) || (url.Contains("ultrabook")) || (url.Contains("transformer")) || (url.Contains("tablet")) || (url.Contains("macbook")) || (url.Contains("laptops"))))
                 {
-                    FileStream fs = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/Working/FYPAdam/AdamDal/bin/Debug/UrlEbuyer.txt", FileMode.Append);
+                   FileStream fs = new FileStream("../../../Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/FYP DB Fix UP/FYPAdam/AdamDal/bin/Debug/UrlEbuyer.txt", FileMode.Append);
+                   // FileStream fs = new FileStream("UrlEbuyer.txt", FileMode.Append);
                     //FileStream fs = new FileStream(@"~\AdamDal\bin\Debug\url.txt", FileMode.Append);
                     StreamWriter sw = new StreamWriter(fs);
                     sw.WriteLine(url);

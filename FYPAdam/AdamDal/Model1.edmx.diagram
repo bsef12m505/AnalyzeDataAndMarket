@@ -23,6 +23,8 @@
         <EntityTypeShape EntityType="AdamDatabaseModel.Brand" Width="1.5" PointX="3" PointY="6.75" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Brand_Category" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_Brand" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.FeatureSentiment" Width="1.5" PointX="10.5" PointY="5.875" />
+        <AssociationConnector Association="AdamDatabaseModel.FK_Feature_Product" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
