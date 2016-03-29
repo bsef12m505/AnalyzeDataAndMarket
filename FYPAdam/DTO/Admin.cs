@@ -42,7 +42,7 @@ namespace DTO
         public virtual Customer Customer { get; set; }
     }
 
-   
+
 
     public class ProductReview
     {
@@ -67,7 +67,7 @@ namespace DTO
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
     }
 
-   
+
     public class Item
     {
         public int id { get; set; }
@@ -75,7 +75,7 @@ namespace DTO
         public int SearchCount { get; set; }
     }
 
-    
+
     public class Product_Specification
     {
         public int Id { get; set; }
@@ -110,10 +110,10 @@ namespace DTO
         public virtual Category Category { get; set; }
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
         public virtual ICollection<ProductReview> ProductReviews { get; set; }
-        
+
         [ScriptIgnore]
         public virtual Brand Brand { get; set; }
-        
+
     }
 
     public partial class Brand
@@ -145,5 +145,16 @@ namespace DTO
         public virtual ICollection<Brand> Brands { get; set; }
         public virtual ICollection<Customer_AreaOfInterest> Customer_AreaOfInterest { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+    }
+
+    public class FeatureSentiment
+    {
+        public int Id { get; set; }
+        public int PId { get; set; }
+        public string Feature { get; set; }
+        public int Sentiment { get; set; }
+        public int Count { get; set; }
+        [ScriptIgnore]
+        public virtual Product Product { get; set; }
     }
 }

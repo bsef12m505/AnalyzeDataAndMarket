@@ -25,6 +25,11 @@ namespace Engine
                     .WithIdentity("myJob", "group1")
                     .Build();
 
+                //create a job for sending mail to the user
+                IJobDetail userJob = JobBuilder.Create<UserEmailJob>()
+                    .WithIdentity("userJob", "group1")
+                    .Build();
+
                 //ITrigger trigger = TriggerBuilder.Create()
                 //                .StartNow().WithDailyTimeIntervalSchedule
                 //                  (s =>
@@ -42,8 +47,19 @@ namespace Engine
                      .RepeatForever())
                  .Build();
 
+                //user email trigger
+                ITrigger emailTrigger = TriggerBuilder.Create()
+                .WithIdentity("trigger2", "group2")
+                .StartNow()
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(854000)
+                    .RepeatForever())
+                .Build();
+
                 //Schedule a Job
+                sched.ScheduleJob(userJob, emailTrigger);
                 sched.ScheduleJob(job, trigger);
+
             }
             catch (ArgumentException e)
             {

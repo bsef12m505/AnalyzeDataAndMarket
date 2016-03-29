@@ -43,7 +43,7 @@
 
 #LoginBut {
    
-    margin-top: 7px;
+    
     border-color: #9d426b;
     background-color: #9d426b;
     color: white;
@@ -637,4 +637,99 @@ hr {
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
+}
+
+/*intellisece font setting*/
+.ui-autocomplete {
+    position: absolute;
+    cursor: default;
+    height: 200px;
+    width: 325px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+
+}
+
+#searchTextBox{
+    width:250px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color:black;
+    border-radius:4px;
+    
+}
+
+#prodName{
+    margin-top:50px;
+    color:white;
+    
+}
+
+#prodimg{
+    height:151px;
+}
+#searchMargin{
+    margin-top:12px;
+    margin-left:-20px;
+}
+
+#searchHeading{
+    
+    color:#9d426b;
+    font-size:25px;
+    margin-left:-17%;
+}
+
+#proddesc{
+    color:black;
+}
+
+#compareProd {
+    color: #9d426b;
+   
+    align-content: center;
+    font-size: 25px;
+    margin-left: -8%;
+
+}
+#compareBar1{
+    /*margin-left: -15px;*/
+    padding-right: 137px;
+    height:50px;
+    font-size:medium;
+}
+#compareBar2{
+    /*margin-left: -15px;*/
+    padding-right: 137px;
+    height:50px;
+    font-size:medium;
+}
+#search1 {
+    background-color: #9d426b;
+    border-color: #9d426b;
+    color: white;
+    height:50px;
+}
+#compareProdDetail {
+    margin:10px;
+}
+#ProductTitle1{
+    text-align:initial;
+    margin-left:20px;
+}
+
+#ProductTitle2{
+    text-align:initial;
+    margin-left:20px;
+}
+#productThumbnail{
+    margin-top:14px;
+    margin-left: 1px;
+    
+}
+#productImage1 {
+    margin-top: 10px;
+    height: 100px;
+    width: 200px;
 }

@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "DrawChart";
+}
+
+using System.Json;
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1">
+    <link rel="icon" href="~/img/favicon.png" type="image/png">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/fancybox/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/style.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/Custom.css" rel="stylesheet" />
+    <link href="~/Content/reveal.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/flot/jquery.reveal.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['bar', 'line', 'corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var negativeFeatures = @Html.Raw(Json.Encode(@ViewBag.negativefea));
+            var negativeFeaturesCount=@Html.Raw(Json.Encode(@ViewBag.negativefeaCount));
+            var listColors=@Html.Raw(Json.Encode(@ViewBag.color));
+            
+            var data1 = new google.visualization.DataTable();
+            data1.addColumn('string', 'Name');
+            data1.addColumn('number', 'Value');
+            data1.addColumn({ type: 'string', role: 'style' });
+            data1.addRows(postiveFeatures.length);
+            for (var i = 0; i < negativeFeatures.length; i++) {
+                data1.setCell(i, 0, negativeFeatures[i]);
+                data1.setCell(i,1, negativeFeaturesCount[i]);
+                data1.setCell(i,2, listColors[i]);
+            }
+
+            var options = {
+                chart: {
+                    title: 'Positive Feature Graph',
+                    
+                },
+                title: 'Positive Feature Graph',
+                hAxis: {
+                    title: 'Positive Count',
+                },
+                bars: 'horizontal', // Required for Material Bar Charts.
+                width: 712,
+                height: 370,
+                
+            };
+
+
+            var chart = new google.visualization.BarChart(document.getElementById('prodDesc'));
+            chart.draw(data1, options);
+
+            var url = chart.getImageURI();
+            $("#para").text(url);
+            $.ajax({
+                                 
+                url: 'http://localhost/Engine/Home/DownloadImage',
+                type: 'POST',
+                data: { imageUrl: url},
+                dataType: 'json',
+                success: function (data) {
+                    alert('success');
+
+                },
+                error: function () {
+                    
+                                        
+                    alert('error');
+                }
+            });
+
+        }
+    </script>
+    </head>
+    <body>
+        <p id="para"></p>
+        <div class="col-md-8">
+            <div class="description" id="prodDesc">
+            </div>
+
+        </div>
+    </body>

@@ -16,9 +16,8 @@ namespace AdamDal
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public int AreaOfInterest { get; set; }
+        public string AreaOfInterest { get; set; }
     
-        public virtual Category Category { get; set; }
         public virtual Customer Customer { get; set; }
     }
 }

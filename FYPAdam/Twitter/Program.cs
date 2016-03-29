@@ -18,6 +18,7 @@ namespace Twitter
         public static DataTable HashTag_info = new DataTable();
         public static List<int> retweetCount = new List<int>();
         public static List<dynamic> topTags = new List<dynamic>();
+        public static List<dynamic> extractedTags = new List<dynamic>();
         //public static string HistName;
         //public static string HistX_axis_Tiltle;
         //public static string HistY_axis_Tiltle;
@@ -32,8 +33,8 @@ namespace Twitter
                 accessToken = await GetAccessToken();
             }
             DbWrappers wrap = new DbWrappers();
-            List<Brand> laptopBrands=wrap.GetAllBrandNamesOfLaptops();
-            foreach(Brand b in laptopBrands)
+            List<Brand> laptopBrands = wrap.GetAllBrandNamesOfLaptops();
+            foreach (Brand b in laptopBrands)
             {
                 var requestUserTimeline = new HttpRequestMessage(HttpMethod.Get, string.Format("https://api.twitter.com/1.1/users/show.json?screen_name={0}", b.UserName));
                 requestUserTimeline.Headers.Add("Authorization", "Bearer " + accessToken);
@@ -47,7 +48,7 @@ namespace Twitter
             }
 
             List<Brand> mobileBrands = wrap.GetAllBrandOfMobiles();
-            foreach(Brand b in mobileBrands)
+            foreach (Brand b in mobileBrands)
             {
                 var requestUserTimeline = new HttpRequestMessage(HttpMethod.Get, string.Format("https://api.twitter.com/1.1/users/show.json?screen_name={0}", b.UserName));
                 requestUserTimeline.Headers.Add("Authorization", "Bearer " + accessToken);
@@ -61,42 +62,7 @@ namespace Twitter
             }
 
         }
-        public async Task<List<dynamic>> GetTwitts_HashTags(string userName, string accessToken = null)
-        {
-            if (accessToken == null)
-            {
-                accessToken = await GetAccessToken();
-            }
-            // var requestUserTimeline = new HttpRequestMessage(HttpMethod.Get, string.Format("https://api.twitter.com/1.1/search/tweets.json?q=%23{0}&count=190&since_id=24012619984051000", userName));
-            var requestUserTimeline = new HttpRequestMessage(HttpMethod.Get, string.Format("https://api.twitter.com/1.1/search/tweets.json?q={0}&count=20", userName));
 
-            requestUserTimeline.Headers.Add("Authorization", "Bearer " + accessToken);
-            var httpClient = new HttpClient();
-            HttpResponseMessage responseUserTimeLine = await httpClient.SendAsync(requestUserTimeline);
-            var serializer = new JavaScriptSerializer();
-            List<Object> lst = new List<object>();
-            dynamic json = serializer.Deserialize<object>(await responseUserTimeLine.Content.ReadAsStringAsync());
-            foreach (var kvp in json)
-            {
-
-                foreach (var obj in kvp.Value)
-                {
-                    lst.Add(obj);
-                }
-
-                break;
-            }
-
-            var enumerableTwitts = (lst as IEnumerable<dynamic>);
-
-            if (enumerableTwitts == null)
-            {
-                return null;
-            }
-            //return enumerableTwitts.Select(t => (string)(t["text"].ToString()));
-
-            return enumerableTwitts.ToList<dynamic>();
-        }
 
         public async Task<string> GetAccessToken()
         {
@@ -119,213 +85,88 @@ namespace Twitter
         }
 
 
-        public static void Frequency_Analysis_HashTag()
+        public List<dynamic> Frequency_Analysis_HashTag(DataTable hashTag)
         {
-            var hastTag_Count = from row in HashTag_info.AsEnumerable()
-                                group row by row.Field<string>("HashTag") into grp
-                                select new { key = grp.Key, cnt = grp.Count() };
-
-            var topTenHashTags = hastTag_Count.OrderByDescending(x => x.cnt).Take(10);
-            // List<dynamic> topTags = new List<dynamic>();
-            int i = 1;
-            Console.WriteLine("                                      Hash Tags and their count                           ");
-            foreach (var o in topTenHashTags)
+            try
             {
-                topTags.Add(o);
-                Console.WriteLine(i + "- HashTag Name : " + o.key);
-                Console.WriteLine(i + "- HashTag Count : " + o.cnt);
-                Console.WriteLine("-------------------------------------------------------------------------");
-                i++;
+                var hastTag_Count = from row in hashTag.AsEnumerable()
+                                    group row by row.Field<string>("HashTag") into grp
+                                    select new { key = grp.Key, cnt = grp.Count() };
+
+                var topTenHashTags = hastTag_Count.OrderByDescending(x => x.cnt).Take(10);
+                // List<dynamic> topTags = new List<dynamic>();
+
+                Console.WriteLine("                                      Hash Tags and their count                           ");
+                foreach (var o in topTenHashTags)
+                {
+
+                    topTags.Add(o);
+                    string tag = o.key.ToLower();
+                    if (tag.Contains("galaxy"))
+                    {
+                        extractedTags.Add(o.key);
+
+                    }
+
+
+                }
+
+                return extractedTags;
+
             }
-
-
+            catch (Exception)
+            {
+                return extractedTags;
+            }
             // var result1 = result.Count(x => x.Key);
 
         }
-        public static void Frequency_Analysis_RetweetCount(DataTable tab)
+
+
+        public async Task<List<dynamic>> GetTweetsUserName(string userName, int count, string accessToken = null)
         {
-            var result = from row in tab.AsEnumerable()
-                         group row by row.Field<int>("Retweet_Count"); //Grouping the records on the basis of retweet count.result will have group of records on the basis of retweet count  
+            if (accessToken == null)
+            {
+                accessToken = await GetAccessToken();
+            }
+            List<dynamic> lst = new List<dynamic>();
+            var requestUserTimeline = new HttpRequestMessage(HttpMethod.Get, string.Format("https://api.twitter.com/1.1/statuses/user_timeline.json?count={0}&screen_name={1}&trim_user=1&exclude_replies=1", count, userName));
 
-            List<dynamic> lst1 = new List<object>();
+            requestUserTimeline.Headers.Add("Authorization", "Bearer " + accessToken);
+            var httpClient = new HttpClient();
+            HttpResponseMessage responseUserTimeLine = await httpClient.SendAsync(requestUserTimeline);
+            var serializer = new JavaScriptSerializer();
+            dynamic json = serializer.Deserialize<object>(await responseUserTimeLine.Content.ReadAsStringAsync());
 
-            var result1 = result.OrderByDescending(x => x.Key);  //ordering each group in the decending ordr
-            foreach (var res in result1)
+            foreach (var kvp in json)
             {
 
-                var r2 = res.Select(x => x).Take(1);   //selecting the first record of the group
 
-                foreach (var s in r2)
-                {
-
-                    lst1.Add(s);
-                }
+                lst.Add(kvp);
 
             }
-            var enumerableTwitts = (lst1 as IEnumerable<dynamic>);
-            int counter = 0;
-            Console.WriteLine("                   Frequency Analysis of Tweets             ");
-            Console.WriteLine("-------------------------------------------------------------------------");
-            foreach (var tweetObj in enumerableTwitts)
+
+            var enumerableTwitts = (lst as IEnumerable<dynamic>);
+
+            if (enumerableTwitts == null)
             {
-                if (counter <= 10)
-                {
-                    retweetCount.Add(tweetObj["Retweet_Count"]);
-                    Console.WriteLine("ReTweet Count :" + tweetObj["Retweet_Count"]);
-                    Console.WriteLine("Tweet :" + tweetObj["Tweets"]);
-                    Console.WriteLine("Screne Name :" + tweetObj["ScreenName"]);
-                    Console.WriteLine("-------------------------------------------------------------------------");
-                }
-                counter++;
+                return null;
             }
-        }
+            //return enumerableTwitts.Select(t => (string)(t["text"].ToString()));
 
-        public static void ShowBarChartHashTag(List<dynamic> tags) //showing te bar chart of top 10 hashtags and their count in 100 tweets
-        {
-
-            Chart barchart = new Chart();
-            barchart.Size = new Size(800, 500);//size f te bar chart
-            ChartArea area = new ChartArea();
-            barchart.ChartAreas.Add(area);
-            barchart.BackColor = Color.Transparent;
-            barchart.ChartAreas[0].BackColor = Color.Transparent;
-            barchart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            barchart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            barchart.ChartAreas[0].AxisX.Title = "HahTags";//title on the x-axis
-            barchart.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Center;
-            barchart.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Horizontal;
-            barchart.ChartAreas[0].AxisX.Interval = 1;
-            // barchart.ChartAreas[0].AxisY.LabelAutoFitStyle = LabelAutoFitStyles.None;
-            // barchart.ChartAreas[0].AxisX.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 2.25F, System.Drawing.FontStyle.Bold);
-
-            barchart.ChartAreas[0].AxisY.Title = "HashTag Count";//title on the y-axis
-            barchart.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Center;
-            barchart.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Horizontal;
-
-            Series series = new Series()
-            {
-                Name = "Series2",
-                IsVisibleInLegend = false,
-                ChartType = SeriesChartType.Column
-            };
-
-            barchart.Series.Add(series);
-            int i = 1;
-            foreach (var obj in tags)
-            {
-                DataPoint P1 = new DataPoint(0, obj.cnt);//Adding bars to the barchart
-                P1.Color = Color.LightGreen;
-                P1.AxisLabel = "" + i;
-                P1.LegendText = "" + i;
-                P1.Label = obj.key;
-
-                series.Points.Add(P1);
-                i++;
-            }
-
-            barchart.SaveImage("hashTagHist.png", ChartImageFormat.Png); //saving the barchart in the same folder as exe
+            return enumerableTwitts.ToList<dynamic>();
         }
 
 
-
-
-        public static void ShowBarChart(List<int> count)
-        {
-
-            Chart barchart = new Chart();
-            barchart.Size = new Size(800, 500);
-            ChartArea area = new ChartArea();
-            barchart.ChartAreas.Add(area);
-            barchart.BackColor = Color.Transparent;
-            barchart.ChartAreas[0].BackColor = Color.Transparent;
-            barchart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            barchart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            barchart.ChartAreas[0].AxisX.Title = "Tweets";//title of th x-axis
-            barchart.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Center;
-            barchart.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Horizontal;
-            barchart.ChartAreas[0].AxisX.Interval = 1;
-
-
-            barchart.ChartAreas[0].AxisY.Title = "Retweet Count";//title on the y -axis
-            barchart.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Center;
-            barchart.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Horizontal;
-
-            Series series = new Series()
-            {
-                Name = "Series2",
-                IsVisibleInLegend = false,
-                ChartType = SeriesChartType.Column
-            };
-
-            barchart.Series.Add(series);
-            int i = 1;
-            foreach (var obj in count)
-            {
-                DataPoint P1 = new DataPoint(0, obj);//Adding each point to the bar chart
-                P1.Color = Color.LightGreen;
-                P1.AxisLabel = "" + i;
-                P1.LegendText = "" + i;
-                P1.Label = obj.ToString();
-
-                series.Points.Add(P1);
-                i++;
-            }
-
-            barchart.SaveImage("retweetCountHist.png", ChartImageFormat.Png);//saving the barchart in the same folder as the exe
-        }
-
-        public static void ShowTableData(DataTable tweetTable)
-        {
-            foreach (DataRow row in tweetTable.Rows)
-            {
-                Int64 id = (Int64)row["Tweet_Id"];
-                string text = row["Tweets"].ToString();
-                int retweetCount = (int)row["Retweet_Count"];
-                string name = row["ScreenName"].ToString();
-                int fav_count = (int)row["Favourites_Count"];
-                string location = row["Location"].ToString();
-                int status_Count = (int)row["Status_Count"];
-                int friends_Count = (int)row["Friends_Count"];
-                int followers_Count = (int)row["Followers_Count"];
-
-                var result = from row1 in HashTag_info.AsEnumerable()
-                             where row1.Field<Int64>("Tweet_Id") == id
-                             select row1;
-
-                Console.WriteLine("Tweet id" + id);
-                Console.WriteLine("Tweet:" + text);
-                Console.WriteLine("Screne Name :" + name);
-                Console.WriteLine("Location :" + location);
-                Console.WriteLine("Total Likes :" + fav_count);
-                Console.WriteLine("Statuses Count :" + status_Count);
-                Console.WriteLine("Friends Count :" + friends_Count);
-                Console.WriteLine("Retweet Count :" + retweetCount);
-                Console.WriteLine("Followers Count :" + followers_Count);
-                Console.Write("Hashtags : ");
-
-                foreach (var tag in result)
-                {
-                    Console.Write("#" + tag["HashTag"] + " , ");
-                }
-
-                Console.WriteLine();
-                Console.WriteLine("-------------------------------------------------------------------------");
-
-            }
-
-        }
-
-        public static DataTable add_HashTags(List<dynamic> lst)
+        public DataTable add_HashTags(List<dynamic> lst)
         {
             DataTable Tweet_info = new DataTable();
             Tweet_info.Columns.Add("Tweets", typeof(string)); //Adding columns to the Tweet_info table
             Tweet_info.Columns.Add("Tweet_Id", typeof(Int64)); //Adding columns to the Tweet_info table
-            Tweet_info.Columns.Add("ScreenName", typeof(string)); //Adding columns to the Tweet_info table
-            Tweet_info.Columns.Add("Location", typeof(string)); //Adding columns to the Tweet_info table
+
+
             Tweet_info.Columns.Add("Retweet_Count", typeof(int)); //Adding columns to the Tweet_info table
-            Tweet_info.Columns.Add("Status_Count", typeof(int)); //Adding columns to the Tweet_info table
-            Tweet_info.Columns.Add("Followers_Count", typeof(int)); //Adding columns to the Tweet_info table
-            Tweet_info.Columns.Add("Friends_Count", typeof(int)); //Adding columns to the Tweet_info table
+
             Tweet_info.Columns.Add("Favourites_Count", typeof(int)); //Adding columns to the Tweet_info table
 
             //DataTable HashTag_info = new DataTable();
@@ -346,13 +187,10 @@ namespace Twitter
                     newRow["Tweets"] = t["text"].ToString();
                     newRow["Tweet_Id"] = (Int64)t["id"];
 
-                    newRow["ScreenName"] = userData["screen_name"];
-                    newRow["Location"] = userData["location"];
+
+                    newRow["Favourites_Count"] = (int)t["favorite_count"];
                     newRow["Retweet_Count"] = (int)t["retweet_count"];
-                    newRow["Status_Count"] = (int)userData["statuses_count"];
-                    newRow["Followers_Count"] = (int)userData["followers_count"];
-                    newRow["Friends_Count"] = (int)userData["friends_count"];
-                    newRow["Favourites_Count"] = (int)userData["favourites_count"];
+
 
                     Tweet_info.Rows.Add(newRow);//Adding new data row to the Tweet_info data Table
 
@@ -368,7 +206,7 @@ namespace Twitter
 
                 }
 
-                return Tweet_info;
+                return HashTag_info;
                 // Console.ReadKey();
             }
             catch (Exception e)
@@ -376,8 +214,13 @@ namespace Twitter
 
             }
 
-            return Tweet_info;
+            return HashTag_info;
         }
+
+
+
+
+
 
         static void Main(string[] args)
         {

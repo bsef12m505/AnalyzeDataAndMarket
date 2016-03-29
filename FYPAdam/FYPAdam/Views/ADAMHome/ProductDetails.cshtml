@@ -6,10 +6,11 @@
 <!doctype html>
 <html>
 <head>
-   <title></title>
+    <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1">
     <link rel="icon" href="~/img/favicon.png" type="image/png">
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Scripts/fancybox/jquery.fancybox.css" rel="stylesheet" />
     <link href="~/font-awesome/css/style.css" rel="stylesheet" />
@@ -20,9 +21,15 @@
     <script src="~/Scripts/plugins/flot/jquery.reveal.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
         google.charts.load('current', { 'packages': ['bar', 'line', 'corechart'] });
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
+            var postiveFeatures = @Html.Raw(Json.Encode(@ViewBag.pFeatureList));
+            var positiveFeatureCount=@Html.Raw(Json.Encode(@ViewBag.pCountList));
+            var negativeFeatures = @Html.Raw(Json.Encode(@ViewBag.nFeatureList));
+            var FeatureCount=@Html.Raw(Json.Encode(@ViewBag.nCountList));
+            var listColors=@Html.Raw(Json.Encode(@ViewBag.color));
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Name');
             data.addColumn('number', 'Value');
@@ -54,6 +61,16 @@
             var chart = new google.visualization.BarChart(document.getElementById('prodDesc'));
             chart.draw(data, options);
 
+            var data1 = new google.visualization.DataTable();
+            data1.addColumn('string', 'Name');
+            data1.addColumn('number', 'Value');
+            data1.addColumn({ type: 'string', role: 'style' });
+            data1.addRows(postiveFeatures.length);
+            for (var i = 0; i < postiveFeatures.length; i++) {
+                data1.setCell(i, 0, postiveFeatures[i]);
+                data1.setCell(i,1, positiveFeatureCount[i]);
+                data1.setCell(i,2, listColors[i]);
+            }
             var options1 = {
 
                 title: 'Positive Feature Graph',
@@ -67,8 +84,20 @@
             };
 
             var chart1 = new google.visualization.BarChart(document.getElementById('positiveFeatureGraph'));
-            chart1.draw(data, options1);
+            chart1.draw(data1, options1);
 
+
+
+            var data2 = new google.visualization.DataTable();
+            data2.addColumn('string', 'Name');
+            data2.addColumn('number', 'Value');
+            data2.addColumn({ type: 'string', role: 'style' });
+            data2.addRows(negativeFeatures.length);
+            for (var i = 0; i < negativeFeatures.length; i++) {
+                data2.setCell(i, 0, negativeFeatures[i]);
+                data2.setCell(i,1, FeatureCount[i]);
+                data2.setCell(i,2, listColors[i]);
+            }
             var options2 = {
 
                 title: 'Negative Feature Graph',
@@ -82,7 +111,7 @@
             };
 
             var chart2 = new google.visualization.BarChart(document.getElementById('negativeFeaturegraph'));
-            chart2.draw(data, options2);
+            chart2.draw(data2, options2);
 
 
         }
@@ -119,13 +148,14 @@
 
                     </div>
                     <div class="col-lg-4">
-                        <form action="Home/Products" method="post" class="navbar-form navbar-right" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search here...">
-                            </div>
+                        <div>
 
-                            <button type="submit" class="btn btn-default" id="search"><strong>Search</strong></button>
-                        </form>
+                            <input type="text" placeholder="Search here..." id="searchTextBox" onfocus="TitleIntellisecce()">
+
+                            <button type="submit" class="btn btn-default" id="search" onclick="SearchProduct()"><strong>Search</strong></button>
+                        </div>
+
+
                     </div>
                     <div class="container">
                         <div class="col-lg-1">
@@ -159,7 +189,7 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" href="#home">Product Specifications</a></li>
                                 <li><a data-toggle="tab" href="#menu1">Product Review</a></li>
-                                <li><a data-toggle="tab" href="#menu3">Suggestions</a></li>
+                                <li><a data-toggle="tab" href="#menu3" onclick="CallWM(@Model.Id);">Suggestions</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -175,7 +205,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-4" >
+                                            <div class="col-md-4">
                                                 <div class="row" id="productThumbnail">
                                                     <a href="#" class="thumbnail">
                                                         <img src="@Model.ImageUrl" alt="@Model.Title">
@@ -186,8 +216,8 @@
                                                     <p class="descriptionHeader">Description</p>
                                                     <p>@Model.ProductDescription</p>
                                                     <p><b>Price &nbsp;</b>@Model.Price</p>
-                                                    
-                                                    
+
+
 
                                                 </div>
                                                 <br />
@@ -198,7 +228,7 @@
                                                 </div>
 
                                             </div>
-                                            
+
 
                                         </div>
                                         <div class="row">
@@ -306,16 +336,123 @@
                                         </div>
 
                                     </div>
-                                    </div>
+                                </div>
 
                                 <div id="menu3" class="tab-pane fade">
                                     <br />
                                     <div class="pricing-table-header-tiny">
                                         <h3 class="detail-product">Sugested Products </h3>
+                                    </div>
+                                    <br />
+                                    <div class="row" style="margin-left:2%;display:none" id="relatedProdRow5">
+
+                                        <div class="col-lg-2">
+
+                                            <a href="#" class="thumbnail">
+                                                <img src="~/img/Hpenvyspectre.jpg" alt="Flower" id="relatedProdimg5" style="height:127px">
+                                            </a>
+
+                                        </div>
+
+                                        <div class="col-lg-6" id="searchMargin">
+
+
+                                            <a href="" id="relatedProdName5">Hp Envy Spectre 13 with 3D Glasses</a>
+
+                                            <pre id="relatedProddesc5">The HP Spectre 13t-3000 Ultrabook packs a user-friendly touchpad, strong performance and long battery life in a beautiful design.The HP Spectre x360 13t midrange convertible-hybrid laptop combines premium, all-metal construction, a refined portable design, and solid performance that matches that of more expensive systems.</pre>
+                                        </div>
 
                                     </div>
                                     <br />
-                                    <p>&nbsp;Macbook Air 2015</p>
+
+                                    <!--2nd-->
+
+                                    <div class="row" style="margin-left:2%;display:none" id="relatedProdRow1">
+
+                                        <div class="col-lg-2">
+
+                                            <a href="#" class="thumbnail">
+                                                <img src="~/img/Hpenvyspectre.jpg" alt="Flower" id="relatedProdimg1" style="height:127px">
+                                            </a>
+
+                                        </div>
+
+                                        <div class="col-lg-6" id="searchMargin">
+
+
+                                            <a href="" id="relatedProdName1">Hp Envy Spectre 13 with 3D Glasses</a>
+
+                                            <pre id="relatedProddesc1">The HP Spectre 13t-3000 Ultrabook packs a user-friendly touchpad, strong performance and long battery life in a beautiful design.The HP Spectre x360 13t midrange convertible-hybrid laptop combines premium, all-metal construction, a refined portable design, and solid performance that matches that of more expensive systems.</pre>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <!--3rd-->
+
+                                    <div class="row" style="margin-left:2%;display:none" id="relatedProdRow2">
+
+                                        <div class="col-lg-2">
+
+                                            <a href="#" class="thumbnail">
+                                                <img src="~/img/Hpenvyspectre.jpg" alt="Flower" id="relatedProdimg2" style="height:127px">
+                                            </a>
+
+                                        </div>
+
+                                        <div class="col-lg-6" id="searchMargin">
+
+
+                                            <a href="" id="relatedProdName2">Hp Envy Spectre 13 with 3D Glasses</a>
+
+                                            <pre id="relatedProddesc2">The HP Spectre 13t-3000 Ultrabook packs a user-friendly touchpad, strong performance and long battery life in a beautiful design.The HP Spectre x360 13t midrange convertible-hybrid laptop combines premium, all-metal construction, a refined portable design, and solid performance that matches that of more expensive systems.</pre>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <!--4th-->
+                                    <div class="row" style="margin-left:2%;display:none" id="relatedProdRow3">
+
+                                        <div class="col-lg-2">
+
+                                            <a href="#" class="thumbnail">
+                                                <img src="~/img/Hpenvyspectre.jpg" alt="Flower" id="relatedProdimg3" style="height:127px">
+                                            </a>
+
+                                        </div>
+
+                                        <div class="col-lg-6" id="searchMargin">
+
+
+                                            <a href="" id="relatedProdName3">Hp Envy Spectre 13 with 3D Glasses</a>
+
+                                            <pre id="relatedProddesc3">The HP Spectre 13t-3000 Ultrabook packs a user-friendly touchpad, strong performance and long battery life in a beautiful design.The HP Spectre x360 13t midrange convertible-hybrid laptop combines premium, all-metal construction, a refined portable design, and solid performance that matches that of more expensive systems.</pre>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <!--5th-->
+                                    <div class="row" style="margin-left:2%;display:none" id="relatedProdRow4">
+
+                                        <div class="col-lg-2">
+
+                                            <a href="#" class="thumbnail">
+                                                <img src="~/img/Hpenvyspectre.jpg" alt="Flower" id="relatedProdimg4" style="height:127px">
+                                            </a>
+
+                                        </div>
+
+                                        <div class="col-lg-6" id="searchMargin">
+
+
+                                            <a href="" id="relatedProdName4">Hp Envy Spectre 13 with 3D Glasses</a>
+
+                                            <pre id="relatedProddesc4">The HP Spectre 13t-3000 Ultrabook packs a user-friendly touchpad, strong performance and long battery life in a beautiful design.The HP Spectre x360 13t midrange convertible-hybrid laptop combines premium, all-metal construction, a refined portable design, and solid performance that matches that of more expensive systems.</pre>
+                                        </div>
+
+                                    </div>
+                                    <br />
+
+                                    <!---->
                                 </div>
                             </div>
                             @*------------------------*@
@@ -332,6 +469,64 @@
                 <div class="col-lg-8"></div>
             </div>
         </section>
+
+
+        <script>
+            function CallWM(prodId) {
+
+                var prodName = $('#ProductTitle').text();
+
+
+
+                RealCallWM(prodName,prodId);
+
+
+            }
+            function RealCallWM(prodName,prodId) {
+
+                $.ajax({
+                    type: "GET",
+                    data: { RelatedProdName: prodName, RelatedProdId: prodId},
+
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    url: 'http://localhost/Engine/Home/RelatedProducts',
+
+                    async: true,
+                    success: function (result) {
+                        str="";
+                        j = 1;
+                        $.each(result, function (i, product) {
+                            $("#relatedProdRow"+j).show();
+                            $("#relatedProdimg"+j).attr("src", product.ImageUrl);
+                            $("#relatedProdName"+j).text(product.Title);
+                            $("#relatedProdName"+j).attr("href","../../FYPAdam/ADAMHome/ProductDetails?pId="+product.Id);
+                            $("#relatedProddesc"+j).text(product.ProductDescription);
+
+                            str=str+j;
+
+                            j++;
+
+
+
+                        });
+
+
+
+
+
+                    },
+                    failure: function (data) {
+                        alert(data);
+                    },
+                    error: function (data) {
+                        alert(data);
+                    }
+                });
+            }
+        </script>
+
+
         <!--/Portfolio -->
 
     </div>

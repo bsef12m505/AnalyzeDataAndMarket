@@ -11,6 +11,9 @@ using System.IO;
 using AmazonSOAP;
 using Twitter;
 using TextMining;
+using System.Data;
+using System.Web.Mvc;
+using Engine.Controllers;
 
 namespace Engine
 {
@@ -50,15 +53,16 @@ namespace Engine
                     OAuthConsumerSecret = "OAuth Consumer Secret"
                 };
            // ReviewRefinement refinement = new ReviewRefinement();
-         //   ReviewRefinement.GetSentimentandNouns();
+            
 
             //List<dynamic> Tweets_HashTag = twitter.GetTwitts_HashTags("samsung").Result; //fetchng top 100 tweets related to a hash tag
             //twitter.GetFollowersCount();
 
             // ---Set Abot to Crawl Links-----
 
-            CrawlingLinks links = new CrawlingLinks();
-
+            //CrawlingLinks links = new CrawlingLinks();
+            //var otherController = DependencyResolver.Current.GetService<HomeController>();
+            //var result = otherController.DrawChart();
           // CrawlingLinks.StartCrawlEbuyer("http://www.ebuyer.com/store/Computer/cat/Laptops");
 
 
@@ -76,6 +80,12 @@ namespace Engine
             //ExtractingHtml.ExtractDetailsEbuyer();
                 
             //}
+
+            ///email job
+            ///
+
+
+         
 
         }
     }

@@ -35,7 +35,7 @@ namespace TextMining
 
     public class ReviewRefinement
     {
-        public static string jarRoot = @"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\FYP DB Fix UP\FYPAdam\TextMining\packet-files\models";
+        public static string jarRoot = @"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\FYP DB Fix UP\FYPAdam\ReviewsAnalysis\packet-files\models";
         public static Properties props = new Properties();
         public static List<Tree> lst11 = new List<Tree>();
         public static List<string> opinionPhrases = new List<string>();
@@ -44,36 +44,19 @@ namespace TextMining
 
         public static int GetSentiment(string review, dynamic pipeline)
         {
-            // Annotation pipeline configuration
-            // props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref,sentiment");
-            // props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
-            //props.setProperty("ner.useSUTime", "0");
-
-
-            // We should change current directory, so StanfordCoreNLP could find all the model files automatically
-            //var curDir = Environment.CurrentDirectory;
-            //Directory.SetCurrentDirectory(jarRoot);
-            //var pipeline = new StanfordCoreNLP(props);
-            //Directory.SetCurrentDirectory(curDir);
+           
 
             int mainSentiment = 0;
             if (review != null && review.Length > 0)
             {
                 int longest = 0;
                 Annotation annotation = pipeline.process(review);
-                //var sentence;
-                //var Sentence=annotation.get(new edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation().getClass()) as ArrayList;
+                
                 var Sentence = annotation.get(typeof(CoreAnnotations.SentencesAnnotation)) as ArrayList;
 
                 foreach (CoreMap sen in Sentence)
                 {
-                    // java.lang.Class treeClass = new edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation().getClass();
-
-                    // java.lang.Class treeClass = typeof(edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation);
-                    //edu.stanford.nlp.trees.Tree tree1 = (edu.stanford.nlp.trees.Tree)sen.get(treeClass);
-                    //Console.WriteLine(tree1);
-                    //java.lang.Class treeClass =(java.lang.Class) sen.get(typeof(edu.stanford.nlp.sentiment.SentimentCoreAnnotations.SentimentAnnotatedTree));
-                    //  Tree tree = (Tree)sen.get(treeClass);
+                    
                     Tree tree = (Tree)sen.get(typeof(SentimentCoreAnnotations.SentimentAnnotatedTree));
 
 
@@ -99,7 +82,7 @@ namespace TextMining
             //props.setProperty("annotators", "tokenize, ssplit, parse");
             props.setProperty("ner.useSUTime", "0");
             List<string> nouns = new List<string>();
-            List<string> adjectives = new List<string>();
+          //  List<string> adjectives = new List<string>();
             string line = "";
             int sentiment;
 

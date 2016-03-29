@@ -26,7 +26,7 @@ namespace AdamDal
         public string ImageUrl { get; set; }
         public Nullable<int> FollowersCount { get; set; }
         public string UserName { get; set; }
-    [ScriptIgnore]
+     [ScriptIgnore]
         public virtual Category Category { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
