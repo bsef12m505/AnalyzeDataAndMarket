@@ -24,11 +24,27 @@ namespace Engine
             try
             {
 
-                
+                FileStream fs = new FileStream("UrlGSM2.txt", FileMode.Append);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine("Hello World");
+                sw.Close();
+                fs.Close();
+                FileStream fs1 = new FileStream("UrlGSM2.txt", FileMode.Open);
+                string str = "";
+                string str1 = "";
+
+                StreamReader sr = new StreamReader(fs1);
+                while ((str = sr.ReadLine()) != null)
+                {
+                    str1 = str;
+                    break;
+                }
+                sr.Close();
+                fs1.Close();
                 //Checking the Time Duration of Servive with Email
                 using (var message = new MailMessage("adamanalyzer@gmail.com", "adamtestreceiver@gmail.com"))
                 {
-                    message.Subject = "Hello World2";
+                    message.Subject = str1+"";
                     message.Body = "Service is being started at " + DateTime.Now;
                     using (SmtpClient client = new SmtpClient
                     {
