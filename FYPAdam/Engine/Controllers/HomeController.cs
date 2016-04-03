@@ -18,10 +18,10 @@ namespace Engine.Controllers
         public JsonResult DownloadImage(string imageUrl)
         {
             ImageUtitlites.imgUrl = imageUrl;
-            //using (WebClient webClient = new WebClient())
-            //{
-            //    webClient.DownloadFile(imageUrl, "../../../..Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/FYP DB Fix UP/FYPAdam/FYPAdam/img/chart1.png");
-            //}
+            using (WebClient webClient = new WebClient())
+            {
+                webClient.DownloadFile(imageUrl, "../../../..Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/FYP DB Fix UP/FYPAdam/FYPAdam/img/chart1.png");
+            }
 
             return this.Json("",JsonRequestBehavior.AllowGet);
 

@@ -23,17 +23,35 @@ namespace Engine
         {
             try
             {
-                //Checking the Time Duration of Servive with Email
-                using (var message = new MailMessage("fariyah129@gmail.com", "bsef12m505@pucit.edu.pk"))
+
+                FileStream fs = new FileStream("../../UrlGSM1.txt", FileMode.Append);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine("Hello World");
+                sw.Close();
+                fs.Close();
+                FileStream fs1 = new FileStream("../../UrlGSM1.txt", FileMode.Open);
+                string str="";
+                string str1 = "";
+               
+                StreamReader sr = new StreamReader(fs1);
+                while ((str = sr.ReadLine()) != null)
                 {
-                    message.Subject = "Service";
+                    str1 = str;
+                    break;
+                }
+                sr.Close();
+                fs1.Close();
+                //Checking the Time Duration of Servive with Email
+                using (var message = new MailMessage("adamanalyzer@gmail.com", "adamtestreceiver@gmail.com"))
+                {
+                    message.Subject = str1+"";
                     message.Body = "Service is being started at " + DateTime.Now;
                     using (SmtpClient client = new SmtpClient
                     {
                         EnableSsl = true,
                         Host = "smtp.gmail.com",
                         Port = 587,
-                        Credentials = new NetworkCredential("fariyah129@gmail.com", "03244047800f")
+                        Credentials = new NetworkCredential("adamanalyzer@gmail.com", "analyzedataandmarket")
                     })
                     {
                         client.Send(message);
@@ -52,6 +70,8 @@ namespace Engine
                     OAuthConsumerKey = "OAuth Consumer Key",
                     OAuthConsumerSecret = "OAuth Consumer Secret"
                 };
+
+            
            // ReviewRefinement refinement = new ReviewRefinement();
             
 

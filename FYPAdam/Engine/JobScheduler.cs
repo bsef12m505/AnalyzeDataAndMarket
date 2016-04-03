@@ -43,7 +43,7 @@ namespace Engine
                  .WithIdentity("trigger1", "group2")
                  .StartNow()
                  .WithSimpleSchedule(x => x
-                     .WithIntervalInSeconds(864000)
+                     .WithIntervalInSeconds(180)
                      .RepeatForever())
                  .Build();
 
@@ -52,7 +52,7 @@ namespace Engine
                 .WithIdentity("trigger2", "group2")
                 .StartNow()
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(854000)
+                    .WithIntervalInSeconds(7200)
                     .RepeatForever())
                 .Build();
 
