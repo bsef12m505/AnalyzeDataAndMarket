@@ -21,6 +21,165 @@ namespace AmazonSOAP
     {
         public static bool hasReviews = false;
         public static List<string> reviewList = new List<string>();
+        public static bool IsCorrect = false;
+        public Dictionary<string, string> GetProdDetails(string pName)
+        {
+            Dictionary<string, string> proddescDic = new Dictionary<string, string>();
+            string title = "";
+            string manufacturer = "";
+            string model = "";
+            string brand = "";
+            string priceInDollar = "";
+            double price = 0.0;
+            string[] features;
+            string fea = "";
+            // Instantiate Amazon ProductAdvertisingAPI client
+            AWSECommerceServicePortTypeClient amazonClient = new AWSECommerceServicePortTypeClient();
+
+            // prepare an ItemSearch request
+            ItemSearchRequest request = new ItemSearchRequest();
+            request.SearchIndex = "All";
+
+            //request.Title = "WCF";
+
+            request.Keywords = pName;
+            request.ResponseGroup = new string[] { "ItemAttributes", "Offers", "OfferSummary", "Reviews" };
+
+            ItemSearch itemSearch = new ItemSearch();
+            itemSearch.Request = new ItemSearchRequest[] { request };
+            itemSearch.AWSAccessKeyId = ConfigurationManager.AppSettings["accessKeyId"];
+            itemSearch.AssociateTag = "newmobiles0d-20";
+
+            // send the ItemSearch request
+            try
+            {
+                bool getNextTitle = false;
+
+                ItemSearchResponse response = amazonClient.ItemSearch(itemSearch);
+
+                foreach (var item in response.Items[0].Item)
+                {
+                    if (!IsCorrect)
+                    {
+                        //Getting title
+                        try
+                        {
+                            title = item.ItemAttributes.Title;
+                            if (!(title.ToLower().Contains("Stick".ToLower())) || (title.ToLower().Contains("Case".ToLower())) || (title.ToLower().Contains("Cover".ToLower())))
+                            {
+                                proddescDic["Title"] = title;
+                                IsCorrect = true;
+                                getNextTitle = false;
+                            }
+                            else
+                            {
+                                getNextTitle = true;
+                                proddescDic["Title"] = title;
+                            }
+
+                        }
+                        catch (Exception)
+                        { };
+                        if (!getNextTitle)
+                        {
+                            //Getting manufacturer of the item
+                            try
+                            {
+                                manufacturer = item.ItemAttributes.Manufacturer;
+                                proddescDic["Manufacturer"] = manufacturer;
+                            }
+                            catch (Exception)
+                            { };
+                            //Getting model
+                            try
+                            {
+                                model = item.ItemAttributes.Model;
+                                proddescDic["Model"] = model;
+                            }
+                            catch (Exception) { };
+                            //Getting Brand
+                            try
+                            {
+                                brand = item.ItemAttributes.Brand;
+                                proddescDic["Brand"] = brand;
+                            }
+                            catch (Exception)
+                            { };
+                            //Getting Amount in Dollar
+                            try
+                            {
+                                priceInDollar = item.ItemAttributes.ListPrice.FormattedPrice;
+                                proddescDic["Price"] = priceInDollar;
+                            }
+                            catch (Exception)
+                            { };
+                            //Getting Amount
+                            try
+                            {
+                                string p = item.ItemAttributes.ListPrice.Amount;
+                            }
+                            catch (Exception)
+                            { };
+                            try
+                            {
+                                features = item.ItemAttributes.Feature;
+                                foreach (var f in features)
+                                {
+                                    fea = fea + "\n" + f;
+                                }
+                                proddescDic["Features"] = fea;
+                                Console.WriteLine(fea);
+                            }
+                            catch (Exception)
+                            { };
+
+                        }
+                    }
+
+                    if ((item.CustomerReviews.HasReviews) == true)
+                    {
+                        string str = item.CustomerReviews.IFrameURL;
+                        string final_response = "";
+                        try
+                        {
+                            //Getting html from IFrame URL
+                            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(str);
+                            req.Method = "POST";
+                            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+                            StreamReader stream = new StreamReader(res.GetResponseStream());
+                            final_response = stream.ReadToEnd();
+
+                            GetMainPageHtml(final_response);
+
+
+
+                        }
+
+
+
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
+
+
+
+                    }
+
+
+
+
+                }
+
+            }
+            catch (Exception e1)
+            {
+
+            }
+
+            return proddescDic;
+        }
         public static void GetMainPageHtml(string res_str, int prodId)
         {
 

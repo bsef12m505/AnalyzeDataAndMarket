@@ -4,25 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="271ecafb14034f48adce18ed343c708d" Name="Diagram1">
-        <EntityTypeShape EntityType="AdamDatabaseModel.Admin" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Category" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Customer" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Item" Width="1.5" PointX="5.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Product_Specification" Width="1.5" PointX="5.25" PointY="11" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.ProductReview" Width="1.5" PointX="5.25" PointY="14" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Specification" Width="1.5" PointX="3" PointY="15.25" IsExpanded="true" />
+      <Diagram DiagramId="271ecafb14034f48adce18ed343c708d" Name="Diagram1" ZoomLevel="103">
+        <EntityTypeShape EntityType="AdamDatabaseModel.Admin" Width="1.5" PointX="1.375" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Category" Width="1.5" PointX="0.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Customer" Width="1.5" PointX="3.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Item" Width="1.5" PointX="7.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Product_Specification" Width="1.5" PointX="4.625" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.ProductReview" Width="1.5" PointX="6.375" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Specification" Width="1.5" PointX="9.875" PointY="2.625" IsExpanded="true" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_Specification_Specification" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Product" Width="1.5" PointX="8.25" PointY="5" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Product" Width="1.5" PointX="6.125" PointY="0.75" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_Category" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_Specification_Product" />
         <AssociationConnector Association="AdamDatabaseModel.FK_ProductReview_Product" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Brand" Width="1.5" PointX="3" PointY="6.75" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Brand" Width="1.5" PointX="2.5" PointY="5.25" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Brand_Category" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_Brand" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.FeatureSentiment" Width="1.5" PointX="10.5" PointY="5.875" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.FeatureSentiment" Width="2" PointX="8.75" PointY="4.875" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Feature_Product" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Customer_AreaOfInterest" Width="1.5" PointX="6" PointY="5" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Customer_AreaOfInterest" Width="2" PointX="3.625" PointY="3.25" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Customer_AreaOfInterest_Customer" />
       </Diagram>
     </edmx:Diagrams>

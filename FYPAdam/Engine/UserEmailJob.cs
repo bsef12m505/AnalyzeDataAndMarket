@@ -18,14 +18,17 @@ using System.Net;
 using System.Net.Mime;
 using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Web.Hosting;
 
 
 namespace Engine
 {
     public class UserEmailJob : IJob
     {
+        public static string enginePath= "";
         public void Execute(IJobExecutionContext context)
         {
+            enginePath = HostingEnvironment.MapPath(@"~/packet-files/models");
             List<Customer_AreaOfInterest> custInterrest = new List<Customer_AreaOfInterest>();
             List<Color> colorList = new List<Color>();
             colorList.Add(Color.Gold);
@@ -54,6 +57,7 @@ namespace Engine
             Dictionary<string, int> posFeatures;
             Dictionary<string, int> negFeatures;
             
+            
 
             try
             {
@@ -71,11 +75,12 @@ namespace Engine
                             List<dynamic> refinedTags=twitter.Frequency_Analysis_HashTag(hashtagTable); //Extracting the relevent hashtags(i.e tags that are a product name)
                             foreach(var prodName in refinedTags)
                             {
-                             Dictionary<string,string> prodDesc= col.GetProductAgainstHashTag(prodName);//geting the product details of the top products (extracted using twitter) from amazon 
+                             //Dictionary<string,string> prodDesc= col.GetProductAgainstHashTag(prodName);//geting the product details of the top products (extracted using twitter) from amazon 
+                             Dictionary<string, string> prodDesc = col.GetProdDetails(prodName);
                              List<string> reviews=ReviewCollection.reviewList; //Reviews of the related product
                              var arr = prodDesc.Keys.ToArray();
                              var prodValues = prodDesc.Values.ToArray();
-                             test.GetSentimentandNouns(reviews);  //extracting positive and negative features from reviews
+                             test.GetSentimentandNouns(reviews, enginePath);  //extracting positive and negative features from reviews
                              posFeatures = test.pfeatureDictionary;
                              negFeatures = test.nfeatureDictionary;
 
@@ -256,6 +261,8 @@ namespace Engine
                             test.positiveFeatures.Clear();
                             test.pfeatureDictionary.Clear();
                             test.nfeatureDictionary.Clear();
+                            test.positiveFeatures.Columns.Remove("pNouns");
+                            test.negativeFeatures.Columns.Remove("nNouns");
                             posFeatures.Clear();
                             negFeatures.Clear();
 

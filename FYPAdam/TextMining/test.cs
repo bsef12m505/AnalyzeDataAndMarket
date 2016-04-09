@@ -34,8 +34,10 @@ namespace TextMining
     
    public class test
     {
-        //public static string jarRoot = @"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\FYP DB Fix UP\FYPAdam\ReviewsAnalysis\packet-files\models";
-       public static string jarRoot = @"../../packet-files/models";
+        public static string jarRoot = @"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\FYP DB Fix UP\FYPAdam\ReviewsAnalysis\packet-files\models";
+       //public static string jarRoot = @"../../packet-files/models";
+      // HostingEnvironment.MapPath(@"~/App_Data/PriceModels.xml");
+      // public static string jarRoot = UserEmailJob.enginePath;
         public static Properties props = new Properties();
         public static DataTable positiveFeatures = new DataTable();
         public static DataTable negativeFeatures = new DataTable();
@@ -75,7 +77,7 @@ namespace TextMining
 
             return mainSentiment;
         }
-        public static void GetSentimentandNouns(List<string> reviews)
+        public static void GetSentimentandNouns(List<string> reviews,string path)
         {
             try
             {
@@ -94,7 +96,7 @@ namespace TextMining
 
                 // We should change current directory, so StanfordCoreNLP could find all the model files automatically
                 var curDir = Environment.CurrentDirectory;
-                Directory.SetCurrentDirectory(jarRoot);
+                Directory.SetCurrentDirectory(path);
                 var pipeline = new StanfordCoreNLP(props);
                 Directory.SetCurrentDirectory(curDir);
 
@@ -534,11 +536,7 @@ namespace TextMining
                 {
                     
                 }
-            finally
-            {
-                positiveFeatures.Columns.Remove("pNouns");
-                negativeFeatures.Columns.Remove("nNouns");
-            }
+           
         }
     }
 }

@@ -11,7 +11,6 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Script.Serialization;
     
     public partial class Product_Specification
     {
@@ -22,7 +21,6 @@ namespace AdamDal
         public Nullable<double> NumericValue { get; set; }
     
         public virtual Specification Specification { get; set; }
-         [ScriptIgnore]
         public virtual Product Product { get; set; }
     }
 }

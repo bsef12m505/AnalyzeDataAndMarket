@@ -11,7 +11,6 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Script.Serialization;
     
     public partial class ProductReview
     {
@@ -19,7 +18,7 @@ namespace AdamDal
         public int ProductId { get; set; }
         public string Review { get; set; }
         public Nullable<int> ReviewScore { get; set; }
-     [ScriptIgnore]
+    
         public virtual Product Product { get; set; }
     }
 }
