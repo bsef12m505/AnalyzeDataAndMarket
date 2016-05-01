@@ -403,9 +403,10 @@ a.read_more:hover {
             margin-top: 4px !important;
         }
         .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
-            color: #000000;
+            color:white;
             cursor: default;
-            background-color: #fff;
+            background:#9d426b;
+
             border: 2px solid #000000;
             border-bottom-color: transparent!important;
         }

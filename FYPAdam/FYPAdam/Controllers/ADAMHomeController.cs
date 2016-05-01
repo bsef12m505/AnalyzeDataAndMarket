@@ -187,6 +187,103 @@ namespace FYPAdam.Controllers
             return View(brandList[0]);
         }
 
+        public JsonResult WeeklyComparisonTrendMobile()
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/WeeklyMobileComparison");
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                List<List<int>> brandFollowerList = serializer.Deserialize<List<List<int>>>(finalResponse);
+                return this.Json(brandFollowerList,JsonRequestBehavior.AllowGet);
+                //string[] bnamesMob = brandFollowerList[0].Keys.ToArray();
+                //int[][] followerscountMob = brandFollowerList[0].Values.ToArray();
+
+                //string[] bnamesLaptop = brandFollowerList[1].Keys.ToArray();
+                //int[][] followerscountLaptop = brandFollowerList[1].Values.ToArray();
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+               
+            }
+            return this.Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult WeeklyTrends(string catName, string bName)
+        {
+            return View();
+        }
+        public ActionResult Trends()
+        {
+           
+            try
+            {
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/GetFollowersWeekly");
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                List<Dictionary<string,int[]>> brandFollowerList= serializer.Deserialize<List<Dictionary<string,int[]>>>(finalResponse);
+                string[] bnamesMob = brandFollowerList[0].Keys.ToArray();
+                int[][] followerscountMob = brandFollowerList[0].Values.ToArray();
+
+                string[] bnamesLaptop = brandFollowerList[1].Keys.ToArray();
+                int[][] followerscountLaptop = brandFollowerList[1].Values.ToArray();
+
+                ViewBag.brandNamesMob = bnamesMob;
+                ViewBag.fCountMob = followerscountMob;
+
+                ViewBag.brandNamesLaptop = bnamesLaptop;
+                ViewBag.fCountLaptop = followerscountLaptop;
+
+                HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/GetDateWeekly");
+                request1.Timeout = 12000000;
+                request1.KeepAlive = false;
+                request1.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response1 = (HttpWebResponse)request1.GetResponse();
+
+                
+
+                StreamReader stream1 = new StreamReader(response1.GetResponseStream());
+                finalResponse = stream1.ReadToEnd();
+                List<DateTime> dateArray = serializer.Deserialize<List<DateTime>>(finalResponse);
+                List<string> array = new List<string>();
+
+                foreach(var date in dateArray)
+                {
+                    string [] dateOnly=Convert.ToString(date).Split(' ');
+                    array.Add(dateOnly[0]);
+                }
+
+                ViewBag.weekDates = array.ToArray();
+                return View();
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+
+
+            return View();
+        }
         public ActionResult temp()
         {
             return View();

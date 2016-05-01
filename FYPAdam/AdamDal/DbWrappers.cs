@@ -404,6 +404,18 @@ namespace AdamDal
 
         }
 
+        public void AddBrandFollower(BrandFollower follower)
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            try
+            {
+                ed1.BrandFollowers.Add(follower);
+                ed1.SaveChanges();
+            }catch(Exception)
+            {
+
+            }
+        }
         public bool AddSignUpDetail(string fname, string lname, string email, string password)
         {
             AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
@@ -432,6 +444,91 @@ namespace AdamDal
             ed1.Configuration.ProxyCreationEnabled = false;
             List<Brand> brands = ed1.Brands.Where(y => y.CategoryId == 1).Select(x => x).ToList();
             return brands;
+        }
+
+        public List< List<int>> BrandComparisonMobilesWeekly()
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            List<List<int>> comparisonList = new List<List<int>>();
+
+            DateTime startOfWeek = DateTime.Today.AddDays(-1 * (int)(DateTime.Today.DayOfWeek));//this gives sunday as strt of the week day
+            DateTime strtOfPrevWeek = startOfWeek.Subtract(new TimeSpan(7, 0, 0, 0));
+            DateTime fifteenDaysAgo = startOfWeek.Subtract(new TimeSpan(14, 0, 0, 0));
+            List<int> thisWeekFollowers=ed.BrandFollowers.Include("Brand").Where(x => x.Brand.CategoryId == 2 && x.Date == DateTime.Today.Date).Select(y=>y.FollowersCount).ToList();
+            List<int> prevWeekFollowers = ed.BrandFollowers.Include("Brand").Where(x => x.Brand.CategoryId == 2 && x.Date == strtOfPrevWeek.Date).Select(y => y.FollowersCount).ToList();
+            List<int> fifteenDaysAgoFollowers = ed.BrandFollowers.Include("Brand").Where(x => x.Brand.CategoryId == 2 && x.Date == fifteenDaysAgo.Date).Select(y => y.FollowersCount).ToList();
+
+            comparisonList.Add(thisWeekFollowers);
+            comparisonList.Add(prevWeekFollowers);
+            comparisonList.Add(fifteenDaysAgoFollowers);
+
+            return comparisonList;
+
+
+        }
+        public List<int> GetFollowerCountonSpecificDate(DateTime dateTime ,int brandId)
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+
+           
+            DateTime startOfWeek = DateTime.Today.AddDays(-1 * (int)(DateTime.Today.DayOfWeek));//this gives sunday as strt of the week day
+            
+
+            DateTime strtDate = startOfWeek.Date;
+            DateTime monday = startOfWeek.Add(new TimeSpan(1, 0, 0, 0));
+            DateTime mondayDate = monday.Date;
+            DateTime today = dateTime.Date;
+            var difference=today-startOfWeek;
+
+           if(difference.Days==0)
+           {
+               startOfWeek = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
+               strtDate = startOfWeek.Date;
+           }
+
+            List<int> folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && (x.Date >= strtDate && x.Date <= today)).Select(y => y.FollowersCount).ToList();
+            return folowerCount;
+
+        }
+
+        public dynamic GetWeekLastDayTrend(int brandId)//not needed yet
+        {
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+            ed1.Configuration.ProxyCreationEnabled = false;
+            DateTime startOfWeek = DateTime.Today.AddDays(-1 * (int)(DateTime.Today.DayOfWeek));//this gives sunday as strt of the week day
+            var folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && x.Date==startOfWeek.Date).Select(y => y.FollowersCount);
+            return folowerCount;
+
+        }
+        public List<DateTime> GetDateWeekly()
+        {
+            List<DateTime> dateList = new List<DateTime>();
+            try
+            {
+                AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
+                ed1.Configuration.ProxyCreationEnabled = false;
+
+                DateTime startOfWeek = DateTime.Today.AddDays(-1 * (int)(DateTime.Today.DayOfWeek));//this gives sunday as strt of the week day
+                DateTime strtDate = startOfWeek.Date;
+                DateTime monday = startOfWeek.Add(new TimeSpan(1, 0, 0, 0));
+                DateTime mondayDate = monday.Date;
+                DateTime today = DateTime.Today.Date;
+
+                var difference = today - startOfWeek;
+
+                if (difference.Days == 0)
+                {
+                    startOfWeek = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
+                    strtDate = startOfWeek.Date;
+                }
+                dateList = ed1.BrandFollowers.Where(x => x.Date >= strtDate && x.Date <= today).Select(y => y.Date).Distinct().ToList();
+                return dateList;
+            }catch(Exception )
+            {
+                return dateList;
+            }
         }
 
         public List<Brand> GetAllBrandOfMobiles()

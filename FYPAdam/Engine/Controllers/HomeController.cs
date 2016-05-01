@@ -14,7 +14,112 @@ namespace Engine.Controllers
 {
     public class HomeController : Controller
     {
+//twitter weekly trends
+        public JsonResult GetFollowersWeekly()
+        {
+            DbWrappers wrap = new DbWrappers();
+            Dictionary<string,int []> mobBrandFollwers = new Dictionary<string,int[]>();
+            Dictionary<string, int[]> lapBrandFollwers = new Dictionary<string, int[]>();
+            List<Dictionary<string, int[]>> brandFollowersDic = new List<Dictionary<string, int[]>>();
+            try
+            {
+                List<Brand> brands = wrap.GetAllBrandOfMobiles();//geting all the mobile brands coz we need them for twitter username
+                foreach (var b in brands)
+                {
+                    List<int> countList = wrap.GetFollowerCountonSpecificDate(DateTime.Today, b.Id);
+                    List<int> countDiff = new List<int>();
+                    int[] arr = countList.ToArray();
+                    int j = 0;
+                    for (int i = 1; i < arr.Length;i++ )
+                    {
+                        j = i - 1;
+                        countDiff.Add(Math.Abs(arr[i]-arr[j]));
 
+                    }
+
+                    mobBrandFollwers[b.Name] = countDiff.ToArray();
+                }
+
+                //Laptop Brands
+
+                List<Brand> laptopBrands = wrap.GetAllBrandNamesOfLaptops(); //geting all the mobile brands coz we need them for twitter username
+
+                foreach (var b in laptopBrands)
+                {
+                    List<int> countList = wrap.GetFollowerCountonSpecificDate(DateTime.Today, b.Id);
+                    List<int> countDiff = new List<int>();
+                    int[] arr = countList.ToArray();
+                    int j = 0;
+                    for (int i = 1; i < arr.Length; i++)
+                    {
+                        j = i - 1;
+                       
+                        countDiff.Add(Math.Abs(arr[i] - arr[j]));
+
+                    }
+
+                    lapBrandFollwers[b.Name] = countDiff.ToArray();
+                }
+
+                brandFollowersDic.Add(mobBrandFollwers);
+                brandFollowersDic.Add(lapBrandFollwers);
+                return this.Json(brandFollowersDic, JsonRequestBehavior.AllowGet);
+            }catch(Exception )
+            {
+                return this.Json("", JsonRequestBehavior.AllowGet); ;
+            }
+
+        }
+
+        public JsonResult GetDateWeekly()
+        {
+            DbWrappers wrap = new DbWrappers();
+            try
+            {
+                List<DateTime> weeklyDates = wrap.GetDateWeekly();//geting all the mobile brands coz we need them for twitter username
+
+
+                return this.Json(weeklyDates.ToArray(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return this.Json("", JsonRequestBehavior.AllowGet); ;
+            }
+        }
+
+        public JsonResult WeeklyMobileComparison()
+        {
+            DbWrappers wrap = new DbWrappers();
+            List<List<int>> diffList = new List<List<int>>();
+
+            
+            try
+            {
+                int z = 0;
+                List<List<int>> folowersList = wrap.BrandComparisonMobilesWeekly();//geting all the mobile brands coz we need them for twitter username
+                for (int i = 0; i < folowersList.Count-1; i++)
+                {
+                    List<int> tempArr = new List<int>();
+                    z = i + 1;
+                    int xx = folowersList[i].Count;
+                    for (int j = 0; j < folowersList[i].Count;j++ )
+                    {
+
+                        tempArr.Add(Math.Abs(folowersList[i][j] - folowersList[z][j]));
+                    }
+
+                    diffList.Add(tempArr);
+                    
+                }
+
+
+                return this.Json(diffList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return this.Json("", JsonRequestBehavior.AllowGet); ;
+            }
+        }
         public JsonResult DownloadImage(string imageUrl)
         {
             ImageUtitlites.imgUrl = imageUrl;

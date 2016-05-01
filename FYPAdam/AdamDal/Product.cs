@@ -11,6 +11,7 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Script.Serialization;
     
     public partial class Product
     {
@@ -19,6 +20,8 @@ namespace AdamDal
             this.Product_Specification = new HashSet<Product_Specification>();
             this.ProductReviews = new HashSet<ProductReview>();
             this.FeatureSentiments = new HashSet<FeatureSentiment>();
+            this.ProductHits = new HashSet<ProductHit>();
+            this.ProductSearches = new HashSet<ProductSearch>();
         }
     
         public int Id { get; set; }
@@ -31,11 +34,15 @@ namespace AdamDal
         public string ReleaseDate { get; set; }
         public Nullable<double> Rating { get; set; }
         public string ProductDescription { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
         public virtual ICollection<ProductReview> ProductReviews { get; set; }
+        [ScriptIgnore]
         public virtual Brand Brand { get; set; }
         public virtual ICollection<FeatureSentiment> FeatureSentiments { get; set; }
+        public virtual ICollection<ProductHit> ProductHits { get; set; }
+        public virtual ICollection<ProductSearch> ProductSearches { get; set; }
     }
 }

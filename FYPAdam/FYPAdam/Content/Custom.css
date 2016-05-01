@@ -733,3 +733,35 @@ hr {
     height: 100px;
     width: 200px;
 }
+
+#weeklyTrend{
+    margin-left:120px;
+    margin-top:50px;
+    margin-bottom:50px;
+}
+
+#weekTrendRadio{
+ margin-left:33.2%;
+}
+
+#rodioButton{
+    margin-right:9%;
+}
+#weeklyTrendLaptops
+{
+    
+    
+}
+
+.weeklyTrendsBox {
+    border-bottom: 1px solid #D3D3D3;
+    border-left: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    border-top: 1px solid #D3D3D3;
+    border-radius:25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+   
+   
+}

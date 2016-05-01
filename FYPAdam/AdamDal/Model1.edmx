@@ -25,6 +25,15 @@
           <Property Name="FollowersCount" Type="int" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="BrandFollowers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
+          <Property Name="FollowersCount" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -83,6 +92,7 @@
           <Property Name="ReleaseDate" Type="nvarchar(max)" />
           <Property Name="Rating" Type="float" />
           <Property Name="ProductDescription" Type="nvarchar(max)" />
+          <Property Name="Date" Type="date" />
         </EntityType>
         <EntityType Name="Product_Specification">
           <Key>
@@ -94,6 +104,15 @@
           <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
           <Property Name="NumericValue" Type="float" />
         </EntityType>
+        <EntityType Name="ProductHits">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="SearchCount" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="ProductReview">
           <Key>
             <PropertyRef Name="Id" />
@@ -103,6 +122,15 @@
           <Property Name="Review" Type="nvarchar(max)" />
           <Property Name="ReviewScore" Type="int" />
         </EntityType>
+        <EntityType Name="ProductSearch">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="SearchCount" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Specification">
           <Key>
             <PropertyRef Name="Id" />
@@ -110,6 +138,26 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="TrendingProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Brand_BrandFollowers">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="1" />
+          <End Role="BrandFollowers" Type="Self.BrandFollowers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BrandFollowers">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Brand_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1" />
           <End Role="Brand" Type="Self.Brand" Multiplicity="*" />
@@ -170,6 +218,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Product_ProductHit">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductHits" Type="Self.ProductHits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductHits">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductSearch">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductSearch" Type="Self.ProductSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductSearch">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Specification_Product">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Product_Specification" Type="Self.Product_Specification" Multiplicity="*" />
@@ -206,9 +278,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TrenProd_Brand">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="1" />
+          <End Role="TrendingProduct" Type="Self.TrendingProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrendingProduct">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="AdamDatabaseModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrandFollowers" EntityType="Self.BrandFollowers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer_AreaOfInterest" EntityType="Self.Customer_AreaOfInterest" Schema="dbo" store:Type="Tables" />
@@ -216,8 +301,15 @@
           <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product_Specification" EntityType="Self.Product_Specification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductHits" EntityType="Self.ProductHits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductReview" EntityType="Self.ProductReview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSearch" EntityType="Self.ProductSearch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specification" EntityType="Self.Specification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrendingProduct" EntityType="Self.TrendingProduct" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Brand_BrandFollowers" Association="Self.FK_Brand_BrandFollowers">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="BrandFollowers" EntitySet="BrandFollowers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Brand_Category" Association="Self.FK_Brand_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Brand" EntitySet="Brand" />
@@ -238,6 +330,14 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductHit" Association="Self.FK_Product_ProductHit">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductHits" EntitySet="ProductHits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductSearch" Association="Self.FK_Product_ProductSearch">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductSearch" EntitySet="ProductSearch" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Specification_Product" Association="Self.FK_Product_Specification_Product">
             <End Role="Product" EntitySet="Product" />
             <End Role="Product_Specification" EntitySet="Product_Specification" />
@@ -249,6 +349,10 @@
           <AssociationSet Name="FK_ProductReview_Product" Association="Self.FK_ProductReview_Product">
             <End Role="Product" EntitySet="Product" />
             <End Role="ProductReview" EntitySet="ProductReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrenProd_Brand" Association="Self.FK_TrenProd_Brand">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="TrendingProduct" EntitySet="TrendingProduct" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -284,14 +388,6 @@
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Customer_AreaOfInterest" Relationship="AdamDatabaseModel.FK_Customer_AreaOfInterest_Customer" FromRole="Customer" ToRole="Customer_AreaOfInterest" />
-        </EntityType>
-        <EntityType Name="Item">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SearchString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SearchCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Product_Specification">
           <Key>
@@ -339,7 +435,6 @@
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="Items" EntityType="Self.Item" />
           <EntitySet Name="Product_Specification" EntityType="Self.Product_Specification" />
           <EntitySet Name="ProductReviews" EntityType="Self.ProductReview" />
           <EntitySet Name="Specifications" EntityType="Self.Specification" />
@@ -379,6 +474,27 @@
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Customer_AreaOfInterest" EntitySet="Customer_AreaOfInterest" />
           </AssociationSet>
+          <EntitySet Name="ProductHits" EntityType="AdamDatabaseModel.ProductHit" />
+          <AssociationSet Name="FK_Product_ProductHit" Association="AdamDatabaseModel.FK_Product_ProductHit">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductHit" EntitySet="ProductHits" />
+          </AssociationSet>
+          <EntitySet Name="BrandFollowers" EntityType="AdamDatabaseModel.BrandFollower" />
+          <EntitySet Name="Items" EntityType="AdamDatabaseModel.Item" />
+          <EntitySet Name="ProductSearches" EntityType="AdamDatabaseModel.ProductSearch" />
+          <AssociationSet Name="FK_Brand_BrandFollowers" Association="AdamDatabaseModel.FK_Brand_BrandFollowers">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="BrandFollower" EntitySet="BrandFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductSearch" Association="AdamDatabaseModel.FK_Product_ProductSearch">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductSearch" EntitySet="ProductSearches" />
+          </AssociationSet>
+          <EntitySet Name="TrendingProducts" EntityType="AdamDatabaseModel.TrendingProduct" />
+          <AssociationSet Name="FK_TrenProd_Brand" Association="AdamDatabaseModel.FK_TrenProd_Brand">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="TrendingProduct" EntitySet="TrendingProducts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Product">
           <Key>
@@ -399,6 +515,9 @@
           <NavigationProperty Name="ProductReviews" Relationship="AdamDatabaseModel.FK_ProductReview_Product" FromRole="Product" ToRole="ProductReview" />
           <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
           <NavigationProperty Name="FeatureSentiments" Relationship="AdamDatabaseModel.FK_Feature_Product" FromRole="Product" ToRole="FeatureSentiment" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ProductHits" Relationship="AdamDatabaseModel.FK_Product_ProductHit" FromRole="Product" ToRole="ProductHit" />
+          <NavigationProperty Name="ProductSearches" Relationship="AdamDatabaseModel.FK_Product_ProductSearch" FromRole="Product" ToRole="ProductSearch" />
         </EntityType>
         <Association Name="FK_Product_Category">
           <End Type="AdamDatabaseModel.Category" Role="Category" Multiplicity="1" />
@@ -448,6 +567,8 @@
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Category" Relationship="AdamDatabaseModel.FK_Brand_Category" FromRole="Brand" ToRole="Category" />
           <NavigationProperty Name="Products" Relationship="AdamDatabaseModel.FK_Product_Brand" FromRole="Brand" ToRole="Product" />
+          <NavigationProperty Name="BrandFollowers" Relationship="AdamDatabaseModel.FK_Brand_BrandFollowers" FromRole="Brand" ToRole="BrandFollower" />
+          <NavigationProperty Name="TrendingProducts" Relationship="AdamDatabaseModel.FK_TrenProd_Brand" FromRole="Brand" ToRole="TrendingProduct" />
         </EntityType>
         <Association Name="FK_Brand_Category">
           <End Type="AdamDatabaseModel.Category" Role="Category" Multiplicity="1" />
@@ -517,6 +638,101 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ProductHit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="SearchCount" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_ProductHit" FromRole="ProductHit" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Product_ProductHit">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.ProductHit" Role="ProductHit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductHit">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BrandFollower">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <Property Name="FollowersCount" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_Brand_BrandFollowers" FromRole="BrandFollower" ToRole="Brand" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchString" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SearchCount" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductSearch">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="SearchCount" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_ProductSearch" FromRole="ProductSearch" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Brand_BrandFollowers">
+          <End Type="AdamDatabaseModel.Brand" Role="Brand" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.BrandFollower" Role="BrandFollower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BrandFollower">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductSearch">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.ProductSearch" Role="ProductSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductSearch">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TrendingProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_TrenProd_Brand" FromRole="TrendingProduct" ToRole="Brand" />
+        </EntityType>
+        <Association Name="FK_TrenProd_Brand">
+          <End Type="AdamDatabaseModel.Brand" Role="Brand" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.TrendingProduct" Role="TrendingProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrendingProduct">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -553,15 +769,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="AdamDatabaseModel.Item">
-              <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="SearchString" ColumnName="SearchString" />
-                <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Product_Specification">
             <EntityTypeMapping TypeName="AdamDatabaseModel.Product_Specification">
               <MappingFragment StoreEntitySet="Product_Specification">
@@ -594,6 +801,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="AdamDatabaseModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
                 <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
@@ -635,6 +843,54 @@
               <MappingFragment StoreEntitySet="Customer_AreaOfInterest">
                 <ScalarProperty Name="AreaOfInterest" ColumnName="AreaOfInterest" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductHits">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.ProductHit">
+              <MappingFragment StoreEntitySet="ProductHits">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BrandFollowers">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.BrandFollower">
+              <MappingFragment StoreEntitySet="BrandFollowers">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="FollowersCount" ColumnName="FollowersCount" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
+                <ScalarProperty Name="SearchString" ColumnName="SearchString" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductSearches">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.ProductSearch">
+              <MappingFragment StoreEntitySet="ProductSearch">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrendingProducts">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.TrendingProduct">
+              <MappingFragment StoreEntitySet="TrendingProduct">
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

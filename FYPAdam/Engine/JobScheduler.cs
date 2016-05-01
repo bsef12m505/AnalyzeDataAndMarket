@@ -30,6 +30,11 @@ namespace Engine
                     .WithIdentity("userJob", "group1")
                     .Build();
 
+                //create a job for sending mail to the user
+                IJobDetail WeeklyTrendJob = JobBuilder.Create<WeekTrend>()
+                    .WithIdentity("WeeklyTrendJob", "group1")
+                    .Build();
+
                 //ITrigger trigger = TriggerBuilder.Create()
                 //                .StartNow().WithDailyTimeIntervalSchedule
                 //                  (s =>
@@ -56,10 +61,21 @@ namespace Engine
                     .RepeatForever())
                 .Build();
 
-                //Schedule a Job
-                sched.ScheduleJob(userJob, emailTrigger);
-                sched.ScheduleJob(job, trigger);
 
+                //weekly trends trigger
+                ITrigger weeklyTrendTrigger = TriggerBuilder.Create()
+                .WithIdentity("trigger2", "group2")
+                .StartNow()
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(86400)
+                    .RepeatForever())
+                .Build();
+
+                //Schedule a Job
+                //sched.ScheduleJob(userJob, emailTrigger);
+                sched.ScheduleJob(job, trigger);
+                //Schedule weekly trend Job
+                sched.ScheduleJob(WeeklyTrendJob, weeklyTrendTrigger);
             }
             catch (ArgumentException e)
             {

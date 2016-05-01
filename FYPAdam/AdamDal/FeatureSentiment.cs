@@ -11,6 +11,7 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Script.Serialization;
     
     public partial class FeatureSentiment
     {
@@ -19,6 +20,7 @@ namespace AdamDal
         public string Feature { get; set; }
         public int Sentiment { get; set; }
         public int Count { get; set; }
+        [ScriptIgnore]
     
         public virtual Product Product { get; set; }
     }

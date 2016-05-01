@@ -11,12 +11,15 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Script.Serialization;
     
     public partial class Brand
     {
         public Brand()
         {
             this.Products = new HashSet<Product>();
+            this.BrandFollowers = new HashSet<BrandFollower>();
+            this.TrendingProducts = new HashSet<TrendingProduct>();
         }
     
         public int Id { get; set; }
@@ -25,8 +28,12 @@ namespace AdamDal
         public string ImageUrl { get; set; }
         public Nullable<int> FollowersCount { get; set; }
         public string UserName { get; set; }
-    
+    [ScriptIgnore]
         public virtual Category Category { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        [ScriptIgnore]
+        public virtual ICollection<BrandFollower> BrandFollowers { get; set; }
+        [ScriptIgnore]
+        public virtual ICollection<TrendingProduct> TrendingProducts { get; set; }
     }
 }

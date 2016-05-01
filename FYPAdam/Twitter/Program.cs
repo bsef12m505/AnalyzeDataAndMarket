@@ -63,6 +63,22 @@ namespace Twitter
 
         }
 
+        public async Task<int> GetBrandFollowers(string BUserName,string accessToken = null)
+        {
+            if (accessToken == null)
+            {
+                accessToken = await GetAccessToken();
+            }
+
+            var requestUserTimeline = new HttpRequestMessage(HttpMethod.Get, string.Format("https://api.twitter.com/1.1/users/show.json?screen_name={0}", BUserName));
+            requestUserTimeline.Headers.Add("Authorization", "Bearer " + accessToken);
+            var httpClient = new HttpClient();
+            HttpResponseMessage responseUserTimeLine = await httpClient.SendAsync(requestUserTimeline);
+            var serializer = new JavaScriptSerializer();
+            dynamic json = serializer.Deserialize<object>(await responseUserTimeLine.Content.ReadAsStringAsync());
+            int followercount = (int)json["followers_count"];
+            return followercount;
+        }
 
         public async Task<string> GetAccessToken()
         {
