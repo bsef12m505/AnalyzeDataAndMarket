@@ -69,10 +69,10 @@
 
             var options = {
                 title: 'Brand Ratings this week',
-                width: 1119,
+                width: 550,
                 height: 500,
                 hAxis: {
-                    format: 'M/d/yy',
+                    format: 'M/d',
                     gridlines: { count: 3 }
                 },
                 vAxis: {
@@ -125,18 +125,18 @@
 
             var options1 = {
                 title: 'Brand Ratings this week',
-                width: 1119,
-                height: 400,
+                width: 550,
+                height: 500,
                 hAxis: {
-                    format: 'M/d/yy',
-                   
+                    format: 'M/d',
+                    gridlines: { count: 3 }
                 },
                 vAxis: {
                    
                     minValue: 0,
                     baseline: 0,
                 },
-                pointSize: 10,
+                pointSize: 5,
             };
             
 
@@ -347,28 +347,23 @@
 
                                     <div class="row" >
                                         
-                                        <div class="col-lg-12" >
+                                        <div class="col-lg-6" >
                                             <h4>Mobile Brands</h4>
                                             <div id="weeklyTrendMobile" style="display:none;">
 
                                             </div>
                                            
                                         </div>
-                                   
+                                        <div class="col-lg-6">
+                                            <h4>Laptop Brands</h4>
+                                            <div id="weeklyTrendLaptops">
+
+                                            </div>
+                                        </div>
 
                                     </div>
                                 <br />
-                                <div class="row">
-
-                                    <div class="col-lg-12">
-                                        <h4>Laptop Brands</h4>
-                                        <div id="weeklyTrendLaptops">
-
-                                        </div>
-                                    </div>
-                                    <br />
-                                </div>
-
+                              
                                     <div class="row">
 
                                         <div class="col-lg-9">
