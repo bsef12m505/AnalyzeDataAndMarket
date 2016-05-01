@@ -20,34 +20,34 @@ namespace Engine
             try
             {
                 DbWrappers wrap = new DbWrappers();
-                //List<Brand> mobBrands = wrap.GetAllBrandOfMobiles();//geting all the mobile brands coz we need them for twitter username
+                List<Brand> mobBrands = wrap.GetAllBrandOfMobiles();//geting all the mobile brands coz we need them for twitter username
 
 
 
-                //foreach (var b in mobBrands)
-                //{
-                //    var count = twitter.GetBrandFollowers(b.UserName);
-                //    BrandFollower follower = new BrandFollower();
-                //    follower.BrandId = b.Id;
-                //    follower.Date = DateTime.Today.Date;
-                //    follower.FollowersCount = count.Result;
-                //    wrap.AddBrandFollower(follower);
-                //}
+                foreach (var b in mobBrands)
+                {
+                    var count = twitter.GetBrandFollowers(b.UserName);
+                    BrandFollower follower = new BrandFollower();
+                    follower.BrandId = b.Id;
+                    follower.Date = DateTime.Today.Date;
+                    follower.FollowersCount = count.Result;
+                    wrap.AddBrandFollower(follower);
+                }
 
 
-                //List<Brand> laptopBrands = wrap.GetAllBrandNamesOfLaptops(); ;//geting all the mobile brands coz we need them for twitter username
+                List<Brand> laptopBrands = wrap.GetAllBrandNamesOfLaptops(); ;//geting all the mobile brands coz we need them for twitter username
 
 
 
-                //foreach (var b in laptopBrands)
-                //{
-                //    var count = twitter.GetBrandFollowers(b.UserName);
-                //    BrandFollower follower = new BrandFollower();
-                //    follower.BrandId = b.Id;
-                //    follower.Date = DateTime.Today.Date;
-                //    follower.FollowersCount = count.Result;
-                //    wrap.AddBrandFollower(follower);
-                //}
+                foreach (var b in laptopBrands)
+                {
+                    var count = twitter.GetBrandFollowers(b.UserName);
+                    BrandFollower follower = new BrandFollower();
+                    follower.BrandId = b.Id;
+                    follower.Date = DateTime.Today.Date;
+                    follower.FollowersCount = count.Result;
+                    wrap.AddBrandFollower(follower);
+                }
 
 
             }catch(Exception e)
