@@ -48,8 +48,7 @@ namespace Engine
                     follower.FollowersCount = count.Result;
                     wrap.AddBrandFollower(follower);
                 }
-
-
+              
             }catch(Exception e)
             {
 

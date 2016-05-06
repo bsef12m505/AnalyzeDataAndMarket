@@ -484,11 +484,11 @@ namespace AdamDal
 
            if(difference.Days==0)
            {
-               startOfWeek = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
-               strtDate = startOfWeek.Date;
+               mondayDate = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
+               mondayDate = startOfWeek.Date;
            }
 
-            List<int> folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && (x.Date >= strtDate && x.Date <= today)).Select(y => y.FollowersCount).ToList();
+           List<int> folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && (x.Date >= mondayDate && x.Date <= today)).Select(y => y.FollowersCount).ToList();
             return folowerCount;
 
         }
@@ -520,10 +520,10 @@ namespace AdamDal
 
                 if (difference.Days == 0)
                 {
-                    startOfWeek = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
-                    strtDate = startOfWeek.Date;
+                    mondayDate = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
+                    mondayDate = startOfWeek.Date;
                 }
-                dateList = ed1.BrandFollowers.Where(x => x.Date >= strtDate && x.Date <= today).Select(y => y.Date).Distinct().ToList();
+                dateList = ed1.BrandFollowers.Where(x => x.Date >= mondayDate && x.Date <= today).Select(y => y.Date).Distinct().ToList();
                 return dateList;
             }catch(Exception )
             {
