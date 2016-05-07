@@ -17,6 +17,58 @@ namespace FYPAdam.Controllers
     public class ADAMHomeController : Controller
     {
 
+        public ActionResult CompareProduct()
+        {
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+        public ActionResult SearchProduct(string SearchProd)
+        {
+            List<Product> prod = new List<Product>();
+            Product searchedProd = new Product();
+            try
+            {
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/SearchedProduct?name=" + SearchProd);
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                prod = serializer.Deserialize<List<Product>>(finalResponse);
+                if (prod.Count == 1)
+                {
+                    ViewBag.SearchFound = "true";
+                    return View(prod[0]);
+
+                }
+                else if (prod.Count < 1)
+                {
+                    ViewBag.SearchFound = "false";
+                }
+                else if (prod.Count > 1)
+                {
+                    ViewBag.SearchFound = "rtrue";
+                }
+
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+            }
+
+            return View(prod);
+        }
         public async Task<ActionResult> Index(string catName, string bName)
         {
             if (catName == null && bName == null)

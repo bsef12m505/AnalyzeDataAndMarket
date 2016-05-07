@@ -314,12 +314,16 @@ namespace Engine.Controllers
             }
             catch (Exception)
             { };
+            if (prodList.Count < 2)
+            {
+                return this.Json(new { Success = false });
+            }
             return this.Json(prodList, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SearchedProduct(string name)
         {
-            Product p = new Product();
+            List<Product> p = new List<Product>();
             try
             {
                 DbWrappers wrap = new DbWrappers();

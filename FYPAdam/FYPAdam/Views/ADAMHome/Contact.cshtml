@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/Navbar.cshtml";
+}
+
+<body>
+    <div id="ContactBoundary">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 ">
+
+                <h2 id="Contact"><span class="glyphicon glyphicon-envelope"></span>&nbsp; &nbsp; &nbsp;Contact Us</h2>
+
+                <form class="rcorners" action="/Home/SaveMessages" method="post">
+                    <input type="text" placeholder="Name" name="Name" required id="ContactFormat" />
+                    <br />
+                    <br />
+                    <input type="email" placeholder="Email" name="Email" required id="ContactFormat" />
+                    <br />
+                    <br />
+                    <textarea rows="6" placeholder="Message" name="Message1" required id="ContactMessage"></textarea>
+                    <br />
+                    <br />
+                    <button type="submit" class="btn btn-warning" id="ContactButton">Send</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<br />
+<br />

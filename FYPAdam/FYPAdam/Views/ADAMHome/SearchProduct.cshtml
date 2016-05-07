@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "SearchProduct";
+    Layout = "~/Views/Shared/Navbar.cshtml";
+}
+
+@using DTO;
+<!--Search Section-->
+<section id="ProductSearch" class="content" style="margin-bottom: 50px">
+    @if (ViewBag.SearchFound == "true")
+    {
+        <div class="row" style="margin-left: 2%;" id="prodRow">
+            <div class="row">
+                <br />
+                <br />
+                <h2 id="searchHeading">Search Results</h2>
+            </div>
+            <div class="col-lg-2">
+
+                <a href="@Url.Action("ProductDetails", "ADAMHome", new { pId = @Model.Id })" class="thumbnail">
+                    <img src="@Model.ImageUrl" alt="Image" id="prodimg">
+                </a>
+
+            </div>
+
+            <div class="col-lg-6" id="searchMargin">
+
+                <div class="pricing-table-header-tiny">
+                    <a href="@Url.Action("ProductDetails", "ADAMHome", new { pId = @Model.Id })" id="prodName">@Model.Title</a>
+                </div>
+                <pre id="proddesc">@Model.ProductDescription</pre>
+
+            </div>
+
+        </div>
+    }
+    @if (ViewBag.SearchFound == "false")
+    {
+        <br />
+        <br />
+        <div class="row" id="SearchNotFound">
+            <img src="~/img/NoSearchFound.png" alt="Product Not Found">
+        </div>
+        <br />
+        <br />
+    }
+    @if (ViewBag.SearchFound == "rtrue")
+    {
+        <br />
+        <br />
+        <div class="row" id="SearchNotFound">
+            <img src="~/img/NoSearchFound.png" alt="Product Not Found">
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <h2 id="RelatedProdHeading">Related Products</h2>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <div class="col-lg-1"></div>
+                <div id="RelProd">
+                    <div class="col-lg-2">
+
+                        <a href="@Url.Action("ProductDetails", "ADAMHome", new { pId = @Model[i].Id })" class="thumbnail">
+                            <img src="@Model[i].ImageUrl" alt="Image" id="prodimg">
+                        </a>
+
+                    </div>
+                    <div class="col-lg-3" id="searchMargin">
+
+                        <div class="pricing-table-header-tiny">
+                            <a href="@Url.Action("ProductDetails", "ADAMHome", new { pId = @Model[i].Id })" id="prodName">@Model[i].Title</a>
+                        </div>
+                        <pre id="proddesc">@Model[i].ProductDescription</pre>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>
+<br />
+<br />
+<br />
+<!--End Search -->
+

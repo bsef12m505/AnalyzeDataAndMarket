@@ -70,21 +70,39 @@ namespace AdamDal
             return strlist;
 
         }
-        public Product SearchedProduct(string name)
+        public List<Product> SearchedProduct(string name)
         {
+            List<Product> prodList = new List<Product>();
+            bool searchfound = true;
             Product p = new Product();
             try
             {
                 AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
-                //List<Product> list = new List<Product>();
                 ed.Configuration.ProxyCreationEnabled = false;
                 p = ed.Products.First(x => x.Title.Equals(name));
-                return p;
+                prodList.Add(p);
+
+
+                return prodList;
             }
             catch (Exception)
             {
-                return p;
+                searchfound = false;
             }
+            if (!searchfound)
+            {
+                try
+                {
+                    AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+                    ed.Configuration.ProxyCreationEnabled = false;
+                    prodList = ed.Products.Where(x => x.Title.Contains(name)).Select(x => x).Distinct().OrderByDescending(x => x.Rating).Take(4).ToList();
+                }
+                catch (Exception)
+                { };
+
+
+            }
+            return prodList;
         }
         public List<string> GetAllProductTitles()
         {
@@ -212,10 +230,11 @@ namespace AdamDal
 
         public List<Product> CompareProduct(string prodName1, string prodName2)
         {
+            bool prodCount = false;
             Product[] arrList = new Product[2];
             List<Product> prodList = new List<Product>();
             List<Product> tempProdList = new List<Product>();
-            AdamDatabaseEntities2 ed = new AdamDatabaseEntities2();
+            AdamDatabaseEntities2 ed1 = new AdamDatabaseEntities2();
             ed.Configuration.ProxyCreationEnabled = false;
             try
             {
@@ -224,6 +243,7 @@ namespace AdamDal
                 int i = 0;
                 foreach (Product p in tempProdList)
                 {
+                    prodCount = true;
                     if (count < 2)
                     {
                         if (tempProdList[i].Title.Equals(prodName1) && arrList[0] == null)
@@ -248,7 +268,11 @@ namespace AdamDal
             }
             catch (Exception)
             {
-
+                prodCount = false;
+            }
+            if (arrList[0] == null || arrList[1] == null)
+            {
+                return prodList;
             }
             prodList.Add(arrList[0]);
             prodList.Add(arrList[1]);
@@ -484,11 +508,11 @@ namespace AdamDal
 
            if(difference.Days==0)
            {
-               mondayDate = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
-               mondayDate = startOfWeek.Date;
+               strtDate = startOfWeek.Subtract(new TimeSpan(7, 0, 0, 0));
+               strtDate = startOfWeek.Date;
            }
 
-           List<int> folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && (x.Date >= mondayDate && x.Date <= today)).Select(y => y.FollowersCount).ToList();
+           List<int> folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && (x.Date >= strtDate && x.Date <= today)).Select(y => y.FollowersCount).ToList();
             return folowerCount;
 
         }

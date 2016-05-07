@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "CompareProduct";
+    Layout = "~/Views/Shared/Navbar.cshtml";
+}
+
+<!--Compare Section -->
+<section id="compare">
+    <div id="CompareProductBoundary">
+        <div class="row">
+            <div>
+                <h2 id="compareProd">Compare Products</h2>
+            </div>
+        </div>
+        <div class="row">
+
+            <form method="post" class="navbar-form" role="search">
+
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" id="compareBar1" placeholder="First Product" onfocus="TitleIntellisecceForComp1()">
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" id="compareBar2" placeholder="Second Product" onfocus="TitleIntellisecceForComp2()">
+                    </div>
+                    <div class="col-lg-3">
+                        <button type="button" class="btn btn-default" id="search1" onclick="CallWM();"><strong>Compare Products</strong></button>
+
+                    </div>
+                </div>
+            </form>
+
+            <br />
+            <br />
+        </div>
+        <div class="row">
+
+            <div class="col-lg-6">
+                <br />
+                <div class="collapse" id="collapseExample1">
+                    <div class="well" id="compareProdDetail">
+                        <div style="align-self: center">
+                            <h3 id="ProductTitle1"></h3>
+                        </div>
+                        <!--table-->
+                        <div class="span3 tiny ">
+                            <div class="pricing-table-header-tiny">
+                                <h3 class="detail-product">Product Details</h3>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-7">
+                                    <div class="row" id="productThumbnail">
+                                        <a href="#" class="thumbnail">
+                                            <img id="ProductImage1" src="//img.ebyrcdn.net/695585-703446-290.jpg" alt="Flower">
+                                        </a>
+                                    </div>
+
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="compProdTable1">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Features</th>
+                                                    <th>Product Details</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Price</td>
+                                                    <td id="CompPrice1"></td>
+
+
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="pricing-table-signup-tiny">
+                                    <p><a href="#">Sign Up</a></p>
+                                </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <br />
+                <div class="collapse" id="collapseExample2">
+                    <div class="well" id="compareProdDetail">
+                        <div style="align-self: center">
+                            <h3 id="ProductTitle2"></h3>
+                        </div>
+                        <!--table-->
+                        <div class="span3 tiny ">
+                            <div class="pricing-table-header-tiny">
+                                <h3 class="detail-product">Product Details</h3>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-7">
+                                    <div class="row" id="productThumbnail">
+                                        <a href="#" class="thumbnail">
+                                            <img id="ProductImage2" src="//img.ebyrcdn.net/695585-703446-290.jpg" alt="Flower">
+                                        </a>
+                                    </div>
+
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="compProdTable2">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Features</th>
+                                                    <th>Product Details</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Price</td>
+                                                    <td id="CompPrice2"></td>
+
+
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="pricing-table-signup-tiny">
+                                    <p><a href="#">Sign Up</a></p>
+                                </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="ProductNotFound">
+            <img src="~/img/NoSearchFound.png" alt="OOPS" style="width: 30%; height:30% ; margin-left:35%">
+        </div>
+    </div>
+    <script type="text/javascript">
+
+
+        function TitleIntellisecceForComp1() {
+            $.getScript('../../FYPAdam/Scripts/jquery-ui.js');
+            var titles = [];
+            $.ajax({
+                url: 'http://localhost/Engine/Home/AllProductTtiles',
+                type: 'Get',
+                dataType: 'json',
+                success: function (data) {
+
+                    $(data).each(function (index, item) {
+                        titles.push(item);
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+            $("#compareBar1").autocomplete({
+                source: titles
+            });
+        }
+    </script>
+    <script type="text/javascript">
+
+
+        function TitleIntellisecceForComp2() {
+            $.getScript('../../FYPAdam/Scripts/jquery-ui.js');
+            var titles = [];
+            $.ajax({
+                url: 'http://localhost/Engine/Home/AllProductTtiles',
+                type: 'Get',
+                dataType: 'json',
+                success: function (data) {
+
+                    $(data).each(function (index, item) {
+                        titles.push(item);
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+            $("#compareBar2").autocomplete({
+                source: titles
+            });
+        }
+    </script>
+    <script>
+        function CallWM() {
+            compBar1 = $("#compareBar1").val();
+            compBar2 = $('#compareBar2').val();
+
+            RealCallWM(compBar1, compBar2)
+
+
+        }
+        function RealCallWM(compBar1, compBar2) {
+
+            $.ajax({
+                type: "GET",
+                data: { prodName1: compBar1, prodName2: compBar2 },
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: 'http://localhost/Engine/Home/CompareProducts',
+
+                async: true,
+                success: function (result) {
+
+                    $('#ProductNotFound').hide();
+
+                    j = 1;
+                    $.each(result, function (i, product) {
+
+                        $('#ProductTitle' + j).text(product.Title);
+                        $('#ProductImage' + j).attr("src", product.ImageUrl);
+                        $('#CompPrice' + j).html(product.Price);
+                        $(product.Product_Specification).each(function (k, prodSpec) {
+                            $(prodSpec.Specification).each(function (m, spec) {
+                                $('#compProdTable' + j).append($("<tr><td>" + spec.Name + "</td><td>" + prodSpec.Value + "</td>"));
+                            });
+
+                        });
+                        ++j;
+
+
+
+                    });
+                    $('#collapseExample1').show();
+                    $('#collapseExample2').show();
+
+
+                },
+                failure: function (data) {
+                    alert(data);
+                },
+                error: function (data) {
+                    $('#collapseExample1').hide();
+                    $('#collapseExample2').hide();
+                    $('#ProductNotFound').show();
+                }
+            });
+        }
+    </script>
+</section>
+<br />
+<br />
+<br />
+
+<!--compare section script-->

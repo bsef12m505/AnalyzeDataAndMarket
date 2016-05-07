@@ -65,10 +65,11 @@ namespace Engine
                 //weekly trends trigger
                 ITrigger weeklyTrendTrigger = TriggerBuilder.Create()
                 .WithIdentity("trigger2", "group2")
+                .StartNow()
                 .WithDailyTimeIntervalSchedule
                  (s => s.WithIntervalInHours(24)
                 .OnEveryDay()
-                .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(13, 0))
+                .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(0, 0))
                 )
                 .Build();
 

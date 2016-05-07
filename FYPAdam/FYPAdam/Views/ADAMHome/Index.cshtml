@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Navbar.cshtml";
 }
 @using DTO;
 <!doctype html>
@@ -8,20 +9,7 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1">
-    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
 
-
-    <link rel="icon" href="~/img/favicon.png" type="image/png">
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Scripts/fancybox/jquery.fancybox.css" rel="stylesheet" />
-    <link href="~/font-awesome/css/style.css" rel="stylesheet" />
-    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/font-awesome/css/animate.css" rel="stylesheet" />
-    <link href="~/Content/Custom.css" rel="stylesheet" />
-    <link href="~/Content/reveal.css" rel="stylesheet" />
-    <script src="~/Scripts/plugins/flot/jquery.reveal.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <link href="~/Content/External/dist/css/jquery-ui.css" rel="stylesheet" />
 
     <script type="text/javascript">
 
@@ -166,127 +154,7 @@
 </head>
 <body style="background-color: white">
 
-    <header id="header_wrapper">
-        <div class="container">
-            <div class="header_box">
-                <div class="logo">
-                    <a href="#">
-                        <img src="~/img/logo.png" alt="logo" style="width: 60%;">
-                    </a>
-                </div>
-                <nav class="navbar navbar-inverse" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                    </div>
-                    <div id="main-nav" class="navbar-header" @*class="collapse navbar-collapse navStyle"*@>
-                        <ul class="nav nav-pills" id="mainNav">
-                            <li class="active"><a href="#hero_section" class="scroll-link"><strong>Home</strong></a></li>
-                            <li><a href="#service" class="scroll-link"><strong>Top Rated Products</strong></a></li>
-                            <li><a href="#compare" class="scroll-link"><strong>Compare</strong></a></li>
-                            <li><a href="../../ADAMHome/Trends" class="scroll-link"><strong>Trends</strong></a></li>
-                        </ul>
 
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-
-                            <input type="text" placeholder="Search here..." id="searchTextBox" onfocus="TitleIntellisecce()">
-
-                            <button type="submit" class="btn btn-default" id="search" onclick="SearchProduct()"><strong>Search</strong></button>
-                        </div>
-
-
-                    </div>
-                    <div class="container">
-                        <div class="col-lg-1">
-                            <button type="submit" class="btn btn-default" onclick="location.href = '../../ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <script type="text/javascript">
-
-        $.getScript('../../FYPAdam/Scripts/jquery-ui.js');
-        function TitleIntellisecce() {
-
-            var titles = [];
-            $.ajax({
-                url: 'http://localhost/Engine/Home/AllProductTtiles',
-                type: 'Get',
-                dataType: 'json',
-                success: function (data) {
-
-                    $(data).each(function (index, item) {
-                        titles.push(item);
-                    });
-                },
-                error: function () {
-                    alert('error');
-                }
-            });
-
-            $("#searchTextBox").autocomplete({
-                source: titles
-            });
-        }
-    </script>
-    <script>
-
-        function SearchProduct()
-        {
-            var prodTitle=$("#searchTextBox").val();
-
-            document.getElementById("ProductSearch").scrollIntoView();
-            $.ajax({
-
-                url: 'http://localhost/Engine/Home/SearchedProduct',
-                type: 'Get',
-                data: { name: prodTitle},
-                dataType: 'json',
-                success: function (data) {
-                    document.getElementById("ProductSearch").scrollIntoView();
-                    $("#prodRow").show();
-                    $("#prodimg").attr("src", data.ImageUrl);
-                    $("#prodName").text(data.Title);
-                    $("#prodName").attr("href","../../FYPAdam/ADAMHome/ProductDetails?pId="+data.Id);
-                    var removedNewLines=data.ProductDescription.trim();
-                    var removeWhiteSpaces=removedNewLines.replace(/\s+/, '');
-                    var arr=removeWhiteSpaces.split("\n");
-
-
-                    if(data.CategoryId==1)
-                    {
-                        var re=' '.repeat(14)+arr[1];
-                        var re1=' '.repeat(14)+arr[2];
-                        var re2=' '.repeat(14)+arr[3];
-
-                        $('#proddesc').text("Description : "+arr[0] +"\n"+re+"\n"+re1+"\n"+re2+"\n"+ "Price : "+"$"+data.Price);
-                    }
-                    else{
-                        var re=' '.repeat(8)+arr[1];
-                        var re1=' '.repeat(8)+arr[2];
-                        var re2=' '.repeat(8)+arr[3];
-
-                        $('#proddesc').text("Description : "+arr[0] +"\n"+re+"\n"+re1+"\n"+re2+"\n"+ "Price : "+"$"+data.Price);
-
-                    }
-
-
-                },
-                error: function () {
-                    document.getElementById("ProductSearch").scrollIntoView();
-                    $("#errorRow").show();
-
-                    alert('error');
-                }
-            });
-
-
-        }
-    </script>
     <!--Hero_Section-->
     <div class="container">
         <section id="hero_section" class="top_cont_outer">
@@ -311,632 +179,201 @@
             </div>
         </section>
         <!--Hero_Section-->
-        <!--Service-->
-        <section id="service">
-            <div style="align-self: center">
-                <h2 id="topRated">Top Rated Products</h2>
-            </div>
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="just-padding">
-
-                        <div class="list-group list-group-root well">
-                            <a href="#" class="list-group-item active" id="Laptop">Laptop</a>
-                            @{
-                                int i = 1;
-                                int j = 1;
-                            }
-
-                            @foreach (var cat in @ViewBag.NameOfCategories)
-                            {
-                                if (cat.Name.Equals("Laptop"))
-                                {
-                                    foreach (var b in cat.Brands)
-                                    {
-
-
-                                        if (@i <= 3)
-                                        {
-                                            <div class="list-group">
-
-                                                <a href='@Url.Action("Index", "ADAMHome", new { catName = "Laptop", bName = @b.Name })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
-                                                @{
-                                            ++i;
-                                                }
-
-                                            </div>
-                                        }
-                                    }
-
-                                    <a href="#demo4" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Laptop"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
-                                    <div class="collapse" id="demo4">
-
-                                        @foreach (var b in cat.Brands)
-                                        {
-
-                                            if (@j > 3)
-                                            {
-
-                                                <a href="@Url.Action("Index", "ADAMHome", new { catName = "Laptop", bName = @b.Name })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
-
-
-                                            }
-
-                                            ++j;
-
-                                        }
-                                    </div>
-
-                                }
-                            }
-                            <a href="#" class="list-group-item active" id="MobilePhones">MobilePhones</a>
-                            @{
-                                i = 1;
-                                j = 1;
-                            }
-
-                            @foreach (var cat in @ViewBag.NameOfCategories)
-                            {
-                                if (cat.Name.Equals("MobilePhones"))
-                                {
-                                    foreach (var b in cat.Brands)
-                                    {
-
-
-                                        if (@i <= 3)
-                                        {
-                                            <div class="list-group">
-
-                                                <a href='@Url.Action("Index", "ADAMHome", new { catName = "MobilePhones", bName = @b.Name })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
-                                                @{
-                                            ++i;
-                                                }
-
-                                            </div>
-                                        }
-                                    }
-
-                                    <a href="#demo5" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Mobile"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
-                                    <div class="collapse" id="demo5">
-
-                                        @foreach (var b in cat.Brands)
-                                        {
-
-                                            if (@j > 3)
-                                            {
-
-                                                <a href="@Url.Action("Index", "ADAMHome", new { catName = "MobilePhones", bName = @b.Name })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
-
-
-                                            }
-
-                                            ++j;
-
-                                        }
-                                    </div>
-
-                                }
-                            }
-                        </div>
-                    </div>
+        <!--TOP TRENDS-->
+        <section id="topTrends">
+            <div id="topRatedProds">
+                <div style="align-self: center">
+                    <h2 id="topRated">Top Rated Products</h2>
                 </div>
-                <div class="col-lg-5">
-                    <div class="rcorners" id="topProducts">
-                        @{
-                            int bId = 0;
-                        }
-
-                        @foreach (var p in @ViewBag.ProductList)
-                        {  <div class="row" id="product">
-                            @if (p.CategoryId == 1)
-                            {
-                                bId = p.BrandId;
-                                <div class="col-lg-3">
-                                    <a href="#">
-                                        <img src='@p.ImageUrl' alt="review" id="productImage">
-                                    </a>
-                                </div>
-                                <div class="col-lg-7">
-                                    <div class="row">
-                                        <a href="@Url.Action("ProductDetails", "ADAMHome", new {pId=@p.Id})">
-                                            <h4 class="h4FontSize">@p.Title</h4>
-                                        </a>
-                                    </div>
-                                    <div class="row">
-                                        <span class="stars-container stars-@p.Rating">★★★★★</span>
-                                    </div>
-                                    <div class="row">
-                                        <p>Review</p>
-                                    </div>
-                                </div>
-                                <br />
-                            }
-                            @if (p.CategoryId == 2)
-                            {
-                                bId = p.BrandId;
-                                <div class="col-lg-2">
-                                    <a href="#">
-                                        <img src='@p.ImageUrl' alt="review" id="productImage">
-                                    </a>
-                                </div>
-                                <div class="col-lg-10">
-                                    <div class="row">
-                                        <a href="@Url.Action("ProductDetails", "ADAMHome", new {pId=@p.Id})">
-                                            <h4 class="h4FontSize">@p.Title</h4>
-                                        </a>
-                                    </div>
-                                    <div class="row">
-                                        <span class="stars-container stars-@p.Rating">★★★★★</span>
-                                    </div>
-                                    <div class="row">
-                                        <p>Review</p>
-                                    </div>
-                                </div>
-                                <br />
-                            }
-
-
-                        </div>
-                        }
-                        <br />
-                        <div class="row">
-                            <div class="col-lg-8"></div>
-                            <div class="col-lg-2">
-                                <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products?bId='+@bId">See More</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br />
-
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="trendsBox" id="trendsBox1">
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin-top: 10px">
-                        <div class="trendsBox" id="linechart">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-        <!--Service-->
-        <!-- Portfolio -->
-        <section id="ProductReview" class="content"></section>
-        <!--/Portfolio -->
-        <!--Search Section-->
-        <section id="ProductSearch" class="content" style="margin-bottom:50px">
-            <div class="row" style="margin-left:2%;display:none" id="prodRow">
                 <div class="row">
+                    <div class="col-lg-3">
+                        <div class="just-padding">
 
-                    <h2 id="searchHeading">Search Results</h2>
-                </div>
-                <div class="col-lg-2">
+                            <div class="list-group list-group-root well">
+                                <a href="#" class="list-group-item active" id="Laptop">Laptop</a>
+                                @{
+                                    int i = 1;
+                                    int j = 1;
+                                }
 
-                    <a href="#" class="thumbnail">
-                        <img src="~/img/Hpenvyspectre.jpg" alt="Flower" id="prodimg">
-                    </a>
-
-                </div>
-
-                <div class="col-lg-6" id="searchMargin">
-
-                    <div class="pricing-table-header-tiny">
-                        <a href="" id="prodName">Hp Envy Spectre 13 with 3D Glasses</a>
-                    </div>
-                    <pre id="proddesc">The HP Spectre 13t-3000 Ultrabook packs a user-friendly touchpad, strong performance and long battery life in a beautiful design.The HP Spectre x360 13t midrange convertible-hybrid laptop combines premium, all-metal construction, a refined portable design, and solid performance that matches that of more expensive systems.</pre>
-                </div>
-
-            </div>
-            <div class="row" id="errorRow" style="display:none">
-                <p id="errorParagraph">Sorry No Search Results Found</p>
-            </div>
-        </section>
-        <!--End Search -->
-        <!--Compare Section -->
-        <section id="compare">
-            <div class="row">
-                <div>
-                    <h2 id="compareProd">Compare Products</h2>
-                </div>
-            </div>
-            <div class="row">
-
-                <form method="post" class="navbar-form" role="search">
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" id="compareBar1" placeholder="First Product">
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" id="compareBar2" placeholder="Second Product">
-                        </div>
-                        <div class="col-lg-3">
-                            <button type="button" class="btn btn-default" id="search1" onclick="CallWM();"><strong>Compare Products</strong></button>
-
-                        </div>
-                    </div>
-                </form>
-
-                <br />
-                <br />
-            </div>
-            <div class="row">
-
-                <div class="col-lg-6">
-                    <br />
-                    <div class="collapse" id="collapseExample1">
-                        <div class="well" id="compareProdDetail">
-                            <div style="align-self: center">
-                                <h3 id="ProductTitle1"></h3>
-                            </div>
-                            <!--table-->
-                            <div class="span3 tiny ">
-                                <div class="pricing-table-header-tiny">
-                                    <h3 class="detail-product">Product Details</h3>
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-7">
-                                        <div class="row" id="productThumbnail">
-                                            <a href="#" class="thumbnail">
-                                                <img id="ProductImage1" src="//img.ebyrcdn.net/695585-703446-290.jpg" alt="Flower">
-                                            </a>
-                                        </div>
-
-                                        <br />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="compProdTable1">
-                                                <thead>
-                                                    <tr>
-
-                                                        <th>Features</th>
-                                                        <th>Product Details</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Price</td>
-                                                        <td id="CompPrice1"></td>
-
-
-                                                    </tr>
-
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <div class="pricing-table-signup-tiny">
-                                    <p><a href="#">Sign Up</a></p>
-                                </div>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <br />
-                    <div class="collapse" id="collapseExample2">
-                        <div class="well" id="compareProdDetail">
-                            <div style="align-self: center">
-                                <h3 id="ProductTitle2"></h3>
-                            </div>
-                            <!--table-->
-                            <div class="span3 tiny ">
-                                <div class="pricing-table-header-tiny">
-                                    <h3 class="detail-product">Product Details</h3>
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-7">
-                                        <div class="row" id="productThumbnail">
-                                            <a href="#" class="thumbnail">
-                                                <img id="ProductImage2" src="//img.ebyrcdn.net/695585-703446-290.jpg" alt="Flower">
-                                            </a>
-                                        </div>
-
-                                        <br />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="compProdTable2">
-                                                <thead>
-                                                    <tr>
-
-                                                        <th>Features</th>
-                                                        <th>Product Details</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Price</td>
-                                                        <td id="CompPrice2"></td>
-
-
-                                                    </tr>
-
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <div class="pricing-table-signup-tiny">
-                                    <p><a href="#">Sign Up</a></p>
-                                </div>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!--compare section script-->
-        <script>
-            function CallWM() {
-                compBar1 = $("#compareBar1").val();
-                compBar2 = $('#compareBar2').val();
-
-                RealCallWM(compBar1,compBar2)
-
-
-            }
-            function RealCallWM(compBar1,compBar2) {
-
-                $.ajax({
-                    type: "GET",
-                    data: { prodName1: compBar1, prodName2: compBar2 },
-
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    url: 'http://localhost/Engine/Home/CompareProducts',
-
-                    async: true,
-                    success: function (result) {
-
-                        j=1;
-                        $.each(result, function (i, product) {
-
-                            $('#ProductTitle'+j).text(product.Title);
-                            $('#ProductImage'+j).attr("src",product.ImageUrl);
-                            $('#CompPrice'+j).html(product.Price);
-                            $(product.Product_Specification).each(function (k,prodSpec){
-                                $(prodSpec.Specification).each(function(m,spec)
+                                @foreach (var cat in @ViewBag.NameOfCategories)
                                 {
-                                    $('#compProdTable'+j).append($("<tr><td>" +spec.Name + "</td><td>" +prodSpec.Value + "</td>"));
-                                });
-
-                            });
-                            ++j;
-
+                                    if (cat.Name.Equals("Laptop"))
+                                    {
+                                        foreach (var b in cat.Brands)
+                                        {
 
 
-                        });
-                        $('#collapseExample1').show();
-                        $('#collapseExample2').show();
+                                            if (@i <= 3)
+                                            {
+                                                <div class="list-group">
+
+                                                    <a href='@Url.Action("Index", "ADAMHome", new { catName = "Laptop", bName = @b.Name })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
+                                                    @{
+                                                ++i;
+                                                    }
+
+                                                </div>
+                                            }
+                                        }
+
+                                        <a href="#demo4" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Laptop"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
+                                        <div class="collapse" id="demo4">
+
+                                            @foreach (var b in cat.Brands)
+                                            {
+
+                                                if (@j > 3)
+                                                {
+
+                                                    <a href="@Url.Action("Index", "ADAMHome", new { catName = "Laptop", bName = @b.Name })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
 
 
-                    },
-                    failure: function (data) {
-                        alert(data);
-                    },
-                    error: function (data) {
-                        alert(data);
-                    }
-                });
-            }
-        </script>
+                                                }
+
+                                                ++j;
+
+                                            }
+                                        </div>
+
+                                    }
+                                }
+                                <a href="#" class="list-group-item active" id="MobilePhones">MobilePhones</a>
+                                @{
+                                    i = 1;
+                                    j = 1;
+                                }
+
+                                @foreach (var cat in @ViewBag.NameOfCategories)
+                                {
+                                    if (cat.Name.Equals("MobilePhones"))
+                                    {
+                                        foreach (var b in cat.Brands)
+                                        {
+
+
+                                            if (@i <= 3)
+                                            {
+                                                <div class="list-group">
+
+                                                    <a href='@Url.Action("Index", "ADAMHome", new { catName = "MobilePhones", bName = @b.Name })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
+                                                    @{
+                                                ++i;
+                                                    }
+
+                                                </div>
+                                            }
+                                        }
+
+                                        <a href="#demo5" class="list-group-item list-group-item" data-toggle="collapse" data-parent="#Mobile"><span class="glyphicon glyphicon-triangle-bottom"></span>&nbsp;&nbsp;More Brands</a>
+                                        <div class="collapse" id="demo5">
+
+                                            @foreach (var b in cat.Brands)
+                                            {
+
+                                                if (@j > 3)
+                                                {
+
+                                                    <a href="@Url.Action("Index", "ADAMHome", new { catName = "MobilePhones", bName = @b.Name })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.Name.ToUpper()</a>
+
+
+                                                }
+
+                                                ++j;
+
+                                            }
+                                        </div>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="rcorners" id="topProducts">
+                            @{
+                                int bId = 0;
+                            }
+
+                            @foreach (var p in @ViewBag.ProductList)
+                            {  <div class="row" id="product">
+                                @if (p.CategoryId == 1)
+                                {
+                                    bId = p.BrandId;
+                                    <div class="col-lg-3">
+                                        <a href="#">
+                                            <img src='@p.ImageUrl' alt="review" id="productImage">
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="row">
+                                            <a href="@Url.Action("ProductDetails", "ADAMHome", new {pId=@p.Id})">
+                                                <h4 class="h4FontSize">@p.Title</h4>
+                                            </a>
+                                        </div>
+                                        <div class="row">
+                                            <span class="stars-container stars-@p.Rating">?????</span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                }
+                                @if (p.CategoryId == 2)
+                                {
+                                    bId = p.BrandId;
+                                    <div class="col-lg-2">
+                                        <a href="#">
+                                            <img src='@p.ImageUrl' alt="review" id="productImage">
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <div class="row">
+                                            <a href="@Url.Action("ProductDetails", "ADAMHome", new {pId=@p.Id})">
+                                                <h4 class="h4FontSize">@p.Title</h4>
+                                            </a>
+                                        </div>
+                                        <div class="row">
+                                            <span class="stars-container stars-@p.Rating">?????</span>
+                                        </div>
+                                        <div class="row">
+                                            <p>Review</p>
+                                        </div>
+                                    </div>
+                                    <br />
+                                }
+
+
+                            </div>
+                            }
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-8"></div>
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '../../FYPAdam/ADAMHome/Products?bId='+@bId">See More</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="trendsBox" id="trendsBox1">
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px">
+                            <div class="trendsBox" id="linechart">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--TOP TRENDS-->
     </div>
-
-    <!--Aboutus-->
-    <!--Footer-->
-    <!-- <footer class="footer_wrapper" id="contact1" style="background-color: #D3D3D3;">-->
-    <div id="footer-outer">
-
-
-
-
-
-
-        <div id="footer-widgets">
-
-            <div class="container">
-
-                <div class="row" id="footer_row">
-
-
-
-                    <div class="col-lg-3">
-
-                        <!-- Footer widget area 1 -->
-
-                        <div id="text-7" class="widget widget_text">
-                            <h4>  &nbsp;Adam </h4>			<div class="textwidget">
-                                <a href="/about-us/" title="">About Us</a>
-                                <hr>
-                                <a href="/our-team/#section-bod" title="">Board Of Directors</a>
-                                <hr>
-                                <a href="/our-team/#section-mt" title="">Management Team</a>
-                                <hr>
-                                <a href="/about-us#testimonial" title="">Testimonials</a>
-                            </div>
-                        </div>
-                    </div><!--/span_3-->
-
-
-
-                    <div class="col-lg-3">
-
-                        <!-- Footer widget area 2 -->
-
-                        <div id="text-9" class="widget widget_text">
-                            <h4>Investors</h4>			<div class="textwidget">
-                                <a href="http://ir.netsoltech.com/press-releases" title="">News / Events</a></br>
-                                <hr>
-                                <a href="http://ir.netsoltech.com/all-sec-filings" title="">SEC Filings</a></br>
-                                <hr>
-                                <a href="http://ir.netsoltech.com/financials" title="">Financial Information</a></br>
-                                <hr>
-                                <a href="http://ir.netsoltech.com" title="">More</a>
-                            </div>
-                        </div>
-
-
-                    </div><!--/span_3-->
-
-
-
-
-                    <div class="col-lg-3">
-
-                        <!-- Footer widget area 3 -->
-
-                        <div id="text-10" class="widget widget_text">
-                            <h4>Information</h4>			<div class="textwidget">
-                                <a href="http://www.netsoltech.com/#/" title="">Sitemap</a>
-                                <hr>
-                                <a href="/website-term-of-use/" title="">Terms of Use</a></br>
-                                <hr>
-                                <a href="/privacy-policy/" title="">Privacy Policy</a></br>
-                                <hr>
-                                <a href="/contact-us/" title="">Contact Us</a></br>
-
-                            </div>
-                        </div>
-
-
-                    </div><!--/span_3-->
-
-
-
-
-
-                    <div class="col-lg-3">
-
-                        <!-- Footer widget area 4 -->
-
-                        <div id="text-3" class="widget widget_text">
-                            <h4>Upcoming Events</h4>			<div class="textwidget">
-                                <a href="http://www.netsoltech.com/event-listings/" title="" target="_blank">Latin American Leasing...</a></br>
-                                <hr>
-                                <a href="http://www.netsoltech.com/event-listings/" title="" target="_blank">AELA Annual Conference</a></br>
-                                <hr>
-                                <a href="http://www.netsoltech.com/event-listings/" title="" target="_blank">ELFA 54th Annual Convention </a></br>
-                                <hr>
-                                <a href="http://www.netsoltech.com/event-listings/" title="">More</a>
-                            </div>
-                        </div>
-
-
-                    </div><!--/span_3-->
-
-
-
-
-                </div><!--/row-->
-
-
-
-            </div><!--/container-->
-
-
-
-        </div><!--/footer-widgets-->
-
-
-
-
-
-
-        <div class="row" id="copyright">
-
-
-
-            <div class="container">
-
-
-
-                <div class="col span_5">
-
-
-
-
-
-                    <p>&copy; 2016 ADAM.  </p>
-
-
-
-
-                </div><!--/span_5-->
-
-
-
-                <div class="col span_7 col_last">
-
-                    <ul id="social"></ul>
-
-                </div><!--/span_7-->
-
-
-
-            </div><!--/container-->
-
-
-
-        </div><!--/row-->
-
-        <div style="height:5px; width:100%; float:left; background:#000;">
-
-            <div style="float:left; width:25%; height:5px; background:#BDD7EE;"></div>
-
-            <div style="float:left; width:25%; height:5px; background:#9DC2E5;"></div>
-
-            <div style="float:left; width:25%; height:5px; background:#1970B8;"></div>
-
-            <div style="float:left; width:25%; height:5px; background:#1D4E79;"></div>
-
-        </div>
-
-
-
-
-
-    </div><!--/footer-outer-->
-    <!--</footer> -->
-
-
-
-
-
-    
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery-scrolltofixed.js"></script>
-    <script src="~/Scripts/jquery.nav.js"></script>
-    <script src="~/Scripts/jquery.easing.1.3.js"></script>
-    <script src="~/Scripts/jquery.isotope.js"></script>
-    <script src="~/Scripts/fancybox/jquery.fancybox.pack.js"></script>
-    <script src="~/Scripts/wow.js"></script>
-    <script src="~/Scripts/custom.js"></script>
-    <script src="~/Scripts/jquery.reveal.js"></script>
 
 </body>
 </html>
