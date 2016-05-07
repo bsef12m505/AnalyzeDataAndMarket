@@ -1,5 +1,138 @@
 ﻿@{
+
+
     ViewBag.Title = "WeeklyTrends";
 }
 
-<h2>WeeklyTrends</h2>
+@using DTO;
+
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1">
+    <link rel="icon" href="~/img/favicon.png" type="image/png">
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/fancybox/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/style.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/Custom.css" rel="stylesheet" />
+    <link href="~/Content/reveal.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/flot/jquery.reveal.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        google.charts.load('current', { 'packages': ['bar', 'line', 'corechart', 'gauge'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+       ['Year', 'Sales', 'Expenses'],
+       ['November', 1000, 400],
+       ['December', 1170, 460],
+       ['January', 660, 1120],
+       ['February', 690, 1120],
+       ['March', 780, 1120],
+       ['April', 820, 1120],
+       ['May', 660, 1120],
+       ['June', 1030, 540]
+            ]);
+
+            var options = {
+                title: '',
+                height: 400,
+                backgroundColor: 'none',
+               
+                hAxis: {
+                    title: 'Year',
+                    titleTextStyle: {
+                        color: 'black'
+                    }
+                },
+                
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('comparisonChart'));
+            chart.draw(data, options)
+
+
+        }
+    </script>
+
+
+
+
+
+
+
+</head>
+<body style="background-color: white">
+    <header id="header_wrapper">
+        <div class="container">
+            <div class="header_box">
+                <div class="logo">
+                    <a href="../../ADAMHome/index">
+                        <img src="~/img/logo.png" alt="logo" style="width: 60%;">
+                    </a>
+                </div>
+                <nav class="navbar navbar-inverse" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    </div>
+                    <div id="main-nav" class="navbar-header" @*class="collapse navbar-collapse navStyle"*@>
+                        <ul class="nav nav-pills" id="mainNav">
+                            <li class="active"><a href="../../ADAMHome/index" class="scroll-link"><strong>Home</strong></a></li>
+                            <li><a href="#service" class="scroll-link"><strong>Top Rated Products</strong></a></li>
+                            <li><a href="#ProductReview" class="scroll-link"><strong>Trends</strong></a></li>
+                            <li><a href="#contact" class="scroll-link"><strong>Contact</strong></a></li>
+                        </ul>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div>
+
+                            <input type="text" placeholder="Search here..." id="searchTextBox" onfocus="TitleIntellisecce()">
+
+                            <button type="submit" class="btn btn-default" id="search" onclick="SearchProduct()"><strong>Search</strong></button>
+                        </div>
+
+
+                    </div>
+                    <div class="container">
+                        <div class="col-lg-1">
+                            <button type="submit" class="btn btn-default" onclick="location.href = '../../ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!--Hero_Section-->
+    <div class="container">
+        <div class="row">
+            <div id="comparisonChart">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="comparison">
+                <h4>Trending in Samsung</h4>
+            </div>
+        </div>
+    </div>
+
+        <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery-scrolltofixed.js"></script>
+        <script src="~/Scripts/jquery.nav.js"></script>
+        <script src="~/Scripts/jquery.easing.1.3.js"></script>
+        <script src="~/Scripts/jquery.isotope.js"></script>
+        <script src="~/Scripts/fancybox/jquery.fancybox.pack.js"></script>
+        <script src="~/Scripts/wow.js"></script>
+        <script src="~/Scripts/custom.js"></script>
+        <script src="~/Scripts/jquery.reveal.js"></script>
+</body>
+   <html>

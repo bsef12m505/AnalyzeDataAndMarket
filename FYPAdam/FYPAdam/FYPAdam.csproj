@@ -476,6 +476,7 @@
     <Content Include="Views\ADAMHome\temp.cshtml" />
     <Content Include="Views\ADAMHome\Trends.cshtml" />
     <Content Include="Views\ADAMHome\WeeklyTrends.cshtml" />
+    <Content Include="Views\Shared\Navbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
