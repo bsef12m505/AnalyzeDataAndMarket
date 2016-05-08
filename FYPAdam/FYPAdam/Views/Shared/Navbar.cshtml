@@ -43,7 +43,7 @@
         <div class="container">
             <div class="header_box">
                 <div class="logo">
-                    <a href="../../FYPAdam/ADAMHome">
+                    <a href="../../ADAMHome">
                         <img src="~/img/logo.png" alt="logo" style="width: 60%;">
                     </a>
                 </div>
@@ -53,16 +53,16 @@
                     </div>
                     <div id="main-nav" class="navbar-header" @*class="collapse navbar-collapse navStyle"*@>
                         <ul class="nav nav-pills" id="mainNav">
-                            <li class="active"><a href="../../FYPAdam/ADAMHome" class="scroll-link"><strong>Home</strong></a></li>
-                            <li><a href="../../FYPAdam/ADAMHome/Trends" class="scroll-link"><strong>Top Trends</strong></a></li>
-                            <li><a href="../../FYPAdam/ADAMHome/CompareProduct" class="scroll-link"><strong>Compare Products</strong></a></li>
-                            <li><a href="../../FYPAdam/ADAMHome/Contact" class="scroll-link"><strong>Contact</strong></a></li>
+                            <li class="active"><a href="../../ADAMHome" class="scroll-link"><strong>Home</strong></a></li>
+                            <li><a href="../../ADAMHome/Trends" class="scroll-link"><strong>Top Trends</strong></a></li>
+                            <li><a href="../../ADAMHome/CompareProduct" class="scroll-link"><strong>Compare Products</strong></a></li>
+                            <li><a href="../../ADAMHome/Contact" class="scroll-link"><strong>Contact</strong></a></li>
                         </ul>
 
                     </div>
                     <div class="col-lg-4">
                         <div>
-                            <form action="../../FYPAdam/ADAMHome/SearchProduct">
+                            <form action="../../ADAMHome/SearchProduct">
                                 <input type="text" placeholder="Search here..." name="SearchProd" id="searchTextBox" onfocus="TitleIntellisecce()">
 
                                 <button type="submit" class="btn btn-default" id="search"><strong>Search</strong></button>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="container">
                         <div class="col-lg-1">
-                            <button type="submit" class="btn btn-default" onclick="location.href = '../../FYPAdam/ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
+                            <button type="submit" class="btn btn-default" onclick="location.href = '../../ADAMHome/Login'" id="LoginBut"><strong>Login</strong></button>
                         </div>
                     </div>
                 </nav>
@@ -88,7 +88,7 @@
             $.getScript('../../FYPAdam/Scripts/jquery-ui.js');
             var titles = [];
             $.ajax({
-                url: 'http://localhost/Engine/Home/AllProductTtiles',
+                url: '../../ADAMHome/AllProductTtiles',
                 type: 'Get',
                 dataType: 'json',
                 success: function (data) {

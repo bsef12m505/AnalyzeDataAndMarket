@@ -16,7 +16,69 @@ namespace FYPAdam.Controllers
 {
     public class ADAMHomeController : Controller
     {
+        public JsonResult CompareProductAjax(string prodName1, string prodName2)
+        {
+            List<Product> prodList = new List<Product>();
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/CompareProducts?prodName1=" + prodName1 + "&prodName2=" + prodName2);
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                prodList = serializer.Deserialize<List<Product>>(finalResponse);
+
+
+                if (prodList.Count < 2)
+                {
+                    return this.Json(new { Success = false });
+                }
+                return this.Json(prodList, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+                return this.Json(new { Success = false });
+            }
+        }
+
+
+        public JsonResult AllProductTtiles()
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/AllProductTtiles");
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                List<string> prodTitles = serializer.Deserialize<List<string>>(finalResponse);
+
+
+                return this.Json(prodTitles, JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+                return this.Json("", JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult CompareProduct()
         {
             return View();

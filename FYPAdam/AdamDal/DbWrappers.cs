@@ -509,7 +509,7 @@ namespace AdamDal
            if(difference.Days==0)
            {
                strtDate = startOfWeek.Subtract(new TimeSpan(7, 0, 0, 0));
-               strtDate = startOfWeek.Date;
+               strtDate = strtDate.Date;
            }
 
            List<int> folowerCount = ed1.BrandFollowers.Where(x => x.BrandId == brandId && (x.Date >= strtDate && x.Date <= today)).Select(y => y.FollowersCount).ToList();
@@ -545,7 +545,7 @@ namespace AdamDal
                 if (difference.Days == 0)
                 {
                     mondayDate = startOfWeek.Subtract(new TimeSpan(6, 0, 0, 0));
-                    mondayDate = startOfWeek.Date;
+                    mondayDate = mondayDate.Date;
                 }
                 dateList = ed1.BrandFollowers.Where(x => x.Date >= mondayDate && x.Date <= today).Select(y => y.Date).Distinct().ToList();
                 return dateList;
