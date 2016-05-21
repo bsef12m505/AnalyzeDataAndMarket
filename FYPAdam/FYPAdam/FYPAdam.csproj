@@ -246,6 +246,7 @@
     <Content Include="font-awesome\css\style.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="font-awesome\img\lap.png" />
+    <Content Include="font-awesome\img\logo.png" />
     <Content Include="font-awesome\img\slide-1.jpg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -305,7 +306,7 @@
     <Content Include="img\images.jpg" />
     <Content Include="img\lap.png" />
     <Content Include="img\logo-asus.png" />
-    <Content Include="img\Logo.jpg" />
+    <Content Include="img\logo.png" />
     <Content Include="img\NoSearchFound.png" />
     <Content Include="img\Originals\Adam1.png" />
     <Content Include="img\Originals\dell-Logo.jpg" />
@@ -476,12 +477,12 @@
     <Content Include="Views\ADAMHome\SignUp.cshtml" />
     <Content Include="Views\User\UserDashboard.cshtml" />
     <Content Include="Views\ADAMHome\temp.cshtml" />
-    <Content Include="Views\Shared\NavBar.cshtml" />
-    <Content Include="Views\ADAMHome\CompareProduct.cshtml" />
-    <Content Include="Views\ADAMHome\Contact.cshtml" />
-    <Content Include="Views\ADAMHome\SearchProduct.cshtml" />
     <Content Include="Views\ADAMHome\Trends.cshtml" />
     <Content Include="Views\ADAMHome\WeeklyTrends.cshtml" />
+    <Content Include="Views\Shared\Navbar.cshtml" />
+    <Content Include="Views\ADAMHome\SearchProduct.cshtml" />
+    <Content Include="Views\ADAMHome\CompareProduct.cshtml" />
+    <Content Include="Views\ADAMHome\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

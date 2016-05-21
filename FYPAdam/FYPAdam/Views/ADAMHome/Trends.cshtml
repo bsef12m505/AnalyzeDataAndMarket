@@ -12,7 +12,7 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1">
-
+   
     <script type="text/javascript">
 
         google.charts.load('current', { 'packages': ['bar', 'line', 'corechart', 'gauge'] });
@@ -326,7 +326,7 @@
 </head>
 <body style="background-color: white">
 
-
+   
     <!--Hero_Section-->
     <div class="container">
         @*<section id="prodDescription_section" class="ProductPageTop" style="display: none">
@@ -412,14 +412,14 @@
 
                                                         if (@i <= 8)
                                                         {
-                                                            <div class="list-group">
+                                                        <div class="list-group">
 
-                                                                <a href='@Url.Action("WeeklyTrends", "ADAMHome", new { catName = "Mobiles", bName = @cat })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@cat.ToUpper()</a>
-                                                                @{
+                                                            <a href='@Url.Action("WeeklyTrends", "ADAMHome", new { catName = "Mobiles", bName = @cat })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@cat.ToUpper()</a>
+                                                            @{
                                                             ++i;
-                                                                }
+                                                            }
 
-                                                            </div>
+                                                        </div>
 
 
 
@@ -435,7 +435,7 @@
                                                             if (@j > 8)
                                                             {
 
-                                                                <a href="@Url.Action("WeeklyTrends", "ADAMHome", new { catName = "Mobiles", bName = @b })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.ToUpper()</a>
+                                                            <a href="@Url.Action("WeeklyTrends", "ADAMHome", new { catName = "Mobiles", bName = @b })" class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@b.ToUpper()</a>
 
 
                                                             }
@@ -488,23 +488,23 @@
 
 
 
+                                                        
+                                                            <div class="list-group">
 
-                                                        <div class="list-group">
+                                                                <a href='@Url.Action("WeeklyTrends", "ADAMHome", new { catName = "Laptop", bName = @cat })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@cat.ToUpper()</a>
+                                                                @{
+                                                            ++k;
+                                                                }
 
-                                                            <a href='@Url.Action("WeeklyTrends", "ADAMHome", new { catName = "Laptop", bName = @cat })' class="list-group-item"><span class="glyphicon glyphicon-menu-right"></span>&nbsp;&nbsp;@cat.ToUpper()</a>
-                                                            @{
-                                                        ++k;
-                                                            }
-
-                                                        </div>
-
-
+                                                            </div>
 
 
+
+                                                       
 
                                                     }
 
-
+                                          
 
 
 
@@ -660,7 +660,7 @@
         });
     </script>
 
-
+    
 </body>
 </html>
 

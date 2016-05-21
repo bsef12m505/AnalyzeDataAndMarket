@@ -63,7 +63,7 @@ namespace Twitter
 
         }
 
-        public async Task<int> GetBrandFollowers(string BUserName, string accessToken = null)
+        public async Task<int> GetBrandFollowers(string BUserName,string accessToken = null)
         {
             if (accessToken == null)
             {

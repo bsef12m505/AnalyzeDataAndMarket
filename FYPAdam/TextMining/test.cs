@@ -479,7 +479,7 @@ namespace TextMining
                     }
 
                 }
-
+               
                 //checking the frequency of features to get the predict positive and negative ones
                 foreach (var obj in pfeatureDictionary)
                 {

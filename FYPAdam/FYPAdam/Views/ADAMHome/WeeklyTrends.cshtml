@@ -14,7 +14,7 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1">
-
+    
     <script type="text/javascript">
 
         google.charts.load('current', { 'packages': ['bar', 'line', 'corechart', 'gauge'] });
@@ -31,7 +31,7 @@
             data1.addRows(daysOfWeek.length);
 
             for (var i = 0; i <  daysOfWeek.length; i++) {
-
+               
                 data1.setCell(i, 0, daysOfWeek[i]);
                 data1.setCell(i, 1, prevWeekArray[i]);
                 data1.setCell(i, 2, prev2WeekArray[i]);
@@ -53,15 +53,15 @@
                 title: '',
                 height: 400,
                 backgroundColor: 'none',
-
+               
                 hAxis: {
-
+                    
                     titleTextStyle: {
                         color: 'black'
                     }
                 },
-
-
+               
+                
             };
 
             var chart = new google.visualization.AreaChart(document.getElementById('comparisonChart'));
@@ -79,23 +79,24 @@
 
 </head>
 <body style="background-color: white">
-
+   
     <!--Hero_Section-->
     <div class="container">
         <div class="row">
+            <h4>Weekly Trend Comparison of @ViewBag.name</h4>
             <div id="comparisonChart">
 
             </div>
-
+            
         </div>
 
-        <div class="row">
+        @*<div class="row">
 
             <div id="comparison">
                 <h4>Trending in Samsung</h4>
             </div>
 
-            <div class="row">
+            <div class="row" >
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -108,8 +109,7 @@
                         </thead>
                         <tbody>
 
-                            @*@foreach (var spec in @Model.Product_Specification)
-                                {*@
+                           
                             <tr>
 
                                 <td>Samsung</td>
@@ -122,8 +122,8 @@
 
                             </tr>
 
-
-                            @*}*@
+                            
+                          
 
 
 
@@ -133,9 +133,9 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 
-
+       
 </body>
-<html>
+   <html>

@@ -8,7 +8,7 @@ using Twitter;
 
 namespace Engine
 {
-    public class WeekTrend : IJob
+    public class WeekTrend: IJob
     {
         public void Execute(IJobExecutionContext context)
         {
@@ -48,9 +48,8 @@ namespace Engine
                     follower.FollowersCount = count.Result;
                     wrap.AddBrandFollower(follower);
                 }
-
-            }
-            catch (Exception e)
+              
+            }catch(Exception e)
             {
 
             }

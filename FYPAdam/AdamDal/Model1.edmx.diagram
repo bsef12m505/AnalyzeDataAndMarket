@@ -4,11 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="271ecafb14034f48adce18ed343c708d" Name="Diagram1" ZoomLevel="79">
+      <Diagram DiagramId="271ecafb14034f48adce18ed343c708d" Name="Diagram1" ZoomLevel="102">
         <EntityTypeShape EntityType="AdamDatabaseModel.Admin" Width="1.5" PointX="1.375" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="AdamDatabaseModel.Category" Width="1.5" PointX="0.5" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AdamDatabaseModel.Customer" Width="1.5" PointX="3.375" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.Item" Width="1.5" PointX="7.875" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="AdamDatabaseModel.Product_Specification" Width="1.5" PointX="4.625" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AdamDatabaseModel.ProductReview" Width="1.5" PointX="6.375" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AdamDatabaseModel.Specification" Width="1.5" PointX="9.875" PointY="2.625" IsExpanded="true" />
@@ -24,14 +23,15 @@
         <AssociationConnector Association="AdamDatabaseModel.FK_Feature_Product" />
         <EntityTypeShape EntityType="AdamDatabaseModel.Customer_AreaOfInterest" Width="2" PointX="3.625" PointY="3.25" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Customer_AreaOfInterest_Customer" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.BrandFollower" Width="1.5" PointX="4.75" PointY="9.5" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.ProductHit" Width="1.5" PointX="8.375" PointY="8.875" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.ProductSearch" Width="1.5" PointX="8.375" PointY="11.625" />
-        <EntityTypeShape EntityType="AdamDatabaseModel.TrendingProduct" Width="1.5" PointX="4.75" PointY="12.25" />
-        <AssociationConnector Association="AdamDatabaseModel.FK_Brand_BrandFollowers" />
-        <AssociationConnector Association="AdamDatabaseModel.FK_TrenProd_Brand" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.ProductHit" Width="1.625" PointX="8.375" PointY="8.875" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_ProductHit" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.BrandFollower" Width="1.5" PointX="5.125" PointY="9.625" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.Item" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.ProductSearch" Width="1.5" PointX="8.75" PointY="12" />
+        <AssociationConnector Association="AdamDatabaseModel.FK_Brand_BrandFollowers" />
         <AssociationConnector Association="AdamDatabaseModel.FK_Product_ProductSearch" />
+        <EntityTypeShape EntityType="AdamDatabaseModel.TrendingProduct" Width="1.5" PointX="4.75" PointY="12.875" />
+        <AssociationConnector Association="AdamDatabaseModel.FK_TrenProd_Brand" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
