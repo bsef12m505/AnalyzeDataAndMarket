@@ -75,12 +75,14 @@ namespace Engine
                             List<dynamic> refinedTags=twitter.Frequency_Analysis_HashTag(hashtagTable); //Extracting the relevent hashtags(i.e tags that are a product name)
                             foreach(var prodName in refinedTags)
                             {
+
+
                              //Dictionary<string,string> prodDesc= col.GetProductAgainstHashTag(prodName);//geting the product details of the top products (extracted using twitter) from amazon 
                              Dictionary<string, string> prodDesc = col.GetProdDetails(prodName);
                              List<string> reviews=ReviewCollection.reviewList; //Reviews of the related product
                              var arr = prodDesc.Keys.ToArray();
                              var prodValues = prodDesc.Values.ToArray();
-                            // test.GetSentimentandNouns(reviews, enginePath);  //extracting positive and negative features from reviews
+                             test.GetSentimentandNouns(reviews, enginePath);  //extracting positive and negative features from reviews
                              posFeatures = test.pfeatureDictionary;
                              negFeatures = test.nfeatureDictionary;
 
@@ -131,9 +133,8 @@ namespace Engine
                                 i++;
                                 j++;
                             }
-                            string chartPath=HostingEnvironment.MapPath(@"~/Charts");
-                            barchart.SaveImage(chartPath+@"\posFeaChart.png", ChartImageFormat.Png); //saving the barchart in the same folder as exe
-                           // barchart.SaveImage(@"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\New folder\FYPAdam\Engine\Charts\posFeaChart.png", ChartImageFormat.Png); //saving the barchart in the same folder as exe
+
+                            barchart.SaveImage(@"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\New folder\FYPAdam\Engine\Charts\posFeaChart.png", ChartImageFormat.Png); //saving the barchart in the same folder as exe
                            // var otherController = DependencyResolver.Current.GetService<HomeController>();
                             //var result = otherController.DrawChart(negFeatures,posFeatures);
 
@@ -184,7 +185,7 @@ namespace Engine
                                 j++;
                             }
 
-                            negFeatureBarChart.SaveImage(chartPath+@"\negFeaChart.png", ChartImageFormat.Png); //saving the barchart in the same folder as exe
+                            negFeatureBarChart.SaveImage(@"..\..\..\..\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\New folder\FYPAdam\Engine\Charts\negFeaChart.png", ChartImageFormat.Png); //saving the barchart in the same folder as exe
                             var sortedPositiveFeatures = from pair in test.pfeatureDictionary
                                         orderby pair.Value descending
                                         select pair;

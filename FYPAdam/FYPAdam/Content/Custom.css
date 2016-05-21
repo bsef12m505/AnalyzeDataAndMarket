@@ -848,3 +848,15 @@ hr {
    
    
 }
+
+.circle
+    {
+    width:100px;
+    height:100px;
+    border-radius:250px;
+    font-size:50px;
+    color:#fff;
+    line-height:100px;
+    text-align:center;
+    background:#000
+    }

@@ -316,7 +316,7 @@ namespace FYPAdam.Controllers
                 StreamReader stream = new StreamReader(response.GetResponseStream());
                 string finalResponse = stream.ReadToEnd();
                 List<List<int>> brandFollowerList = serializer.Deserialize<List<List<int>>>(finalResponse);
-                return this.Json(brandFollowerList,JsonRequestBehavior.AllowGet);
+                return this.Json(brandFollowerList, JsonRequestBehavior.AllowGet);
                 //string[] bnamesMob = brandFollowerList[0].Keys.ToArray();
                 //int[][] followerscountMob = brandFollowerList[0].Values.ToArray();
 
@@ -328,18 +328,75 @@ namespace FYPAdam.Controllers
             {
                 var pageContent = new StreamReader(wex.Response.GetResponseStream())
                         .ReadToEnd();
-               
+
+            }
+            return this.Json("", JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult WeeklyComparisonTrendLaptop()
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/WeeklyLaptopComparison");
+                request.Timeout = 12000000;
+                request.KeepAlive = false;
+                request.ProtocolVersion = HttpVersion.Version10;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                var serializer = new JavaScriptSerializer();
+
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string finalResponse = stream.ReadToEnd();
+                List<List<int>> brandFollowerList = serializer.Deserialize<List<List<int>>>(finalResponse);
+                return this.Json(brandFollowerList, JsonRequestBehavior.AllowGet);
+                //string[] bnamesMob = brandFollowerList[0].Keys.ToArray();
+                //int[][] followerscountMob = brandFollowerList[0].Values.ToArray();
+
+                //string[] bnamesLaptop = brandFollowerList[1].Keys.ToArray();
+                //int[][] followerscountLaptop = brandFollowerList[1].Values.ToArray();
+
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                        .ReadToEnd();
+
             }
             return this.Json("", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult WeeklyTrends(string catName, string bName)
         {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Utilities.EngineUrl + "Home/GetPrevFifteenDayFollowers?catName=" + catName + "&bName=" + bName);
+            request.Timeout = 12000000;
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            var serializer = new JavaScriptSerializer();
+
+            StreamReader stream = new StreamReader(response.GetResponseStream());
+            string finalResponse = stream.ReadToEnd();
+            List<List<int>> brandFollowerList = serializer.Deserialize<List<List<int>>>(finalResponse);
+            List<string> dates = new List<string>();
+            dates.Add("Monday");
+            dates.Add("Tuesday");
+            dates.Add("Wednesday");
+            dates.Add("Thursday");
+            dates.Add("Friday");
+            dates.Add("Saturday");
+            dates.Add("Sunday");
+            ViewBag.prevWeek = brandFollowerList[0].ToArray();
+            ViewBag.prev2Week = brandFollowerList[1].ToArray();
+            ViewBag.days = dates.ToArray();
+
+
             return View();
         }
         public ActionResult Trends()
         {
-           
+
             try
             {
 
@@ -353,7 +410,7 @@ namespace FYPAdam.Controllers
 
                 StreamReader stream = new StreamReader(response.GetResponseStream());
                 string finalResponse = stream.ReadToEnd();
-                List<Dictionary<string,int[]>> brandFollowerList= serializer.Deserialize<List<Dictionary<string,int[]>>>(finalResponse);
+                List<Dictionary<string, int[]>> brandFollowerList = serializer.Deserialize<List<Dictionary<string, int[]>>>(finalResponse);
                 string[] bnamesMob = brandFollowerList[0].Keys.ToArray();
                 int[][] followerscountMob = brandFollowerList[0].Values.ToArray();
 
@@ -372,16 +429,16 @@ namespace FYPAdam.Controllers
                 request1.ProtocolVersion = HttpVersion.Version10;
                 HttpWebResponse response1 = (HttpWebResponse)request1.GetResponse();
 
-                
+
 
                 StreamReader stream1 = new StreamReader(response1.GetResponseStream());
                 finalResponse = stream1.ReadToEnd();
                 List<DateTime> dateArray = serializer.Deserialize<List<DateTime>>(finalResponse);
                 List<string> array = new List<string>();
 
-                foreach(var date in dateArray)
+                foreach (var date in dateArray)
                 {
-                    string [] dateOnly=Convert.ToString(date).Split(' ');
+                    string[] dateOnly = Convert.ToString(date).Split(' ');
                     array.Add(dateOnly[0]);
                 }
 

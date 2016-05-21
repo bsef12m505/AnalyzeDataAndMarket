@@ -14,11 +14,11 @@ namespace Engine.Controllers
 {
     public class HomeController : Controller
     {
-//twitter weekly trends
+        //twitter weekly trends
         public JsonResult GetFollowersWeekly()
         {
             DbWrappers wrap = new DbWrappers();
-            Dictionary<string,int []> mobBrandFollwers = new Dictionary<string,int[]>();
+            Dictionary<string, int[]> mobBrandFollwers = new Dictionary<string, int[]>();
             Dictionary<string, int[]> lapBrandFollwers = new Dictionary<string, int[]>();
             List<Dictionary<string, int[]>> brandFollowersDic = new List<Dictionary<string, int[]>>();
             try
@@ -30,10 +30,10 @@ namespace Engine.Controllers
                     List<int> countDiff = new List<int>();
                     int[] arr = countList.ToArray();
                     int j = 0;
-                    for (int i = 1; i < arr.Length;i++ )
+                    for (int i = 1; i < arr.Length; i++)
                     {
                         j = i - 1;
-                        countDiff.Add(Math.Abs(arr[i]-arr[j]));
+                        countDiff.Add(Math.Abs(arr[i] - arr[j]));
 
                     }
 
@@ -53,7 +53,7 @@ namespace Engine.Controllers
                     for (int i = 1; i < arr.Length; i++)
                     {
                         j = i - 1;
-                       
+
                         countDiff.Add(Math.Abs(arr[i] - arr[j]));
 
                     }
@@ -64,12 +64,47 @@ namespace Engine.Controllers
                 brandFollowersDic.Add(mobBrandFollwers);
                 brandFollowersDic.Add(lapBrandFollwers);
                 return this.Json(brandFollowersDic, JsonRequestBehavior.AllowGet);
-            }catch(Exception )
+            }
+            catch (Exception)
             {
                 return this.Json("", JsonRequestBehavior.AllowGet); ;
             }
 
         }
+
+        public JsonResult GetPrevFifteenDayFollowers(string catName, string bName)
+        {
+            List<List<int>> finalFollowersList = new List<List<int>>();
+            DbWrappers wrap = new DbWrappers();
+            try
+            {
+
+                List<List<int>> followersList = wrap.GetPrevious2WeeksFollowers(catName, bName);//geting all the mobile brands coz we need them for twitter username
+                foreach (var list in followersList)
+                {
+                    List<int> countDiff = new List<int>();
+                    int[] arr = list.ToArray();
+                    int j = 0;
+                    for (int i = 1; i < arr.Length; i++)
+                    {
+                        j = i - 1;
+
+                        countDiff.Add(Math.Abs(arr[i] - arr[j]));
+
+                    }
+                    finalFollowersList.Add(countDiff);
+
+                }
+
+                return this.Json(finalFollowersList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return this.Json("", JsonRequestBehavior.AllowGet); ;
+            }
+        }
+
+
 
         public JsonResult GetDateWeekly()
         {
@@ -92,24 +127,58 @@ namespace Engine.Controllers
             DbWrappers wrap = new DbWrappers();
             List<List<int>> diffList = new List<List<int>>();
 
-            
+
             try
             {
                 int z = 0;
                 List<List<int>> folowersList = wrap.BrandComparisonMobilesWeekly();//geting all the mobile brands coz we need them for twitter username
-                for (int i = 0; i < folowersList.Count-1; i++)
+                for (int i = 0; i < folowersList.Count - 1; i++)
                 {
                     List<int> tempArr = new List<int>();
                     z = i + 1;
                     int xx = folowersList[i].Count;
-                    for (int j = 0; j < folowersList[i].Count;j++ )
+                    for (int j = 0; j < folowersList[i].Count; j++)
                     {
 
                         tempArr.Add(Math.Abs(folowersList[i][j] - folowersList[z][j]));
                     }
 
                     diffList.Add(tempArr);
-                    
+
+                }
+
+
+                return this.Json(diffList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return this.Json("", JsonRequestBehavior.AllowGet); ;
+            }
+        }
+
+        public JsonResult WeeklyLaptopComparison()
+        {
+            DbWrappers wrap = new DbWrappers();
+            List<List<int>> diffList = new List<List<int>>();
+
+
+            try
+            {
+                int z = 0;
+                List<List<int>> folowersList = wrap.BrandComparisonLaptopsWeekly();//geting all the mobile brands coz we need them for twitter username
+                for (int i = 0; i < folowersList.Count - 1; i++)
+                {
+                    List<int> tempArr = new List<int>();
+                    z = i + 1;
+                    int xx = folowersList[i].Count;
+                    for (int j = 0; j < folowersList[i].Count; j++)
+                    {
+
+                        tempArr.Add(Math.Abs(folowersList[i][j] - folowersList[z][j]));
+                    }
+
+                    diffList.Add(tempArr);
+
                 }
 
 
@@ -128,7 +197,7 @@ namespace Engine.Controllers
                 webClient.DownloadFile(imageUrl, "../../../..Users/Hp Mobile Workstatio/Documents/Visual Studio 2013/Projects/FYP DB Fix UP/FYPAdam/FYPAdam/img/chart1.png");
             }
 
-            return this.Json("",JsonRequestBehavior.AllowGet);
+            return this.Json("", JsonRequestBehavior.AllowGet);
 
         }
         public ActionResult DrawChart(Dictionary<string, int> negFeatures, Dictionary<string, int> posFeatures)
@@ -321,6 +390,7 @@ namespace Engine.Controllers
             return this.Json(prodList, JsonRequestBehavior.AllowGet);
         }
 
+
         public JsonResult SearchedProduct(string name)
         {
             List<Product> p = new List<Product>();
@@ -495,6 +565,6 @@ namespace Engine.Controllers
         //    }
         //    return this.Json(productList, JsonRequestBehavior.AllowGet);
         //}
-       
+
     }
 }

@@ -11,7 +11,6 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Script.Serialization;
     
     public partial class BrandFollower
     {
@@ -19,7 +18,6 @@ namespace AdamDal
         public int BrandId { get; set; }
         public int FollowersCount { get; set; }
         public System.DateTime Date { get; set; }
-       
     
         public virtual Brand Brand { get; set; }
     }

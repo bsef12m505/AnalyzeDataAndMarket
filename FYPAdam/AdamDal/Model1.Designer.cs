@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\New folder\FYPAdam\AdamDal\Model1.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Hp Mobile Workstatio\Documents\Visual Studio 2013\Projects\New folder\Old but Goldd\FYPAdam\FYPAdam\AdamDal\Model1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

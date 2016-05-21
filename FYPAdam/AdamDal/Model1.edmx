@@ -389,6 +389,14 @@
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Customer_AreaOfInterest" Relationship="AdamDatabaseModel.FK_Customer_AreaOfInterest_Customer" FromRole="Customer" ToRole="Customer_AreaOfInterest" />
         </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SearchString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SearchCount" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="Product_Specification">
           <Key>
             <PropertyRef Name="Id" />
@@ -435,6 +443,7 @@
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
           <EntitySet Name="Product_Specification" EntityType="Self.Product_Specification" />
           <EntitySet Name="ProductReviews" EntityType="Self.ProductReview" />
           <EntitySet Name="Specifications" EntityType="Self.Specification" />
@@ -474,26 +483,25 @@
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Customer_AreaOfInterest" EntitySet="Customer_AreaOfInterest" />
           </AssociationSet>
-          <EntitySet Name="ProductHits" EntityType="AdamDatabaseModel.ProductHit" />
-          <AssociationSet Name="FK_Product_ProductHit" Association="AdamDatabaseModel.FK_Product_ProductHit">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ProductHit" EntitySet="ProductHits" />
-          </AssociationSet>
           <EntitySet Name="BrandFollowers" EntityType="AdamDatabaseModel.BrandFollower" />
-          <EntitySet Name="Items" EntityType="AdamDatabaseModel.Item" />
+          <EntitySet Name="ProductHits" EntityType="AdamDatabaseModel.ProductHit" />
           <EntitySet Name="ProductSearches" EntityType="AdamDatabaseModel.ProductSearch" />
+          <EntitySet Name="TrendingProducts" EntityType="AdamDatabaseModel.TrendingProduct" />
           <AssociationSet Name="FK_Brand_BrandFollowers" Association="AdamDatabaseModel.FK_Brand_BrandFollowers">
             <End Role="Brand" EntitySet="Brands" />
             <End Role="BrandFollower" EntitySet="BrandFollowers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_ProductSearch" Association="AdamDatabaseModel.FK_Product_ProductSearch">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ProductSearch" EntitySet="ProductSearches" />
-          </AssociationSet>
-          <EntitySet Name="TrendingProducts" EntityType="AdamDatabaseModel.TrendingProduct" />
           <AssociationSet Name="FK_TrenProd_Brand" Association="AdamDatabaseModel.FK_TrenProd_Brand">
             <End Role="Brand" EntitySet="Brands" />
             <End Role="TrendingProduct" EntitySet="TrendingProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductHit" Association="AdamDatabaseModel.FK_Product_ProductHit">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductHit" EntitySet="ProductHits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductSearch" Association="AdamDatabaseModel.FK_Product_ProductSearch">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductSearch" EntitySet="ProductSearches" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Product">
@@ -638,28 +646,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ProductHit">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="SearchCount" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_ProductHit" FromRole="ProductHit" ToRole="Product" />
-        </EntityType>
-        <Association Name="FK_Product_ProductHit">
-          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="AdamDatabaseModel.ProductHit" Role="ProductHit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProductHit">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="BrandFollower">
           <Key>
             <PropertyRef Name="Id" />
@@ -670,13 +656,15 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_Brand_BrandFollowers" FromRole="BrandFollower" ToRole="Brand" />
         </EntityType>
-        <EntityType Name="Item">
+        <EntityType Name="ProductHit">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SearchString" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="SearchCount" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_ProductHit" FromRole="ProductHit" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductSearch">
           <Key>
@@ -687,6 +675,15 @@
           <Property Name="SearchCount" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Product" Relationship="AdamDatabaseModel.FK_Product_ProductSearch" FromRole="ProductSearch" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="TrendingProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_TrenProd_Brand" FromRole="TrendingProduct" ToRole="Brand" />
         </EntityType>
         <Association Name="FK_Brand_BrandFollowers">
           <End Type="AdamDatabaseModel.Brand" Role="Brand" Multiplicity="1" />
@@ -700,27 +697,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Product_ProductSearch">
-          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="AdamDatabaseModel.ProductSearch" Role="ProductSearch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProductSearch">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="TrendingProduct">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BrandId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Brand" Relationship="AdamDatabaseModel.FK_TrenProd_Brand" FromRole="TrendingProduct" ToRole="Brand" />
-        </EntityType>
         <Association Name="FK_TrenProd_Brand">
           <End Type="AdamDatabaseModel.Brand" Role="Brand" Multiplicity="1" />
           <End Type="AdamDatabaseModel.TrendingProduct" Role="TrendingProduct" Multiplicity="*" />
@@ -730,6 +706,30 @@
             </Principal>
             <Dependent Role="TrendingProduct">
               <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductHit">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.ProductHit" Role="ProductHit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductHit">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductSearch">
+          <End Type="AdamDatabaseModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AdamDatabaseModel.ProductSearch" Role="ProductSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductSearch">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -766,6 +766,15 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="SearchString" ColumnName="SearchString" />
+                <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -847,16 +856,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductHits">
-            <EntityTypeMapping TypeName="AdamDatabaseModel.ProductHit">
-              <MappingFragment StoreEntitySet="ProductHits">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BrandFollowers">
             <EntityTypeMapping TypeName="AdamDatabaseModel.BrandFollower">
               <MappingFragment StoreEntitySet="BrandFollowers">
@@ -867,11 +866,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="AdamDatabaseModel.Item">
-              <MappingFragment StoreEntitySet="Item">
+          <EntitySetMapping Name="ProductHits">
+            <EntityTypeMapping TypeName="AdamDatabaseModel.ProductHit">
+              <MappingFragment StoreEntitySet="ProductHits">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="SearchCount" ColumnName="SearchCount" />
-                <ScalarProperty Name="SearchString" ColumnName="SearchString" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
