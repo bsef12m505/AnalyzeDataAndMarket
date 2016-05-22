@@ -64,7 +64,7 @@ namespace AdamDal
             ed.Configuration.ProxyCreationEnabled = false;
             int catId = GetCategoryId(catName);
             int bId = GetBrandId(bName);
-            var strlist = ed.Products.Where(y => y.CategoryId.Equals(catId) && y.BrandId.Equals(bId)).Select(m => m).Distinct().OrderByDescending(x => x.Rating).Take(5).ToList();
+            var strlist = ed.Products.Where(y => y.CategoryId.Equals(catId) && y.BrandId.Equals(bId)).Select(m => m).Distinct().OrderByDescending(x => x.Rating).Take(6).ToList();
 
 
             return strlist;
