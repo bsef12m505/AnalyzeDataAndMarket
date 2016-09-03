@@ -22,7 +22,7 @@ namespace AdamDal
         public Nullable<double> NumericValue { get; set; }
     
         public virtual Specification Specification { get; set; }
-        [ScriptIgnore]
+          [ScriptIgnore]
         public virtual Product Product { get; set; }
     }
 }

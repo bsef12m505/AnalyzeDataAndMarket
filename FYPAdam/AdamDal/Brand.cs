@@ -31,9 +31,7 @@ namespace AdamDal
     [ScriptIgnore]
         public virtual Category Category { get; set; }
         public virtual ICollection<Product> Products { get; set; }
-        [ScriptIgnore]
         public virtual ICollection<BrandFollower> BrandFollowers { get; set; }
-        [ScriptIgnore]
         public virtual ICollection<TrendingProduct> TrendingProducts { get; set; }
     }
 }

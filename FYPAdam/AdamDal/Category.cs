@@ -11,6 +11,7 @@ namespace AdamDal
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Script.Serialization;
     
     public partial class Category
     {
@@ -24,6 +25,7 @@ namespace AdamDal
         public string Name { get; set; }
     
         public virtual ICollection<Product> Products { get; set; }
+        [ScriptIgnore]
         public virtual ICollection<Brand> Brands { get; set; }
     }
 }

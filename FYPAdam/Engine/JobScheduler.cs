@@ -65,13 +65,9 @@ namespace Engine
                 //weekly trends trigger
                 ITrigger weeklyTrendTrigger = TriggerBuilder.Create()
                 .WithIdentity("trigger2", "group2")
-                .StartNow()
-                .WithDailyTimeIntervalSchedule
-                 (s => s.WithIntervalInHours(24)
-                .OnEveryDay()
-                .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(0, 52))
-                )
-                .Build();
+                .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23,50))
+    .ForJob(WeeklyTrendJob)
+    .Build();
 
                 //Schedule a Job
                 //sched.ScheduleJob(userJob, emailTrigger);

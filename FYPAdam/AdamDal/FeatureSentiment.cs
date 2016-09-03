@@ -20,8 +20,7 @@ namespace AdamDal
         public string Feature { get; set; }
         public int Sentiment { get; set; }
         public int Count { get; set; }
-        [ScriptIgnore]
-    
+     [ScriptIgnore]
         public virtual Product Product { get; set; }
     }
 }

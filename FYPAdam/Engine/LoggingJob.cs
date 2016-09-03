@@ -25,7 +25,7 @@ namespace Engine
             try
             {
 
-              
+                string path = HttpContext.Current.Server.MapPath("~/ebuyer.txt");
                 //var path=HostingEnvironment.MapPath(@"~/App_Data/PriceModels.xml");
                // UserEmailJob.enginePath = HostingEnvironment.MapPath(@"~/packet-files/models");
                // var path1 = HttpContext.Current.Server.MapPath("~/App_Data/ebuyer.txt");

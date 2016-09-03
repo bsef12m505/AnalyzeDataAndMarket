@@ -39,7 +39,7 @@ namespace AdamDal
         public virtual Category Category { get; set; }
         public virtual ICollection<Product_Specification> Product_Specification { get; set; }
         public virtual ICollection<ProductReview> ProductReviews { get; set; }
-        [ScriptIgnore]
+          [ScriptIgnore]
         public virtual Brand Brand { get; set; }
         public virtual ICollection<FeatureSentiment> FeatureSentiments { get; set; }
         public virtual ICollection<ProductHit> ProductHits { get; set; }

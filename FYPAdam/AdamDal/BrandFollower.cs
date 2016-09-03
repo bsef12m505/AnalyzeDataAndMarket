@@ -19,8 +19,7 @@ namespace AdamDal
         public int BrandId { get; set; }
         public int FollowersCount { get; set; }
         public System.DateTime Date { get; set; }
-       
-    
+    [ScriptIgnore]
         public virtual Brand Brand { get; set; }
     }
 }
